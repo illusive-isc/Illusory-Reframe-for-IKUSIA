@@ -11,9 +11,13 @@ using UnityEditor.Animations;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    [AddComponentMenu("MizukiReframe")]
-    public partial class MizukiReframe : ReframeAbstract
+    public partial class MizukiExeReframe : ReframeExeAbstract
     {
+        public MizukiExeReframe(MizukiReframe target)
+        {
+            this.target = target;
+        }
+
         string pathDirPrefix = "Assets/IllusoryReframe/Mizuki";
 
         protected override long InitializeAssets(VRCAvatarDescriptor descriptor)
@@ -31,27 +35,30 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 Directory.CreateDirectory(pathDir);
             }
 
-            if (!paryi_FXDef)
+            if (!target.paryi_FXDef)
             {
                 if (!descriptor.baseAnimationLayers[4].animatorController)
                     descriptor.baseAnimationLayers[4].animatorController =
                         AssetDatabase.LoadAssetAtPath<AnimatorController>(
                             AssetDatabase.GUIDToAssetPath("eabec4db12bc4574c996310914852639")
                         );
-                paryi_FXDef =
+                target.paryi_FXDef =
                     descriptor.baseAnimationLayers[4].animatorController as AnimatorController;
             }
-            AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(paryi_FXDef), pathDir + pathName);
+            AssetDatabase.CopyAsset(
+                AssetDatabase.GetAssetPath(target.paryi_FXDef),
+                pathDir + pathName
+            );
 
-            paryi_FX = AssetDatabase.LoadAssetAtPath<AnimatorController>(pathDir + pathName);
+            target.paryi_FX = AssetDatabase.LoadAssetAtPath<AnimatorController>(pathDir + pathName);
 
-            if (!menuDef)
+            if (!target.menuDef)
             {
                 if (!descriptor.expressionsMenu)
                     descriptor.expressionsMenu = AssetDatabase.LoadAssetAtPath<VRCExpressionsMenu>(
                         AssetDatabase.GUIDToAssetPath("2e95f28830e406047b35e7e58b3c0e79")
                     );
-                menuDef = descriptor.expressionsMenu;
+                target.menuDef = descriptor.expressionsMenu;
             }
 
             var iconPath = pathDir + "/icon";
@@ -59,30 +66,39 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             {
                 Directory.CreateDirectory(iconPath);
             }
-            menu = DuplicateExpressionMenu(menuDef, pathDir, iconPath, questFlg1, textureResize);
+            target.menu = DuplicateExpressionMenu(
+                target.menuDef,
+                pathDir,
+                iconPath,
+                (target as MizukiReframe).questFlg1,
+                target.textureResize
+            );
 
-            if (!paramDef)
+            if (!target.paramDef)
             {
                 if (!descriptor.expressionParameters)
                     descriptor.expressionParameters =
                         AssetDatabase.LoadAssetAtPath<VRCExpressionParameters>(
                             AssetDatabase.GUIDToAssetPath("ca37a7e2249e6404ea1893c197866705")
                         );
-                paramDef = descriptor.expressionParameters;
-                paramDef.name = descriptor.expressionParameters.name;
+                target.paramDef = descriptor.expressionParameters;
+                target.paramDef.name = descriptor.expressionParameters.name;
             }
-            param = ScriptableObject.CreateInstance<VRCExpressionParameters>();
-            EditorUtility.CopySerialized(paramDef, param);
-            param.name = paramDef.name;
+            target.param = ScriptableObject.CreateInstance<VRCExpressionParameters>();
+            EditorUtility.CopySerialized(target.paramDef, target.param);
+            target.param.name = target.paramDef.name;
             var NotSyncParameterExtend = new List<string>();
-            if (nadeFlg)
+            if ((target as MizukiReframe).nadeFlg)
                 NotSyncParameterExtend.Add("NadeNade");
-            if (kamitukiFlg)
+            if ((target as MizukiReframe).kamitukiFlg)
                 NotSyncParameterExtend.Add("Gimmick2_5");
 
-            SetNotSyncParameter(param, NotSyncParameters.Concat(NotSyncParameterExtend).ToList());
-            EditorUtility.SetDirty(param);
-            AssetDatabase.CreateAsset(param, pathDir + param.name + ".asset");
+            SetNotSyncParameter(
+                target.param,
+                NotSyncParameters.Concat(NotSyncParameterExtend).ToList()
+            );
+            EditorUtility.SetDirty(target.param);
+            AssetDatabase.CreateAsset(target.param, pathDir + target.param.name + ".asset");
             step1.Stop();
             return step1.ElapsedMilliseconds;
         }
@@ -97,12 +113,14 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                     ReframeCore.SetWeight(
                         body_bSMR,
                         "Foot_heel_OFF_____足_ヒールオフ",
-                        heelFlg1 || heelFlg2 ? 0 : 100
+                        (target as MizukiReframe).heelFlg1 || (target as MizukiReframe).heelFlg2
+                            ? 0
+                            : 100
                     );
                     ReframeCore.SetWeight(
                         body_bSMR,
                         "Foot_Hiheel_____足_ハイヒール",
-                        heelFlg2 ? 100 : 0
+                        (target as MizukiReframe).heelFlg2 ? 100 : 0
                     );
                 }
 
@@ -122,27 +140,35 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             var paryi_ActionParam = GetUseParams(
                 baseLayers[3].animatorController as AnimatorController
             );
-            var paryi_FXParam = EditFXParam(paryi_FX);
+            var paryi_FXParam = EditFXParam(target.paryi_FX);
 
             HashSet<string> allParams = new HashSet<string>();
             allParams.UnionWith(paryi_LocoParam);
             allParams.UnionWith(paryi_GestureParam);
             allParams.UnionWith(paryi_ActionParam);
             allParams.UnionWith(paryi_FXParam);
-            param.parameters = param
-                .parameters.Where(param => allParams.Contains(param.name))
+            target.param.parameters = target
+                .param.parameters.Where(param => allParams.Contains(param.name))
                 .ToArray();
-            if (IKUSIA_emote)
-                foreach (var control in menu.controls)
+            if ((target as MizukiReframe).IKUSIA_emote)
+                foreach (var control in target.menu.controls)
                     if (control.name == "IKUSIA_emote")
                     {
-                        menu.controls.Remove(control);
+                        target.menu.controls.Remove(control);
                         break;
                     }
             Edit4Quest(descriptor);
 
             step2.Stop();
             return step2.ElapsedMilliseconds;
+        }
+
+        protected ParamProcessConfig[] GetParamConfigs(VRCAvatarDescriptor descriptor)
+        {
+            return GetParamConfigs<MizukiBase>(
+                descriptor,
+                "jp.illusive_isc.IllusoryReframe.Mizuki"
+            );
         }
     }
 }

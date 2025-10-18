@@ -15,36 +15,18 @@ using VRC.Dynamics;
 using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
 using VRC.SDKBase;
+using static jp.illusive_isc.IllusoryReframe.IKUSIA.ReframeAbstract;
 using Debug = UnityEngine.Debug;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 {
-    [AddComponentMenu("")]
-    public abstract class ReframeAbstract : MonoBehaviour, IEditorOnly
+    public abstract class ReframeExeAbstract : MonoBehaviour, IEditorOnly
     {
+        protected ReframeAbstract target { get; set; }
         protected string pathDirSuffix = "/FX/";
         protected string pathName = "paryi_FX.controller";
-        public AnimatorController paryi_FXDef;
-        public VRCExpressionsMenu menuDef;
-        public VRCExpressionParameters paramDef;
-
-        public AnimatorController paryi_FX;
-
-        // var paryi_Loco = GetUseParams(baseLayers[0].animatorController as AnimatorController);
-
-        // var paryi_Gesture = GetUseParams(baseLayers[2].animatorController as AnimatorController);
-        // var paryi_Action = GetUseParams(baseLayers[3].animatorController as AnimatorController);
-        // var paryi_FX = EditFXParam(controller);
-        public VRCExpressionsMenu menu;
-        public VRCExpressionParameters param;
-
         protected string pathDir;
 
-        public enum TextureResizeOption
-        {
-            LowerResolution,
-            Delete,
-        }
 
         public readonly List<string> NotSyncParameters = new()
         {
@@ -107,8 +89,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             "AvatarVersion",
         };
 
-        public TextureResizeOption textureResize = TextureResizeOption.LowerResolution;
-
         public void Execute(VRCAvatarDescriptor descriptor)
         {
             var stopwatch = Stopwatch.StartNew();
@@ -136,17 +116,17 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         private long FinalizeAssets(VRCAvatarDescriptor descriptor)
         {
             var step4 = Stopwatch.StartNew();
-            RemoveUnusedMenuControls(menu, param);
-            PromoteSingleSubMenu(menu);
-            EditorUtility.SetDirty(paryi_FX);
-            MarkAllMenusDirty(menu);
-            EditorUtility.SetDirty(param);
+            RemoveUnusedMenuControls(target.menu, target.param);
+            PromoteSingleSubMenu(target.menu);
+            EditorUtility.SetDirty(target.paryi_FX);
+            MarkAllMenusDirty(target.menu);
+            EditorUtility.SetDirty(target.param);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            descriptor.baseAnimationLayers[4].animatorController = paryi_FX;
-            descriptor.expressionsMenu = menu;
-            descriptor.expressionParameters = param;
+            descriptor.baseAnimationLayers[4].animatorController = target.paryi_FX;
+            descriptor.expressionsMenu = target.menu;
+            descriptor.expressionParameters = target.param;
             EditorUtility.SetDirty(descriptor);
             step4.Stop();
             return step4.ElapsedMilliseconds;
@@ -416,14 +396,14 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
                     var paramCount = initializeMethod.GetParameters().Length;
                     var args =
                         paramCount == 3
-                            ? new object[] { descriptor, paryi_FX, this }
-                            : new object[] { descriptor, paryi_FX };
+                            ? new object[] { descriptor, target.paryi_FX, this }
+                            : new object[] { descriptor, target.paryi_FX };
                     initializeMethod.Invoke(instance, args);
                 }
 
                 methods[1]?.Invoke(instance, new object[] { layers });
                 methods[2]?.Invoke(instance, new object[] { parameters });
-                methods[3]?.Invoke(instance, new object[] { menu, menuPath });
+                methods[3]?.Invoke(instance, new object[] { target.menu, menuPath });
                 methods[4]?.Invoke(instance, null);
                 methods[5]?.Invoke(instance, new object[] { delPath });
                 methods[6]?.Invoke(instance, new object[] { parameters });
@@ -821,6 +801,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
                 }
             }
         }
+
         protected void Remove4AAO(VRCAvatarDescriptor descriptor, bool AAORemoveFlg)
         {
             if (AAORemoveFlg)

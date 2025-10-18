@@ -3,52 +3,24 @@ using VRC.SDK3.Avatars.Components;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    public partial class MizukiReframe : ReframeAbstract
+    public partial class MizukiExeReframe : ReframeExeAbstract
     {
-        public bool questFlg1 = false;
-
-        public bool Butt;
-        public bool Skirt_Root;
-        public bool Breast;
-        public bool Cheek;
-        public bool ahoge;
-        public bool Backhair;
-        public bool Front;
-        public bool Frontside;
-        public bool side;
-        public bool headband_Root;
-        public bool tang;
-        public bool TigerEar;
-        public bool Shoulder_Ribbon;
-        public bool coat_hand;
-        public bool Hand_frills;
-        public bool tail;
-        public bool Leg_frills;
-
-        public bool Upperleg_collider1;
-        public bool Upperleg_collider2;
-        public bool Chest_collider;
-        public bool Butt_collider;
-        public bool UpperArm_collider1;
-        public bool UpperArm_collider2;
-        public bool Shoulder_collider;
-        public bool AAORemoveFlg;
-
         protected override void Edit4Quest(VRCAvatarDescriptor descriptor)
         {
-            if (questFlg1)
+            var mizukiTarget = target as MizukiReframe;
+            if (mizukiTarget.questFlg1)
             {
-                if (Butt)
+                if (mizukiTarget.Butt)
                     DelPBByPathArray(descriptor, "Armature/Hips/Butt_L", "Armature/Hips/Butt_R");
 
-                if (Skirt_Root)
+                if (mizukiTarget.Skirt_Root)
                     DelPBByPathArray(
                         descriptor,
                         "Armature/Hips/Skirt_Root/Skirt_L.038",
                         "Armature/Hips/Skirt_Root/Skirt_Root_L",
                         "Armature/Hips/Skirt_Root/Skirt_Root_R"
                     );
-                if (Upperleg_collider1)
+                if (mizukiTarget.Upperleg_collider1)
                 {
                     DelColliderSettingByPathArray(
                         descriptor,
@@ -58,13 +30,13 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                         "Armature/Hips/Skirt_Root/Skirt_Root_R"
                     );
                 }
-                if (Breast)
+                if (mizukiTarget.Breast)
                     DelPBByPathArray(
                         descriptor,
                         "Armature/Hips/Spine/Chest/Breast_L",
                         "Armature/Hips/Spine/Chest/Breast_R"
                     );
-                if (Shoulder_collider)
+                if (mizukiTarget.Shoulder_collider)
                 {
                     DelColliderSettingByPathArray(
                         descriptor,
@@ -73,7 +45,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                         "Armature/Hips/Spine/Chest/Breast_R"
                     );
                 }
-                if (UpperArm_collider1)
+                if (mizukiTarget.UpperArm_collider1)
                 {
                     DelColliderSettingByPathArray(
                         descriptor,
@@ -82,18 +54,18 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                         "Armature/Hips/Spine/Chest/Breast_R"
                     );
                 }
-                if (Cheek)
+                if (mizukiTarget.Cheek)
                     DelPBByPathArray(
                         descriptor,
                         "Armature/Hips/Spine/Chest/Neck/Head/Cheek_L/Cheek_L.001",
                         "Armature/Hips/Spine/Chest/Neck/Head/Cheek_R/Cheek_R.001"
                     );
-                if (ahoge)
+                if (mizukiTarget.ahoge)
                     DelPBByPathArray(
                         descriptor,
                         "Armature/Hips/Spine/Chest/Neck/Head/Hair_root/ahoge"
                     );
-                if (Backhair)
+                if (mizukiTarget.Backhair)
                     DelPBByPathArray(
                         descriptor,
                         "Armature/Hips/Spine/Chest/Neck/Head/Hair_root/Backhair2_L",
@@ -108,7 +80,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                         "Armature/Hips/Spine/Chest/Neck/Head/Hair_root/Backhair_R",
                         "Armature/Hips/Spine/Chest/Neck/Head/Hair_root/Backhair_L"
                     );
-                if (Chest_collider)
+                if (mizukiTarget.Chest_collider)
                 {
                     DelColliderSettingByPathArray(
                         descriptor,
@@ -126,7 +98,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                         "Armature/Hips/Spine/Chest/Neck/Head/Hair_root/Backhair_L"
                     );
                 }
-                if (Butt_collider)
+                if (mizukiTarget.Butt_collider)
                 {
                     DelColliderSettingByPathArray(
                         descriptor,
@@ -144,7 +116,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                         "Armature/Hips/Spine/Chest/Neck/Head/Hair_root/Backhair_L"
                     );
                 }
-                if (Front)
+                if (mizukiTarget.Front)
                     DelPBByPathArray(
                         descriptor,
                         "Armature/Hips/Spine/Chest/Neck/Head/Hair_root/Front",
@@ -152,7 +124,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                         "Armature/Hips/Spine/Chest/Neck/Head/Hair_root/Front2",
                         "Armature/Hips/Spine/Chest/Neck/Head/Hair_root/Front_2"
                     );
-                if (Frontside)
+                if (mizukiTarget.Frontside)
                     DelPBByPathArray(
                         descriptor,
                         "Armature/Hips/Spine/Chest/Neck/Head/Hair_root/Frontside1_L",
@@ -160,7 +132,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                         "Armature/Hips/Spine/Chest/Neck/Head/Hair_root/Frontside2_L",
                         "Armature/Hips/Spine/Chest/Neck/Head/Hair_root/Frontside2_R"
                     );
-                if (side)
+                if (mizukiTarget.side)
                     DelPBByPathArray(
                         descriptor,
                         "Armature/Hips/Spine/Chest/Neck/Head/Hair_root/side3_L",
@@ -176,20 +148,20 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                         "Armature/Hips/Spine/Chest/Neck/Head/Hair_root/side_Root_L",
                         "Armature/Hips/Spine/Chest/Neck/Head/Hair_root/side_Root_R"
                     );
-                if (headband_Root)
+                if (mizukiTarget.headband_Root)
                     DelPBByPathArray(
                         descriptor,
                         "Armature/Hips/Spine/Chest/Neck/Head/headband_Root"
                     );
-                if (tang)
+                if (mizukiTarget.tang)
                     DelPBByPathArray(descriptor, "Armature/Hips/Spine/Chest/Neck/Head/tang");
-                if (TigerEar)
+                if (mizukiTarget.TigerEar)
                     DelPBByPathArray(
                         descriptor,
                         "Armature/Hips/Spine/Chest/Neck/Head/TigerEar/L/ear.L",
                         "Armature/Hips/Spine/Chest/Neck/Head/TigerEar/R/ear.R"
                     );
-                if (Shoulder_Ribbon)
+                if (mizukiTarget.Shoulder_Ribbon)
                     DelPBByPathArray(
                         descriptor,
                         "Armature/Hips/Spine/Chest/Shoulder_L/Shoulder_Ribbon_FrontRoot_L",
@@ -197,7 +169,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                         "Armature/Hips/Spine/Chest/Shoulder_Ribbon_BackRoot_L",
                         "Armature/Hips/Spine/Chest/Shoulder_Ribbon_BackRoot_R"
                     );
-                if (UpperArm_collider2)
+                if (mizukiTarget.UpperArm_collider2)
                 {
                     DelColliderSettingByPathArray(
                         descriptor,
@@ -208,21 +180,21 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                         "Armature/Hips/Spine/Chest/Shoulder_Ribbon_BackRoot_R"
                     );
                 }
-                if (coat_hand)
+                if (mizukiTarget.coat_hand)
                     DelPBByPathArray(
                         descriptor,
                         "Armature/Hips/Spine/Chest/Shoulder_R/Upperarm_R/Lowerarm_R/Right Hand/coat_hand_root_R",
                         "Armature/Hips/Spine/Chest/Shoulder_L/Upperarm_L/Lowerarm_L/Left Hand/coat_hand_root_L"
                     );
-                if (Hand_frills)
+                if (mizukiTarget.Hand_frills)
                     DelPBByPathArray(
                         descriptor,
                         "Armature/Hips/Spine/Chest/Shoulder_R/Upperarm_R/Lowerarm_R/Right Hand/Hand_frills_R",
                         "Armature/Hips/Spine/Chest/Shoulder_L/Upperarm_L/Lowerarm_L/Left Hand/Hand_frills_L"
                     );
-                if (tail)
+                if (mizukiTarget.tail)
                     DelPBByPathArray(descriptor, "Armature/Hips/tail/tail.001");
-                if (Upperleg_collider2)
+                if (mizukiTarget.Upperleg_collider2)
                 {
                     DelColliderSettingByPathArray(
                         descriptor,
@@ -230,13 +202,13 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                         "Armature/Hips/tail/tail.001"
                     );
                 }
-                if (Leg_frills)
+                if (mizukiTarget.Leg_frills)
                     DelPBByPathArray(
                         descriptor,
                         "Armature/Hips/Upperleg_L/Lowerleg_L/Foot_L/Leg_frills_Root_L"
                     );
 
-                if (Upperleg_collider2)
+                if (mizukiTarget.Upperleg_collider2)
                 {
                     DelColliderSettingByPathArray(
                         descriptor,
@@ -245,7 +217,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                         "Armature/Hips/Spine/Chest/Neck/Head/Hair_root/back_hair_root/back_hair_root_L/backhair_L"
                     );
                 }
-                Remove4AAO(descriptor, AAORemoveFlg);
+                Remove4AAO(descriptor, mizukiTarget.AAORemoveFlg);
             }
         }
     }

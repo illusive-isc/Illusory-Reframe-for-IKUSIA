@@ -1,10 +1,9 @@
-#if UNITY_EDITOR
 using UnityEngine;
-using VRC.SDK3.Avatars.Components;
 
-namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
+namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 {
-    public partial class MizukiReframe : ReframeAbstract
+    [AddComponentMenu("MizukiReframe")]
+    public class MizukiReframe : ReframeAbstract
     {
         [SerializeField]
         private bool ClothFlg = false;
@@ -154,17 +153,35 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         public bool MenuFlg = false;
         public bool FreeMenuFlg = false;
 
-        [SerializeField]
-        private bool IKUSIA_emote = false;
-        private readonly bool CoreFlg = true;
+        public bool IKUSIA_emote = false;
+        public readonly bool CoreFlg = true;
 
-        protected ParamProcessConfig[] GetParamConfigs(VRCAvatarDescriptor descriptor)
-        {
-            return GetParamConfigs<MizukiBase>(
-                descriptor,
-                "jp.illusive_isc.IllusoryReframe.Mizuki"
-            );
-        }
+        public bool questFlg1 = false;
+
+        public bool Butt;
+        public bool Skirt_Root;
+        public bool Breast;
+        public bool Cheek;
+        public bool ahoge;
+        public bool Backhair;
+        public bool Front;
+        public bool Frontside;
+        public bool side;
+        public bool headband_Root;
+        public bool tang;
+        public bool TigerEar;
+        public bool Shoulder_Ribbon;
+        public bool coat_hand;
+        public bool Hand_frills;
+        public bool tail;
+        public bool Leg_frills;
+
+        public bool Upperleg_collider1;
+        public bool Upperleg_collider2;
+        public bool Chest_collider;
+        public bool Butt_collider;
+        public bool UpperArm_collider1;
+        public bool UpperArm_collider2;
+        public bool Shoulder_collider;
     }
 }
-#endif

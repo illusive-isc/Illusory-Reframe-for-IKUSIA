@@ -30,8 +30,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 
         protected void AutoInitializeSerializedProperties(ReframeEditor editorInstance)
         {
-            // キャッシュ用の Dictionary を static フィールドとして保持
-
             var editorType = editorInstance.GetType();
             if (!_propertyFieldCache.TryGetValue(editorType, out var serializedPropertyFields))
             {
@@ -81,7 +79,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             GameObject go = new(name);
             go.AddComponent<T>();
 
-            // 右クリックで選択されたオブジェクト（VRCアバターのルート）の子として配置
             GameObjectUtility.SetParentAndAlign(go, menuCommand.context as GameObject);
             Undo.RegisterCreatedObjectUndo(go, "Create " + go.name);
             Selection.activeObject = go;

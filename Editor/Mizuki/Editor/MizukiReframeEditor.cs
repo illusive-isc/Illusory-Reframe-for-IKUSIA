@@ -7,7 +7,6 @@ using Debug = UnityEngine.Debug;
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     [CustomEditor(typeof(MizukiReframe))]
-    [AddComponentMenu("")]
     internal partial class MizukiReframeEditor : ReframeEditor
     {
         public override void OnInspectorGUI()
@@ -236,7 +235,8 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 {
                     try
                     {
-                        script.Execute(descriptor);
+                        MizukiExeReframe reframe = new(script);
+                        reframe.Execute(descriptor);
                     }
                     catch (System.Exception)
                     {

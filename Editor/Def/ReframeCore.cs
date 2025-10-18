@@ -8,7 +8,6 @@ using UnityEditor.Animations;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 {
-    [AddComponentMenu("")]
     public class ReframeCore : ScriptableObject
     {
         protected VRCAvatarDescriptor descriptor;
