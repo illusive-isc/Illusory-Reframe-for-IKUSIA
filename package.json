@@ -1,14 +1,14 @@
 {
-  "name": "jp.illusive-isc.mizuki-optimizer",
-  "version": "0.0.2",
-  "displayName": "MizukiOptimizer",
-  "description": "MizukiOptimizer",
+  "name": "jp.illusive-isc.illusory-reframe-4-ikusia",
+  "version": "0.0.0",
+  "displayName": "Illusory Reframe for IKUSIA",
+  "description": "Illusory Reframe for IKUSIA",
   "unity": "2022.3",
   "author": {
     "name": "illusive_isc",
     "url": "https://illusive_isc.jp"
   },
-  "url": "https://github.com/illusive-isc/MizukiOptimizer",
+  "url": "https://github.com/illusive-isc/Illusory-Reframe-for-IKUSIA",
   "vpmDependencies": {
     "nadena.dev.ndmf": "^1.6.0",
     "com.vrchat.avatars": ">=3.7.0"
