@@ -1,14 +1,13 @@
-#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-#if AVATAR_OPTIMIZER_FOUND
-using Anatawa12.AvatarOptimizer;
-#endif
 using UnityEditor;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
+#if AVATAR_OPTIMIZER_FOUND
+using Anatawa12.AvatarOptimizer;
+#endif
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 {
@@ -253,4 +252,3 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         }
     }
 }
-#endif

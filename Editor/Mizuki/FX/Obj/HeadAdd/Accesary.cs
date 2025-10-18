@@ -1,13 +1,9 @@
 using System.Collections.Generic;
 using UnityEditor.Animations;
-using UnityEngine;
 using VRC.SDK3.Avatars.Components;
-#if UNITY_EDITOR
-
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    [AddComponentMenu("")]
     internal class Accesary : MizukiBase
     {
         internal static new readonly List<string> Parameters = new() { "OBJ7_8" };
@@ -39,4 +35,3 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         }
     }
 }
-#endif

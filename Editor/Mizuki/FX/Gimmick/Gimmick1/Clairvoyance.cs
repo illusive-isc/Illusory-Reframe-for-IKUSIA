@@ -1,10 +1,7 @@
-#if UNITY_EDITOR
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    [AddComponentMenu("")]
     internal class Clairvoyance : MizukiBase
     {
         internal static new readonly List<string> Parameters = new() { "clairvoyance" };
@@ -13,4 +10,3 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         internal static new readonly List<string> delPath = new() { "Advanced/clairvoyance" };
     }
 }
-#endif

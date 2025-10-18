@@ -1,13 +1,10 @@
-#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    [AddComponentMenu("")]
     public class MizukiBase : ReframeCore
     {
         protected void DeleteBarCtrlHandHit(List<string> Parameters, params string[] stateNames)
@@ -89,4 +86,3 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         }
     }
 }
-#endif

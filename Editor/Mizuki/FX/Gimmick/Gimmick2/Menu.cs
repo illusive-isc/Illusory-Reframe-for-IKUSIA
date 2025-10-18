@@ -1,10 +1,7 @@
 using System.Collections.Generic;
-using UnityEngine;
-#if UNITY_EDITOR
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    [AddComponentMenu("")]
     internal class Menu : MizukiBase
     {
         internal static new readonly List<string> Layers = new()
@@ -30,4 +27,3 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         internal static new readonly List<string> delPath = new() { "MenuGrabWorld", "Menu" };
     }
 }
-#endif

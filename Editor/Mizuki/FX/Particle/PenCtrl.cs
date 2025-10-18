@@ -1,10 +1,7 @@
 using System.Collections.Generic;
-using UnityEngine;
-#if UNITY_EDITOR
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    [AddComponentMenu("")]
     internal class PenCtrl : MizukiBase
     {
         internal static new readonly List<string> Layers = new() { "PenCtrl_R", "PenCtrl_L" };
@@ -36,4 +33,3 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         }
     }
 }
-#endif

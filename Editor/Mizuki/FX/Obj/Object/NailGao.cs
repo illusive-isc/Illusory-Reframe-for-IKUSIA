@@ -1,12 +1,10 @@
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
-#if UNITY_EDITOR
-using UnityEditor.Animations;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    [AddComponentMenu("")]
     internal class NailGao : MizukiBase
     {
         bool NailGaoFlg2;
@@ -38,4 +36,3 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         }
     }
 }
-#endif

@@ -1,14 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Animations;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
-#if UNITY_EDITOR
-using UnityEditor.Animations;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    [AddComponentMenu("")]
     internal class Core : MizukiBase
     {
         private static readonly List<string> NotUseParameters = new() { "Mirror Toggle" };
@@ -327,4 +325,3 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         }
     }
 }
-#endif

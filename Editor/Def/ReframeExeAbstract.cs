@@ -1,13 +1,9 @@
-#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-#if AVATAR_OPTIMIZER_FOUND
-using Anatawa12.AvatarOptimizer;
-#endif
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -17,6 +13,9 @@ using VRC.SDK3.Avatars.ScriptableObjects;
 using VRC.SDKBase;
 using static jp.illusive_isc.IllusoryReframe.IKUSIA.ReframeAbstract;
 using Debug = UnityEngine.Debug;
+#if AVATAR_OPTIMIZER_FOUND
+using Anatawa12.AvatarOptimizer;
+#endif
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 {
@@ -26,7 +25,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         protected string pathDirSuffix = "/FX/";
         protected string pathName = "paryi_FX.controller";
         protected string pathDir;
-
 
         public readonly List<string> NotSyncParameters = new()
         {
@@ -824,4 +822,3 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         }
     }
 }
-#endif

@@ -1,10 +1,7 @@
 using System.Collections.Generic;
-using UnityEngine;
-#if UNITY_EDITOR
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    [AddComponentMenu("")]
     internal class NailTrail : MizukiBase
     {
         internal static new readonly List<string> Parameters = new() { "Particle3" };
@@ -13,4 +10,3 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         internal static new readonly List<string> delPath = new() { "Advanced/Particle/3" };
     }
 }
-#endif

@@ -1,10 +1,7 @@
 using System.Collections.Generic;
-using UnityEngine;
-#if UNITY_EDITOR
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    [AddComponentMenu("")]
     internal class FreeParticle : MizukiBase
     {
         internal static new readonly List<string> Parameters = new()
@@ -23,4 +20,3 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         internal static new readonly List<string> delPath = new() { "Particle" };
     }
 }
-#endif

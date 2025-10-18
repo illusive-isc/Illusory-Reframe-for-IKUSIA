@@ -1,13 +1,9 @@
 using System.Collections.Generic;
 using UnityEditor.Animations;
-using UnityEngine;
 using VRC.SDK3.Avatars.Components;
-#if UNITY_EDITOR
-
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    [AddComponentMenu("")]
     internal class LegBelt : MizukiBase
     {
         internal static new readonly List<string> Parameters = new() { "Object5" };
@@ -34,4 +30,3 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         }
     }
 }
-#endif

@@ -1,13 +1,8 @@
 using System.Collections.Generic;
-using UnityEngine;
 using VRC.SDK3.Avatars.ScriptableObjects;
-#if UNITY_EDITOR
-
-
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    [AddComponentMenu("")]
     internal class LightGun : MizukiBase
     {
         internal static new readonly List<string> Layers = new() { "butterfly" };
@@ -55,4 +50,3 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         }
     }
 }
-#endif

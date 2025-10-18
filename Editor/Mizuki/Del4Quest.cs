@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 using VRC.SDK3.Avatars.Components;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
@@ -222,4 +221,3 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         }
     }
 }
-#endif

@@ -1,13 +1,10 @@
 using System.Collections.Generic;
-using UnityEngine;
+using UnityEditor.Animations;
 using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
-#if UNITY_EDITOR
-using UnityEditor.Animations;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    [AddComponentMenu("")]
     internal class FaceContact : MizukiBase
     {
         public bool kamitukiFlg = false;
@@ -63,4 +60,3 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         }
     }
 }
-#endif

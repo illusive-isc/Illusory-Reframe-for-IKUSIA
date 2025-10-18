@@ -1,11 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-#if UNITY_EDITOR
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    [AddComponentMenu("")]
     internal class Drink : MizukiBase
     {
         internal static new readonly List<string> Parameters = new()
@@ -44,4 +41,3 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         }
     }
 }
-#endif

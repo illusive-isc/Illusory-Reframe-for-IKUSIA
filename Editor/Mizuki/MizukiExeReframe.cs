@@ -3,11 +3,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Animations;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
-#if UNITY_EDITOR
-using UnityEditor.Animations;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
@@ -172,4 +171,3 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         }
     }
 }
-#endif

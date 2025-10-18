@@ -1,10 +1,7 @@
 using System.Collections.Generic;
-using UnityEngine;
-#if UNITY_EDITOR
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    [AddComponentMenu("")]
     internal class TPS : MizukiBase
     {
         internal static new readonly List<string> Parameters = new() { "TPS" };
@@ -12,4 +9,3 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         internal static new readonly List<string> delPath = new() { "Advanced/TPS" };
     }
 }
-#endif
