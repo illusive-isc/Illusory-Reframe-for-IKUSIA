@@ -2,9 +2,9 @@
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 
-namespace jp.illusive_isc.IKUSIAOverride.Mizuki
+namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    public partial class MizukiOptimizer : IKUSIAOverrideAbstract
+    public partial class MizukiReframe : ReframeAbstract
     {
         [SerializeField]
         private bool ClothFlg = false;
@@ -160,7 +160,10 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
 
         protected ParamProcessConfig[] GetParamConfigs(VRCAvatarDescriptor descriptor)
         {
-            return GetParamConfigs(descriptor, "jp.illusive_isc.IKUSIAOverride.Mizuki");
+            return GetParamConfigs<MizukiBase>(
+                descriptor,
+                "jp.illusive_isc.IllusoryReframe.Mizuki"
+            );
         }
     }
 }

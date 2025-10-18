@@ -1,8 +1,8 @@
 using UnityEditor;
 
-namespace jp.illusive_isc.IKUSIAOverride.Mizuki
+namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    internal partial class MizukiOptimizerEditor : IKUSIAOverrideEditor
+    internal partial class MizukiReframeEditor : ReframeEditor
     {
         // 多重実行防止用フラグ
         static bool isExecuting = false;

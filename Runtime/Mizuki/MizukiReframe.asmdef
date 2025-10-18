@@ -1,0 +1,20 @@
+{
+    "name": "jp.illusive_isc.IllusoryReframe.Mizuki",
+    "rootNamespace": "jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki",
+    "references": [
+        "jp.illusive_isc.IllusoryReframe.IKUSIA"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "VRC.Dynamics.dll",
+        "VRCSDK3A.dll",
+        "VRCSDKBase.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

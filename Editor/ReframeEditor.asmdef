@@ -1,13 +1,13 @@
 {
-    "name": "jp.illusive_isc.IKUSIAOverride.Mizuki.Editor",
-    "rootNamespace": "jp.illusive_isc.IKUSIAOverride",
+    "name": "jp.illusive_isc.IllusoryReframe.IKUSIA.Editor",
+    "rootNamespace": "jp.illusive_isc.IllusoryReframe.IKUSIA",
     "references": [
-        "jp.illusive_isc.IKUSIAOverride.Editor",
-        "jp.illusive_isc.IKUSIAOverride.Mizuki",
-        "com.anatawa12.avatar-optimizer.runtime",
+        "jp.illusive_isc.IllusoryReframe.IKUSIA",
+        "jp.illusive_isc.IllusoryReframe.Mizuki",
         "nadena.dev.modular-avatar.core",
         "nadena.dev.ndmf",
         "nadena.dev.ndmf.runtime",
+        "com.anatawa12.avatar-optimizer.runtime",
         "com.anatawa12.avatar-optimizer.internal.prefab-safe-set.editor"
     ],
     "includePlatforms": [

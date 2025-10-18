@@ -6,14 +6,13 @@ using System.Reflection;
 #if AVATAR_OPTIMIZER_FOUND
 using Anatawa12.AvatarOptimizer;
 #endif
-using jp.illusive_isc.IKUSIAOverride.Mizuki;
 using UnityEditor;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 
-namespace jp.illusive_isc.IKUSIAOverride
+namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 {
-    public class IKUSIAOverrideEditor : Editor
+    public class ReframeEditor : Editor
     {
         protected class PhysBoneInfo
         {
@@ -29,7 +28,7 @@ namespace jp.illusive_isc.IKUSIAOverride
 
         static Dictionary<Type, FieldInfo[]> _propertyFieldCache = new();
 
-        protected void AutoInitializeSerializedProperties(IKUSIAOverrideEditor editorInstance)
+        protected void AutoInitializeSerializedProperties(ReframeEditor editorInstance)
         {
             // キャッシュ用の Dictionary を static フィールドとして保持
 
@@ -76,11 +75,11 @@ namespace jp.illusive_isc.IKUSIAOverride
             return true;
         }
 
-        protected static void CreateObj(MenuCommand menuCommand, string name)
+        protected static void CreateObj<T>(MenuCommand menuCommand, string name)
+            where T : ReframeAbstract
         {
-            // 新しい GameObject を作成し、MizukiOptimizer コンポーネントを追加
             GameObject go = new(name);
-            go.AddComponent<MizukiOptimizer>();
+            go.AddComponent<T>();
 
             // 右クリックで選択されたオブジェクト（VRCアバターのルート）の子として配置
             GameObjectUtility.SetParentAndAlign(go, menuCommand.context as GameObject);
@@ -179,7 +178,7 @@ namespace jp.illusive_isc.IKUSIAOverride
         }
 
         protected void QuestDialog(
-            IKUSIAOverrideAbstract target,
+            ReframeAbstract target,
             SerializedProperty questFlg1,
             string questHelp
         )

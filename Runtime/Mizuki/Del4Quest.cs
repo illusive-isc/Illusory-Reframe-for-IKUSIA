@@ -1,11 +1,9 @@
 #if UNITY_EDITOR
 using VRC.SDK3.Avatars.Components;
-#if AVATAR_OPTIMIZER_FOUND
-using Anatawa12.AvatarOptimizer;
-#endif
-namespace jp.illusive_isc.IKUSIAOverride.Mizuki
+
+namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    public partial class MizukiOptimizer : IKUSIAOverrideAbstract
+    public partial class MizukiReframe : ReframeAbstract
     {
         public bool questFlg1 = false;
 
@@ -247,23 +245,7 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
                         "Armature/Hips/Spine/Chest/Neck/Head/Hair_root/back_hair_root/back_hair_root_L/backhair_L"
                     );
                 }
-                if (AAORemoveFlg)
-                {
-#if AVATAR_OPTIMIZER_FOUND
-                    if (
-                        !descriptor
-                            .transform.Find("Body")
-                            .TryGetComponent<RemoveMeshByBlendShape>(out var removeMesh)
-                    )
-                    {
-                        removeMesh = descriptor
-                            .transform.Find("Body")
-                            .gameObject.AddComponent<RemoveMeshByBlendShape>();
-                        removeMesh.Initialize(1);
-                    }
-                    removeMesh.ShapeKeys.Add("照れ");
-#endif
-                }
+                Remove4AAO(descriptor, AAORemoveFlg);
             }
         }
     }

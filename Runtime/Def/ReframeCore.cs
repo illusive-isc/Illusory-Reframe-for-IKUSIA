@@ -6,10 +6,10 @@ using VRC.SDK3.Avatars.ScriptableObjects;
 #if UNITY_EDITOR
 using UnityEditor.Animations;
 
-namespace jp.illusive_isc.IKUSIAOverride
+namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 {
     [AddComponentMenu("")]
-    public class IKUSIAOverrideCore : ScriptableObject
+    public class ReframeCore : ScriptableObject
     {
         protected VRCAvatarDescriptor descriptor;
         protected AnimatorController paryi_FX;

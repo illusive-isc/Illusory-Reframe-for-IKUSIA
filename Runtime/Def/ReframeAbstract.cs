@@ -5,6 +5,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+#if AVATAR_OPTIMIZER_FOUND
+using Anatawa12.AvatarOptimizer;
+#endif
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -14,10 +17,10 @@ using VRC.SDK3.Avatars.ScriptableObjects;
 using VRC.SDKBase;
 using Debug = UnityEngine.Debug;
 
-namespace jp.illusive_isc.IKUSIAOverride.Mizuki
+namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 {
     [AddComponentMenu("")]
-    public abstract class IKUSIAOverrideAbstract : MonoBehaviour, IEditorOnly
+    public abstract class ReframeAbstract : MonoBehaviour, IEditorOnly
     {
         protected string pathDirSuffix = "/FX/";
         protected string pathName = "paryi_FX.controller";
@@ -43,7 +46,7 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
             Delete,
         }
 
-        internal readonly List<string> NotSyncParameters = new()
+        public readonly List<string> NotSyncParameters = new()
         {
             "takasa",
             "takasa_Toggle",
@@ -359,7 +362,7 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
         }
 
         protected void ProcessParam<T>(VRCAvatarDescriptor descriptor)
-            where T : IKUSIAOverrideCore, new()
+            where T : ReframeCore, new()
         {
             var type = typeof(T);
             const BindingFlags bindingFlags =
@@ -448,12 +451,13 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
             }
         }
 
-        protected ParamProcessConfig[] GetParamConfigs(
+        protected ParamProcessConfig[] GetParamConfigs<T>(
             VRCAvatarDescriptor descriptor,
-            string TargetNamespace = "jp.illusive_isc.IKUSIAOverride.Mizuki"
+            string TargetNamespace
         )
+            where T : ReframeCore
         {
-            var types = GetMizukiBaseDerivedTypes(TargetNamespace);
+            var types = GetDerivedTypes<T>(TargetNamespace);
             return types
                 .Select(t =>
                 {
@@ -488,9 +492,7 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
         {
             foreach (var path in paths)
             {
-                IKUSIAOverrideCore.DestroyComponent<VRCPhysBoneBase>(
-                    descriptor.transform.Find(path)
-                );
+                ReframeCore.DestroyComponent<VRCPhysBoneBase>(descriptor.transform.Find(path));
             }
         }
 
@@ -501,7 +503,7 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
         {
             foreach (var path in paths)
             {
-                IKUSIAOverrideCore.DestroyComponent<VRCPhysBoneColliderBase>(
+                ReframeCore.DestroyComponent<VRCPhysBoneColliderBase>(
                     descriptor.transform.Find(path)
                 );
             }
@@ -539,7 +541,6 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
             }
         }
 
-        // 安全にアセンブリから Type[] を取得するヘルパー
         private static Type[] SafeGetTypes(Assembly asm)
         {
             try
@@ -556,10 +557,10 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
             }
         }
 
-        // MizukiBase を継承する concrete クラス一覧を返す
-        protected static Type[] GetMizukiBaseDerivedTypes(string TargetNamespace)
+        protected static Type[] GetDerivedTypes<T>(string TargetNamespace)
+            where T : ReframeCore
         {
-            var baseType = typeof(MizukiBase);
+            var baseType = typeof(T);
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             var types = assemblies
                 .SelectMany(a => SafeGetTypes(a))
@@ -575,19 +576,17 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
             return types;
         }
 
-        // 型からインスタンスを作る（ScriptableObject 派生なら CreateInstance を使う）
-        protected static IKUSIAOverrideCore CreateInstanceForType(Type t)
+        protected static ReframeCore CreateInstanceForType(Type t)
         {
             if (t == null)
                 return null;
-            if (!typeof(IKUSIAOverrideCore).IsAssignableFrom(t))
+            if (!typeof(ReframeCore).IsAssignableFrom(t))
                 return null;
 
-            // ScriptableObject 派生なら CreateInstance を使う（エディタ専用）
             if (typeof(ScriptableObject).IsAssignableFrom(t))
             {
 #if UNITY_EDITOR
-                return ScriptableObject.CreateInstance(t) as IKUSIAOverrideCore;
+                return ScriptableObject.CreateInstance(t) as ReframeCore;
 #else
                 return null;
 #endif
@@ -595,7 +594,7 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
 
             try
             {
-                return Activator.CreateInstance(t) as IKUSIAOverrideCore;
+                return Activator.CreateInstance(t) as ReframeCore;
             }
             catch
             {
@@ -603,8 +602,6 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
             }
         }
 
-        // 例: 非公開ジェネリックメソッド ProcessParam<T>(VRCAvatarDescriptor) を runtime の Type で呼ぶ方法
-        // thisObj は ProcessParam を持つインスタンス（たとえば MizukiOptimizer の this）
         protected static void InvokeProcessParamByType(
             object thisObj,
             Type genericParamType,
@@ -622,11 +619,9 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
                 return;
 
             var gm = mi.MakeGenericMethod(genericParamType);
-            // ProcessParam<T> が戻り値を持つ場合は取得できる（ここでは戻り値を無視）
             gm.Invoke(thisObj, new object[] { descriptor });
         }
 
-        // bool フィールドを読み取る／設定するヘルパー（static/instance 対応）
         protected bool GetBoolField(FieldInfo field)
         {
             if (field == null)
@@ -655,13 +650,9 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
                 else
                     field.SetValue(this, value);
             }
-            catch
-            {
-                // ignore
-            }
+            catch { }
         }
 
-        // thisObj の ProcessParam<T>(VRCAvatarDescriptor) をリフレクションで呼ぶ
         protected static void InvokeProcessParamByType(
             object thisObj,
             Type genericParamType,
@@ -685,10 +676,7 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
                 var gm = mi.MakeGenericMethod(genericParamType);
                 gm.Invoke(thisObj, new object[] { descriptor });
             }
-            catch
-            {
-                // ignore invocation errors
-            }
+            catch { }
         }
 
         protected void SetNotSyncParameter(
@@ -831,6 +819,26 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
                         menu.controls[i] = singleControl;
                     }
                 }
+            }
+        }
+        protected void Remove4AAO(VRCAvatarDescriptor descriptor, bool AAORemoveFlg)
+        {
+            if (AAORemoveFlg)
+            {
+#if AVATAR_OPTIMIZER_FOUND
+                if (
+                    !descriptor
+                        .transform.Find("Body")
+                        .TryGetComponent<RemoveMeshByBlendShape>(out var removeMesh)
+                )
+                {
+                    removeMesh = descriptor
+                        .transform.Find("Body")
+                        .gameObject.AddComponent<RemoveMeshByBlendShape>();
+                    removeMesh.Initialize(1);
+                }
+                removeMesh.ShapeKeys.Add("照れ");
+#endif
             }
         }
     }

@@ -5,10 +5,10 @@ using System.Linq;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 
-namespace jp.illusive_isc.IKUSIAOverride.Mizuki
+namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     [AddComponentMenu("")]
-    public class MizukiBase : IKUSIAOverrideCore
+    public class MizukiBase : ReframeCore
     {
         protected void DeleteBarCtrlHandHit(List<string> Parameters, params string[] stateNames)
         {

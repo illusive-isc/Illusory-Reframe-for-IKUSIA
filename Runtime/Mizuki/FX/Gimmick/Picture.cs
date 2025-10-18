@@ -4,7 +4,7 @@ using VRC.SDK3.Avatars.ScriptableObjects;
 #if UNITY_EDITOR
 
 
-namespace jp.illusive_isc.IKUSIAOverride.Mizuki
+namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     [AddComponentMenu("")]
     internal class Picture : MizukiBase

@@ -1,12 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using VRC.SDK3.Avatars.Components;
-using VRC.SDK3.Avatars.ScriptableObjects;
 #if UNITY_EDITOR
-using UnityEditor.Animations;
 
-namespace jp.illusive_isc.IKUSIAOverride.Mizuki
+namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     [AddComponentMenu("")]
     internal class FreeParticle : MizukiBase

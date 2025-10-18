@@ -4,7 +4,7 @@ using VRC.SDK3.Avatars.Components;
 #if UNITY_EDITOR
 using UnityEditor.Animations;
 
-namespace jp.illusive_isc.IKUSIAOverride.Mizuki
+namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     [AddComponentMenu("")]
     internal class NailGao : MizukiBase
@@ -14,7 +14,7 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
         internal void Initialize(
             VRCAvatarDescriptor descriptor,
             AnimatorController paryi_FX,
-            MizukiOptimizer optimizer
+            MizukiReframe optimizer
         )
         {
             this.descriptor = descriptor;

@@ -1,12 +1,10 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using VRC.Dynamics;
 
-namespace jp.illusive_isc.IKUSIAOverride.Mizuki
+namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    internal partial class MizukiOptimizerEditor : IKUSIAOverrideEditor
+    internal partial class MizukiReframeEditor : ReframeEditor
     {
         bool questArea;
 
@@ -216,7 +214,7 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
             if (questArea)
             {
                 QuestDialog(
-                    target as IKUSIAOverrideAbstract,
+                    target as ReframeAbstract,
                     questFlg1,
                     "Quest化に対応してないコンポーネントやシェーダーを使っているためTPS、透視、コライダー・ジャンプ、撮影ギミック、ライトガン、ホワイトブレス、8bit、ペン操作、ハートガンなどを削除します。\n"
                 );

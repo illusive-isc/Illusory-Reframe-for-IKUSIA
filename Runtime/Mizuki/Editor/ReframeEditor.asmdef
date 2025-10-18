@@ -1,0 +1,24 @@
+{
+    "name": "jp.illusive_isc.IllusoryReframe.Mizuki.Editor",
+    "rootNamespace": "jp.illusive_isc.IllusoryReframe",
+    "references": [
+        "jp.illusive_isc.IllusoryReframe.IKUSIA",
+        "jp.illusive_isc.IllusoryReframe.IKUSIA.Editor",
+        "jp.illusive_isc.IllusoryReframe.Mizuki"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "VRC.Dynamics.dll",
+        "VRCSDK3A.dll",
+        "VRCSDKBase.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

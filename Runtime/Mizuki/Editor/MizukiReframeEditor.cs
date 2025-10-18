@@ -4,11 +4,11 @@ using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 using Debug = UnityEngine.Debug;
 
-namespace jp.illusive_isc.IKUSIAOverride.Mizuki
+namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    [CustomEditor(typeof(MizukiOptimizer))]
+    [CustomEditor(typeof(MizukiReframe))]
     [AddComponentMenu("")]
-    internal partial class MizukiOptimizerEditor : IKUSIAOverrideEditor
+    internal partial class MizukiReframeEditor : ReframeEditor
     {
         public override void OnInspectorGUI()
         {
@@ -131,7 +131,7 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
             EditorGUILayout.PropertyField(BreastSizeFlg2, new GUIContent("  └ rurune100にする"));
             GUI.enabled = true;
             {
-                var Mizuki = (MizukiOptimizer)target;
+                var Mizuki = (MizukiReframe)target;
                 if (BreastSizeFlg1.boolValue != Mizuki.BreastSizeFlg1)
                 {
                     BreastSizeFlg2.boolValue = false;
@@ -229,7 +229,7 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
                 }
                 isExecuting = true;
                 var step1 = Stopwatch.StartNew();
-                MizukiOptimizer script = (MizukiOptimizer)target;
+                MizukiReframe script = (MizukiReframe)target;
                 VRCAvatarDescriptor descriptor =
                     script.transform.root.GetComponent<VRCAvatarDescriptor>();
                 if (descriptor != null)
@@ -292,7 +292,7 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
         [MenuItem("GameObject/illusive_tools/Create MizukiOptimizer Object", false, 10)]
         private static void CreateMizukiOptimizerObject(MenuCommand menuCommand)
         {
-            CreateObj(menuCommand, "MizukiOptimizer");
+            CreateObj<MizukiReframe>(menuCommand, "MizukiOptimizer");
         }
     }
 }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 #if UNITY_EDITOR
 
-namespace jp.illusive_isc.IKUSIAOverride.Mizuki
+namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     [AddComponentMenu("")]
     internal class TPS : MizukiBase

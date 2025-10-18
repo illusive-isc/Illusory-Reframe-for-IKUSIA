@@ -7,7 +7,7 @@ using VRC.SDK3.Avatars.ScriptableObjects;
 #if UNITY_EDITOR
 using UnityEditor.Animations;
 
-namespace jp.illusive_isc.IKUSIAOverride.Mizuki
+namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     [AddComponentMenu("")]
     internal class FaceGesture : MizukiBase
@@ -44,7 +44,7 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
         public void Initialize(
             VRCAvatarDescriptor descriptor,
             AnimatorController paryi_FX,
-            MizukiOptimizer optimizer
+            MizukiReframe optimizer
         )
         {
             this.descriptor = descriptor;

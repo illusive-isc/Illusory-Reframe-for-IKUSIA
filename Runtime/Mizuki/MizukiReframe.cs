@@ -9,12 +9,12 @@ using VRC.SDK3.Avatars.ScriptableObjects;
 #if UNITY_EDITOR
 using UnityEditor.Animations;
 
-namespace jp.illusive_isc.IKUSIAOverride.Mizuki
+namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    [AddComponentMenu("MizukiOptimizer")]
-    public partial class MizukiOptimizer : IKUSIAOverrideAbstract
+    [AddComponentMenu("MizukiReframe")]
+    public partial class MizukiReframe : ReframeAbstract
     {
-        string pathDirPrefix = "Assets/MizukiOptimizer/";
+        string pathDirPrefix = "Assets/IllusoryReframe/Mizuki";
 
         protected override long InitializeAssets(VRCAvatarDescriptor descriptor)
         {
@@ -94,12 +94,12 @@ namespace jp.illusive_isc.IKUSIAOverride.Mizuki
             if (body_b)
                 if (body_b.TryGetComponent<SkinnedMeshRenderer>(out var body_bSMR))
                 {
-                    IKUSIAOverrideCore.SetWeight(
+                    ReframeCore.SetWeight(
                         body_bSMR,
                         "Foot_heel_OFF_____足_ヒールオフ",
                         heelFlg1 || heelFlg2 ? 0 : 100
                     );
-                    IKUSIAOverrideCore.SetWeight(
+                    ReframeCore.SetWeight(
                         body_bSMR,
                         "Foot_Hiheel_____足_ハイヒール",
                         heelFlg2 ? 100 : 0
