@@ -5,7 +5,7 @@ using VRC.SDK3.Avatars.Components;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
-    public class MizukiBase : ReframeExe
+    public class MizukiBase : ReframeBase
     {
         protected void DeleteBarCtrlHandHit(List<string> Parameters, params string[] stateNames)
         {

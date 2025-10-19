@@ -11,7 +11,6 @@ using UnityEngine;
 using VRC.Dynamics;
 using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
-using VRC.SDKBase;
 using static jp.illusive_isc.IllusoryReframe.IKUSIA.Reframe;
 using Debug = UnityEngine.Debug;
 #if AVATAR_OPTIMIZER_FOUND
@@ -20,7 +19,7 @@ using Anatawa12.AvatarOptimizer;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 {
-    public abstract class ReframeExeAbstract : MonoBehaviour, IEditorOnly
+    public abstract class ReframeExeAbstract : ScriptableObject
     {
         protected Reframe target { get; set; }
         protected string pathDirSuffix = "/FX/";
@@ -161,7 +160,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
                 target.paramDef = descriptor.expressionParameters;
                 target.paramDef.name = descriptor.expressionParameters.name;
             }
-            target.param = ScriptableObject.CreateInstance<VRCExpressionParameters>();
+            target.param = CreateInstance<VRCExpressionParameters>();
             EditorUtility.CopySerialized(target.paramDef, target.param);
             target.param.name = target.paramDef.name;
 
@@ -202,6 +201,18 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             target.param.parameters = target
                 .param.parameters.Where(param => allParams.Contains(param.name))
                 .ToArray();
+
+            var advanced = descriptor.transform.Find("Advanced");
+            if (advanced != null)
+            {
+                var childList = new List<Transform>();
+                for (int i = 0; i < advanced.childCount; i++)
+                    childList.Add(advanced.GetChild(i));
+
+                foreach (var child in childList)
+                    if (child.GetComponents<Component>().Length == 1 && child.childCount == 0)
+                        DestroyImmediate(child.gameObject);
+            }
 
             ExecuteSpecificEdit<T>();
 
@@ -449,7 +460,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         }
 
         protected void ProcessParam<Exe, Reframe>(VRCAvatarDescriptor descriptor)
-            where Exe : ReframeExe, new()
+            where Exe : ReframeBase, new()
             where Reframe : IKUSIA.Reframe
         {
             Exe instance = ScriptableObject.CreateInstance<Exe>();
@@ -476,7 +487,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             Reframe target,
             string TargetNamespace
         )
-            where Exe : ReframeExe
+            where Exe : ReframeBase
             where Reframe : IKUSIA.Reframe
         {
             var types = GetDerivedTypes<Exe>(TargetNamespace);
@@ -507,7 +518,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         )
         {
             foreach (var path in paths)
-                ReframeExe.DestroyComponent<VRCPhysBoneBase>(descriptor.transform.Find(path));
+                ReframeBase.DestroyComponent<VRCPhysBoneBase>(descriptor.transform.Find(path));
         }
 
         protected static void DelPBColliderByPathArray(
@@ -516,7 +527,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         )
         {
             foreach (var path in paths)
-                ReframeExe.DestroyComponent<VRCPhysBoneColliderBase>(
+                ReframeBase.DestroyComponent<VRCPhysBoneColliderBase>(
                     descriptor.transform.Find(path)
                 );
         }
@@ -570,7 +581,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         }
 
         protected static Type[] GetDerivedTypes<T>(string TargetNamespace)
-            where T : ReframeExe
+            where T : ReframeBase
         {
             var baseType = typeof(T);
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();

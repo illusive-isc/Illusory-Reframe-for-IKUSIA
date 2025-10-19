@@ -7,7 +7,7 @@ using VRC.SDK3.Avatars.ScriptableObjects;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 {
-    public abstract class ReframeExe : ScriptableObject
+    public abstract class ReframeBase : ScriptableObject
     {
         protected VRCAvatarDescriptor descriptor;
         protected AnimatorController paryi_FX;
