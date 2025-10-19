@@ -26,7 +26,13 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                     "2e95f28830e406047b35e7e58b3c0e79",
                     "ca37a7e2249e6404ea1893c197866705"
                 ),
-                ["EditProcessing"] = Edit<MizukiReframe>(descriptor, GetParamConfigs(descriptor)),
+                ["EditProcessing"] = Edit<MizukiReframe>(
+                    descriptor,
+                    GetParamConfigs<Base, MizukiReframe>(
+                        target as MizukiReframe,
+                        "jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki"
+                    )
+                ),
                 ["FinalizeAssets"] = FinalizeAssets(descriptor),
             };
             stopwatch.Stop();
@@ -38,15 +44,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             {
                 Debug.Log($"[Performance] {kvp.Key}: {kvp.Value}ms");
             }
-        }
-
-        protected ParamProcessConfig[] GetParamConfigs(VRCAvatarDescriptor descriptor)
-        {
-            return GetParamConfigs<Base, MizukiReframe>(
-                descriptor,
-                target as MizukiReframe,
-                "jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki"
-            );
         }
     }
 }

@@ -463,7 +463,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             where Exe : BaseAbstract, new()
             where Reframe : IKUSIA.Reframe
         {
-            Exe instance = ScriptableObject.CreateInstance<Exe>();
+            Exe instance = CreateInstance<Exe>();
 
             List<string> parameters = instance.GetParameters();
             List<string> menuPath = instance.GetMenuPath();
@@ -478,12 +478,14 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             if (instance.GetType().Name == "Reframe")
                 instance.ParticleOptimize();
             instance.ChangeObj(delPath);
-            if (instance.GetType().Name == "Reframe")
+            if (
+                instance.GetType().Namespace == "jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki"
+                && instance.GetType().Name == "Reframe"
+            )
                 (instance as Base)?.DeleteMenuButtonCtrl(parameters);
         }
 
         protected ParamProcessConfig[] GetParamConfigs<Exe, Reframe>(
-            VRCAvatarDescriptor descriptor,
             Reframe target,
             string TargetNamespace
         )
