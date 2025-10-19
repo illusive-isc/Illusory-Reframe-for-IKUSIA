@@ -95,8 +95,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         [SerializeField]
         private bool FreeGimmickFlg = false;
 
-        [SerializeField]
-        private bool DrinkFlg = false;
+        public bool DrinkFlg = false;
 
         [SerializeField]
         private bool IssyouFlg = false;

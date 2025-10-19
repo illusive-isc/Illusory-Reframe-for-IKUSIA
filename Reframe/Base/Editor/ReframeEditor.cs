@@ -199,9 +199,9 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         {
             int selected = executeMode.enumValueIndex;
             executeMode.enumValueIndex = EditorGUILayout.Popup(
-                "動作モード",
+                "FX、EXメニュー編集動作モード",
                 selected,
-                new[] { "非ModularAvatar", "ModularAvatar" }
+                new[] { "事前実行", "ビルド時" }
             );
         }
 
@@ -225,7 +225,11 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             GUI.enabled = true;
         }
 
-        protected void QuestDialog(ReframeRuntime target, SerializedProperty questFlg1, string questHelp)
+        protected void QuestDialog(
+            ReframeRuntime target,
+            SerializedProperty questFlg1,
+            string questHelp
+        )
         {
 #if AVATAR_OPTIMIZER_FOUND
             if (target.transform.root.GetComponent<TraceAndOptimize>() == null)
