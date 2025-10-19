@@ -13,6 +13,7 @@ using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
 using static jp.illusive_isc.IllusoryReframe.IKUSIA.ReframeRuntime;
 using Debug = UnityEngine.Debug;
+using Object = UnityEngine.Object;
 #if AVATAR_OPTIMIZER_FOUND
 using Anatawa12.AvatarOptimizer;
 #endif
@@ -22,6 +23,26 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
     public abstract class ExeAbstract : ScriptableObject
     {
         protected ReframeRuntime target { get; set; }
+
+        protected Object AssetContainer { get; set; }
+
+        public void SetTarget<T>(T target)
+            where T : ReframeRuntime
+        {
+            this.target = target;
+        }
+
+        public void SetAssetContainer<T>(T AssetContainer)
+            where T : Object
+        {
+            this.AssetContainer = AssetContainer;
+        }
+
+        public bool IsEdit()
+        {
+            return AssetContainer != null || target.executeMode != ExecuteModeOption.NDMF;
+        }
+
         protected readonly string[] stepNames = new[]
         {
             "InitializeAssets",
@@ -113,74 +134,148 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             where Reframe : ReframeRuntime
         {
             var step1 = Stopwatch.StartNew();
-            pathDir = pathDirPrefix + descriptor.gameObject.name + pathDirSuffix;
-            if (AssetDatabase.LoadAssetAtPath<AnimatorController>(pathDir + pathName) != null)
+            if (target.executeMode != ExecuteModeOption.NDMF)
             {
-                AssetDatabase.DeleteAsset(pathDir + pathName);
-                AssetDatabase.DeleteAsset(pathDir + "Menu");
-                AssetDatabase.DeleteAsset(pathDir + "paryi_paraments.asset");
-            }
-            if (!Directory.Exists(pathDir))
-            {
-                Directory.CreateDirectory(pathDir);
+                pathDir = pathDirPrefix + descriptor.gameObject.name + pathDirSuffix;
+                if (AssetDatabase.LoadAssetAtPath<AnimatorController>(pathDir + pathName) != null)
+                {
+                    AssetDatabase.DeleteAsset(pathDir + pathName);
+                    AssetDatabase.DeleteAsset(pathDir + "Menu");
+                    AssetDatabase.DeleteAsset(pathDir + "paryi_paraments.asset");
+                }
+                if (!Directory.Exists(pathDir))
+                {
+                    Directory.CreateDirectory(pathDir);
+                }
+
+                if (!target.paryi_FXDef)
+                {
+                    if (!descriptor.baseAnimationLayers[4].animatorController)
+                        descriptor.baseAnimationLayers[4].animatorController =
+                            AssetDatabase.LoadAssetAtPath<AnimatorController>(
+                                AssetDatabase.GUIDToAssetPath(GetFxGuid())
+                            );
+                    target.paryi_FXDef =
+                        descriptor.baseAnimationLayers[4].animatorController as AnimatorController;
+                }
+                AssetDatabase.CopyAsset(
+                    AssetDatabase.GetAssetPath(target.paryi_FXDef),
+                    pathDir + pathName
+                );
+
+                target.paryi_FX = AssetDatabase.LoadAssetAtPath<AnimatorController>(
+                    pathDir + pathName
+                );
+
+                if (!target.menuDef)
+                {
+                    if (!descriptor.expressionsMenu)
+                        descriptor.expressionsMenu =
+                            AssetDatabase.LoadAssetAtPath<VRCExpressionsMenu>(
+                                AssetDatabase.GUIDToAssetPath(GetMenuGuid())
+                            );
+                    target.menuDef = descriptor.expressionsMenu;
+                }
+
+                var iconPath = pathDir + "/icon";
+                if (!Directory.Exists(iconPath))
+                {
+                    Directory.CreateDirectory(iconPath);
+                }
+                target.menu = DuplicateExpressionMenu(
+                    target.menuDef,
+                    pathDir,
+                    iconPath,
+                    (target as Reframe).questFlg1,
+                    target.textureResize,
+                    AssetContainer
+                );
+
+                if (!target.paramDef)
+                {
+                    if (!descriptor.expressionParameters)
+                        descriptor.expressionParameters =
+                            AssetDatabase.LoadAssetAtPath<VRCExpressionParameters>(
+                                AssetDatabase.GUIDToAssetPath(GetParamGuid())
+                            );
+                    target.paramDef = descriptor.expressionParameters;
+                    target.paramDef.name = descriptor.expressionParameters.name;
+                }
+                target.param = CreateInstance<VRCExpressionParameters>();
+                EditorUtility.CopySerialized(target.paramDef, target.param);
+                target.param.name = target.paramDef.name;
+
+                SetNotSyncParameter(target.param);
+                EditorUtility.SetDirty(target.param);
+                AssetDatabase.CreateAsset(target.param, pathDir + target.param.name + ".asset");
             }
 
-            if (!target.paryi_FXDef)
+            if (target.executeMode == ExecuteModeOption.NDMF && AssetContainer)
             {
-                if (!descriptor.baseAnimationLayers[4].animatorController)
-                    descriptor.baseAnimationLayers[4].animatorController =
-                        AssetDatabase.LoadAssetAtPath<AnimatorController>(
-                            AssetDatabase.GUIDToAssetPath(GetFxGuid())
-                        );
-                target.paryi_FXDef =
-                    descriptor.baseAnimationLayers[4].animatorController as AnimatorController;
-            }
-            AssetDatabase.CopyAsset(
-                AssetDatabase.GetAssetPath(target.paryi_FXDef),
-                pathDir + pathName
-            );
+                {
+                    var originalController =
+                        descriptor.baseAnimationLayers[0].animatorController as AnimatorController;
+                    if (originalController != null)
+                    {
+                        target.paryi_Loco = Instantiate(originalController);
+                        target.paryi_Loco.name = originalController.name;
+                        AssetDatabase.AddObjectToAsset(target.paryi_Loco, AssetContainer);
+                    }
+                }
+                {
+                    var originalController =
+                        descriptor.baseAnimationLayers[2].animatorController as AnimatorController;
+                    if (originalController != null)
+                    {
+                        target.paryi_Gesture = Instantiate(originalController);
+                        target.paryi_Gesture.name = originalController.name;
+                        AssetDatabase.AddObjectToAsset(target.paryi_Gesture, AssetContainer);
+                    }
+                }
+                {
+                    var originalController =
+                        descriptor.baseAnimationLayers[3].animatorController as AnimatorController;
+                    if (originalController != null)
+                    {
+                        target.paryi_Action = Instantiate(originalController);
+                        target.paryi_Action.name = originalController.name;
+                        AssetDatabase.AddObjectToAsset(target.paryi_Action, AssetContainer);
+                    }
+                }
+                {
+                    var originalController =
+                        descriptor.baseAnimationLayers[4].animatorController as AnimatorController;
+                    if (originalController != null)
+                    {
+                        target.paryi_FX = Instantiate(originalController);
+                        target.paryi_FX.name = originalController.name;
+                        AssetDatabase.AddObjectToAsset(target.paryi_FX, AssetContainer);
+                    }
+                }
 
-            target.paryi_FX = AssetDatabase.LoadAssetAtPath<AnimatorController>(pathDir + pathName);
-
-            if (!target.menuDef)
-            {
-                if (!descriptor.expressionsMenu)
-                    descriptor.expressionsMenu = AssetDatabase.LoadAssetAtPath<VRCExpressionsMenu>(
-                        AssetDatabase.GUIDToAssetPath(GetMenuGuid())
+                var originalMenu = descriptor.expressionsMenu;
+                if (originalMenu != null)
+                {
+                    var iconPath = pathDir + "/icon";
+                    target.menu = DuplicateExpressionMenu(
+                        originalMenu,
+                        pathDir,
+                        iconPath,
+                        (target as Reframe).questFlg1,
+                        target.textureResize,
+                        AssetContainer
                     );
-                target.menuDef = descriptor.expressionsMenu;
-            }
+                }
 
-            var iconPath = pathDir + "/icon";
-            if (!Directory.Exists(iconPath))
-            {
-                Directory.CreateDirectory(iconPath);
+                var originalParam = descriptor.expressionParameters;
+                if (originalParam != null)
+                {
+                    target.param = Instantiate(originalParam);
+                    target.param.name = originalParam.name;
+                    SetNotSyncParameter(target.param);
+                    AssetDatabase.AddObjectToAsset(target.param, AssetContainer);
+                }
             }
-            target.menu = DuplicateExpressionMenu(
-                target.menuDef,
-                pathDir,
-                iconPath,
-                (target as Reframe).questFlg1,
-                target.textureResize
-            );
-
-            if (!target.paramDef)
-            {
-                if (!descriptor.expressionParameters)
-                    descriptor.expressionParameters =
-                        AssetDatabase.LoadAssetAtPath<VRCExpressionParameters>(
-                            AssetDatabase.GUIDToAssetPath(GetParamGuid())
-                        );
-                target.paramDef = descriptor.expressionParameters;
-                target.paramDef.name = descriptor.expressionParameters.name;
-            }
-            target.param = CreateInstance<VRCExpressionParameters>();
-            EditorUtility.CopySerialized(target.paramDef, target.param);
-            target.param.name = target.paramDef.name;
-
-            SetNotSyncParameter(target.param);
-            EditorUtility.SetDirty(target.param);
-            AssetDatabase.CreateAsset(target.param, pathDir + target.param.name + ".asset");
             step1.Stop();
             return step1.ElapsedMilliseconds;
         }
@@ -195,16 +290,16 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
                     InvokeProcessParamByType(this, config.processType, descriptor);
 
             var baseLayers = descriptor.baseAnimationLayers;
-            var paryi_LocoParam = GetUseParams(
-                baseLayers[0].animatorController as AnimatorController
+            EditAnimatorParams(
+                target.paryi_Loco,
+                target.paryi_Gesture,
+                target.paryi_Action,
+                target.paryi_FX
             );
 
-            var paryi_GestureParam = GetUseParams(
-                baseLayers[2].animatorController as AnimatorController
-            );
-            var paryi_ActionParam = GetUseParams(
-                baseLayers[3].animatorController as AnimatorController
-            );
+            var paryi_LocoParam = GetUseParams(target.paryi_Loco);
+            var paryi_GestureParam = GetUseParams(target.paryi_Gesture);
+            var paryi_ActionParam = GetUseParams(target.paryi_Action);
             var paryi_FXParam = EditFXParam(target.paryi_FX);
 
             HashSet<string> allParams = new HashSet<string>();
@@ -236,6 +331,14 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             return step2.ElapsedMilliseconds;
         }
 
+        protected virtual void EditAnimatorParams(
+            AnimatorController paryi_Loco,
+            AnimatorController paryi_Gesture,
+            AnimatorController paryi_Action,
+            AnimatorController paryi_FX
+        )
+        { }
+
         protected void ExecuteSpecificEdit<T>()
             where T : ReframeRuntime
         {
@@ -251,18 +354,28 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         protected long FinalizeAssets(VRCAvatarDescriptor descriptor)
         {
             var step4 = Stopwatch.StartNew();
-            RemoveUnusedMenuControls(target.menu, target.param);
-            PromoteSingleSubMenu(target.menu);
-            EditorUtility.SetDirty(target.paryi_FX);
-            MarkAllMenusDirty(target.menu);
-            EditorUtility.SetDirty(target.param);
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
 
-            descriptor.baseAnimationLayers[4].animatorController = target.paryi_FX;
-            descriptor.expressionsMenu = target.menu;
-            descriptor.expressionParameters = target.param;
-            EditorUtility.SetDirty(descriptor);
+            if (IsEdit())
+            {
+                RemoveUnusedMenuControls(target.menu, target.param);
+                PromoteSingleSubMenu(target.menu);
+                EditorUtility.SetDirty(target.paryi_FX);
+                MarkAllMenusDirty(target.menu);
+                EditorUtility.SetDirty(target.param);
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+
+                if (target.executeMode == ExecuteModeOption.NDMF)
+                {
+                    descriptor.baseAnimationLayers[0].animatorController = target.paryi_Loco;
+                    descriptor.baseAnimationLayers[2].animatorController = target.paryi_Gesture;
+                    descriptor.baseAnimationLayers[3].animatorController = target.paryi_Action;
+                    descriptor.baseAnimationLayers[4].animatorController = target.paryi_FX;
+                }
+                descriptor.expressionsMenu = target.menu;
+                descriptor.expressionParameters = target.param;
+                EditorUtility.SetDirty(descriptor);
+            }
             step4.Stop();
             return step4.ElapsedMilliseconds;
         }
@@ -331,7 +444,8 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             string parentPath,
             string iconPath,
             bool questFlg1,
-            TextureResizeOption textureResize
+            TextureResizeOption textureResize,
+            Object AssetContainer
         )
         {
             return DuplicateExpressionMenu(
@@ -340,6 +454,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
                 iconPath,
                 questFlg1,
                 textureResize,
+                AssetContainer,
                 null,
                 null,
                 null
@@ -352,6 +467,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             string iconPath,
             bool questFlg1,
             TextureResizeOption textureResize,
+            Object AssetContainer = null,
             VRCExpressionsMenu rootMenuAsset = null,
             Dictionary<VRCExpressionsMenu, VRCExpressionsMenu> processedMenus = null,
             Dictionary<string, Texture2D> processedIcons = null
@@ -382,13 +498,25 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 
             if (isRootCall)
             {
-                string menuAssetPath = Path.Combine(parentPath, originalMenu.name + ".asset");
-                AssetDatabase.CreateAsset(newMenu, menuAssetPath);
-                rootMenuAsset = newMenu;
+                if (!AssetContainer)
+                {
+                    string menuAssetPath = Path.Combine(parentPath, originalMenu.name + ".asset");
+                    AssetDatabase.CreateAsset(newMenu, menuAssetPath);
+                    rootMenuAsset = newMenu;
+                }
+                else
+                {
+                    newMenu = Instantiate(originalMenu);
+                    newMenu.name = originalMenu.name;
+                    AssetDatabase.AddObjectToAsset(newMenu, AssetContainer);
+                }
             }
             else if (rootMenuAsset != null)
             {
-                AssetDatabase.AddObjectToAsset(newMenu, rootMenuAsset);
+                AssetDatabase.AddObjectToAsset(
+                    newMenu,
+                    AssetContainer == null ? rootMenuAsset : AssetContainer
+                );
             }
 
             for (int i = 0; i < newMenu.controls.Count; i++)
@@ -453,6 +581,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
                         iconPath,
                         questFlg1,
                         textureResize,
+                        AssetContainer,
                         rootMenuAsset,
                         processedMenus,
                         processedIcons
@@ -486,9 +615,12 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 
             instance.Initialize(descriptor, target.paryi_FX);
             instance.InitializeFlags(target);
-            instance.DeleteFx(Layers);
-            instance.DeleteFxBT(parameters);
-            instance.EditVRCExpressions(target.menu, menuPath);
+            if (IsEdit())
+                instance.DeleteFx(Layers);
+            if (IsEdit())
+                instance.DeleteFxBT(parameters);
+            if (IsEdit())
+                instance.EditVRCExpressions(target.menu, menuPath);
             if (instance.GetType().Name == "Reframe")
                 instance.ParticleOptimize();
             instance.ChangeObj(delPath);
@@ -496,7 +628,10 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
                 instance.GetType().Namespace == GetNameSpace() + ".Mizuki"
                 && instance.GetType().Name == "Reframe"
             )
-                (instance as Base)?.DeleteMenuButtonCtrl(parameters);
+            {
+                if (IsEdit())
+                    (instance as Base)?.DeleteMenuButtonCtrl(parameters);
+            }
         }
 
         protected ParamProcessConfig[] GetParamConfigs<Exe, Reframe>(
