@@ -17,7 +17,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         public bool IKUSIA_emote = false;
         public bool AAORemoveFlg = false;
         public bool questFlg1 = false;
-        public readonly bool CoreFlg = true;
+        public readonly bool ReframeFlg = true;
         public TextureResizeOption textureResize = TextureResizeOption.LowerResolution;
 
         public enum TextureResizeOption
