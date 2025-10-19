@@ -7,7 +7,8 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     public partial class ReframeExe : ExeAbstract
     {
-        public ReframeExe(MizukiReframe target)
+        public void SetTarget<T>(T target)
+            where T : ReframeRuntime
         {
             this.target = target;
         }

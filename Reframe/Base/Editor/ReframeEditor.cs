@@ -25,6 +25,14 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             public int ColliderCount;
         }
 
+        SerializedProperty executeMode;
+        SerializedProperty paryi_FX;
+        SerializedProperty menu;
+        SerializedProperty param;
+        SerializedProperty paryi_FXDef;
+        SerializedProperty menuDef;
+        SerializedProperty paramDef;
+        protected SerializedProperty IKUSIA_emote;
         static Dictionary<Type, FieldInfo[]> _propertyFieldCache = new();
 
         protected void AutoInitializeSerializedProperties(ReframeEditor editorInstance)
@@ -73,7 +81,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         }
 
         protected static void CreateObj<T>(MenuCommand menuCommand, string name)
-            where T : Reframe
+            where T : ReframeRuntime
         {
             GameObject go = new(name);
             go.AddComponent<T>();
@@ -153,6 +161,50 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             GUILayout.EndHorizontal();
         }
 
+        protected void EditData()
+        {
+            EditorGUILayout.Space();
+            GUILayout.TextField(
+                "生成する元Asset",
+                new GUIStyle
+                {
+                    fontStyle = FontStyle.Bold,
+                    fontSize = 24,
+                    normal = new GUIStyleState { textColor = Color.white },
+                }
+            );
+            GUI.enabled = false;
+            EditorGUILayout.Space();
+            EditorGUILayout.PropertyField(paryi_FXDef, new GUIContent("Animator Controller"));
+            EditorGUILayout.PropertyField(menuDef, new GUIContent("Expressions Menu"));
+            EditorGUILayout.PropertyField(paramDef, new GUIContent("Expression Parameters"));
+            GUI.enabled = true;
+            EditorGUILayout.Space();
+            GUILayout.TextField(
+                "生成されたAsset",
+                new GUIStyle
+                {
+                    fontStyle = FontStyle.Bold,
+                    fontSize = 24,
+                    normal = new GUIStyleState { textColor = Color.white },
+                }
+            );
+            EditorGUILayout.Space();
+            EditorGUILayout.PropertyField(paryi_FX, new GUIContent("Animator Controller"));
+            EditorGUILayout.PropertyField(menu, new GUIContent("Expressions Menu"));
+            EditorGUILayout.PropertyField(param, new GUIContent("Expression Parameters"));
+        }
+
+        protected void ExecuteMode()
+        {
+            int selected = executeMode.enumValueIndex;
+            executeMode.enumValueIndex = EditorGUILayout.Popup(
+                "動作モード",
+                selected,
+                new[] { "非ModularAvatar", "ModularAvatar" }
+            );
+        }
+
         protected void DelMenu(SerializedProperty textureResize, SerializedProperty AAORemoveFlg)
         {
             int selected = textureResize.enumValueIndex;
@@ -173,7 +225,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             GUI.enabled = true;
         }
 
-        protected void QuestDialog(Reframe target, SerializedProperty questFlg1, string questHelp)
+        protected void QuestDialog(ReframeRuntime target, SerializedProperty questFlg1, string questHelp)
         {
 #if AVATAR_OPTIMIZER_FOUND
             if (target.transform.root.GetComponent<TraceAndOptimize>() == null)

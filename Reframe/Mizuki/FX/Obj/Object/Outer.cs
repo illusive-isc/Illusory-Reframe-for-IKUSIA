@@ -18,7 +18,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 
         bool OuterFlg2;
 
-        internal override void InitializeFlags(IKUSIA.Reframe reframe)
+        internal override void InitializeFlags(ReframeRuntime reframe)
         {
             OuterFlg2 = ((MizukiReframe)reframe).OuterFlg2;
         }

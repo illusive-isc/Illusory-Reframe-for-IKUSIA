@@ -13,7 +13,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 
         internal override List<string> GetMenuPath() => new() { "Gimmick2", "Breast_size" };
 
-        internal override void InitializeFlags(IKUSIA.Reframe reframe)
+        internal override void InitializeFlags(ReframeRuntime reframe)
         {
             breastSizeFlg1 = ((MizukiReframe)reframe).BreastSizeFlg1;
             breastSizeFlg2 = ((MizukiReframe)reframe).BreastSizeFlg2;

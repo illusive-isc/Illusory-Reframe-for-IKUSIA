@@ -7,7 +7,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
     {
         bool ClothDelFlg2;
 
-        internal override void InitializeFlags(IKUSIA.Reframe reframe)
+        internal override void InitializeFlags(ReframeRuntime reframe)
         {
             ClothDelFlg2 = ((MizukiReframe)reframe).ClothDelFlg2;
         }

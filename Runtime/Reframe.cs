@@ -6,7 +6,7 @@ using VRC.SDKBase;
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 {
     [AddComponentMenu("")]
-    public abstract class Reframe : MonoBehaviour, IEditorOnly
+    public abstract class ReframeRuntime : MonoBehaviour, IEditorOnly
     {
         public AnimatorController paryi_FXDef;
         public VRCExpressionsMenu menuDef;
@@ -18,12 +18,19 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         public bool AAORemoveFlg = false;
         public bool questFlg1 = false;
         public readonly bool ReframeFlg = true;
+        public ExecuteMode executeMode = ExecuteMode.MA;
         public TextureResizeOption textureResize = TextureResizeOption.LowerResolution;
 
         public enum TextureResizeOption
         {
             LowerResolution,
             Delete,
+        }
+
+        public enum ExecuteMode
+        {
+            nonMA,
+            MA,
         }
     }
 }

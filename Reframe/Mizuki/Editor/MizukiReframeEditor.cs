@@ -12,6 +12,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+            ExecuteMode();
 
             GUILayout.BeginHorizontal();
             GUILayout.BeginVertical();
@@ -220,24 +221,32 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             Quest();
 
             serializedObject.ApplyModifiedProperties();
+
+            if (!ExecuteButton(target as MizukiReframe))
+            {
+                return;
+            }
+            EditData();
+        }
+
+        protected bool ExecuteButton<T>(T target)
+            where T : ReframeRuntime
+        {
             if (GUILayout.Button("Execute"))
             {
                 if (isExecuting)
                 {
                     Debug.LogWarning("現在実行中です。しばらくお待ちください。");
-                    return;
+                    return false;
                 }
                 isExecuting = true;
                 var step1 = Stopwatch.StartNew();
-                if (
-                    (target as MizukiReframe).transform.root.TryGetComponent(
-                        out VRCAvatarDescriptor descriptor
-                    )
-                )
+                if (target.transform.root.TryGetComponent(out VRCAvatarDescriptor descriptor))
                 {
                     try
                     {
-                        ReframeExe reframe = new(target as MizukiReframe);
+                        ReframeExe reframe = new();
+                        reframe.SetTarget(target);
                         reframe.Execute(descriptor);
                     }
                     catch (System.Exception)
@@ -253,36 +262,8 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 Debug.Log("MizukiReframe: " + step1.ElapsedMilliseconds + "ms");
                 isExecuting = false;
             }
-            EditorGUILayout.Space();
-            GUILayout.TextField(
-                "生成する元Asset",
-                new GUIStyle
-                {
-                    fontStyle = FontStyle.Bold,
-                    fontSize = 24,
-                    normal = new GUIStyleState { textColor = Color.white },
-                }
-            );
-            GUI.enabled = false;
-            EditorGUILayout.Space();
-            EditorGUILayout.PropertyField(paryi_FXDef, new GUIContent("Animator Controller"));
-            EditorGUILayout.PropertyField(menuDef, new GUIContent("Expressions Menu"));
-            EditorGUILayout.PropertyField(paramDef, new GUIContent("Expression Parameters"));
-            GUI.enabled = true;
-            EditorGUILayout.Space();
-            GUILayout.TextField(
-                "生成されたAsset",
-                new GUIStyle
-                {
-                    fontStyle = FontStyle.Bold,
-                    fontSize = 24,
-                    normal = new GUIStyleState { textColor = Color.white },
-                }
-            );
-            EditorGUILayout.Space();
-            EditorGUILayout.PropertyField(paryi_FX, new GUIContent("Animator Controller"));
-            EditorGUILayout.PropertyField(menu, new GUIContent("Expressions Menu"));
-            EditorGUILayout.PropertyField(param, new GUIContent("Expression Parameters"));
+
+            return true;
         }
 
         [MenuItem("GameObject/illusive_tools/Create MizukiReframe Object", true)]
