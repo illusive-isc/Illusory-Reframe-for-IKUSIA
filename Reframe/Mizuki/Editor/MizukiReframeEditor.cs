@@ -250,7 +250,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                     Debug.LogWarning("VRCAvatarDescriptor が見つかりません。");
                 }
                 step1.Stop();
-                Debug.Log("MizukiOptimizer: " + step1.ElapsedMilliseconds + "ms");
+                Debug.Log("MizukiReframe: " + step1.ElapsedMilliseconds + "ms");
                 isExecuting = false;
             }
             EditorGUILayout.Space();
@@ -285,16 +285,16 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             EditorGUILayout.PropertyField(param, new GUIContent("Expression Parameters"));
         }
 
-        [MenuItem("GameObject/illusive_tools/Create MizukiOptimizer Object", true)]
-        private static bool ValidateCreateMizukiOptimizerObject(MenuCommand menuCommand)
+        [MenuItem("GameObject/illusive_tools/Create MizukiReframe Object", true)]
+        private static bool ValidateCreateMizukiReframeObject(MenuCommand menuCommand)
         {
             return ValidateCreateObj(menuCommand, "mizukiAvatar");
         }
 
-        [MenuItem("GameObject/illusive_tools/Create MizukiOptimizer Object", false, 10)]
-        private static void CreateMizukiOptimizerObject(MenuCommand menuCommand)
+        [MenuItem("GameObject/illusive_tools/Create MizukiReframe Object", false, 10)]
+        private static void CreateMizukiReframeObject(MenuCommand menuCommand)
         {
-            CreateObj<MizukiReframe>(menuCommand, "MizukiOptimizer");
+            CreateObj<MizukiReframe>(menuCommand, "MizukiReframe");
         }
     }
 }

@@ -26,16 +26,10 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         private bool TPSFlg;
         private bool ClairvoyanceFlg;
 
-        protected void Initialize(
-            VRCAvatarDescriptor descriptor,
-            AnimatorController paryi_FX,
-            MizukiReframe optimizer
-        )
+        internal override void InitializeFlags(IKUSIA.Reframe reframe)
         {
-            this.descriptor = descriptor;
-            this.paryi_FX = paryi_FX;
-            TPSFlg = optimizer.TPSFlg;
-            ClairvoyanceFlg = optimizer.ClairvoyanceFlg;
+            TPSFlg = ((MizukiReframe)reframe).TPSFlg;
+            ClairvoyanceFlg = ((MizukiReframe)reframe).ClairvoyanceFlg;
         }
 
         internal override void DeleteFx(List<string> Layers)
