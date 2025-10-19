@@ -18,7 +18,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         public bool AAORemoveFlg = false;
         public bool questFlg1 = false;
         public readonly bool ReframeFlg = true;
-        public ExecuteMode executeMode = ExecuteMode.MA;
+        public ExecuteModeOption executeMode = ExecuteModeOption.MA;
         public TextureResizeOption textureResize = TextureResizeOption.LowerResolution;
 
         public enum TextureResizeOption
@@ -27,7 +27,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             Delete,
         }
 
-        public enum ExecuteMode
+        public enum ExecuteModeOption
         {
             nonMA,
             MA,

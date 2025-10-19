@@ -25,13 +25,13 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             public int ColliderCount;
         }
 
-        SerializedProperty executeMode;
-        SerializedProperty paryi_FX;
-        SerializedProperty menu;
-        SerializedProperty param;
-        SerializedProperty paryi_FXDef;
-        SerializedProperty menuDef;
-        SerializedProperty paramDef;
+        protected SerializedProperty executeMode;
+        protected SerializedProperty paryi_FX;
+        protected SerializedProperty menu;
+        protected SerializedProperty param;
+        protected SerializedProperty paryi_FXDef;
+        protected SerializedProperty menuDef;
+        protected SerializedProperty paramDef;
         protected SerializedProperty IKUSIA_emote;
         static Dictionary<Type, FieldInfo[]> _propertyFieldCache = new();
 
