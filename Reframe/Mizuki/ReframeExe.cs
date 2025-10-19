@@ -41,19 +41,19 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             foreach (var p in paryi_Gesture.parameters.Where(p => p.name == "Gimmick2_6").ToArray())
             {
                 paryi_Gesture.RemoveParameter(p);
-
-                paryi_Gesture.AddParameter(
-                    new AnimatorControllerParameter
-                    {
-                        name = p.name,
-                        type = AnimatorControllerParameterType.Float,
-                        defaultFloat = p.defaultFloat,
-                    }
-                );
+                if (!((MizukiReframe)target).DrinkFlg)
+                    paryi_Gesture.AddParameter(
+                        new AnimatorControllerParameter
+                        {
+                            name = p.name,
+                            type = AnimatorControllerParameterType.Float,
+                            defaultFloat = p.defaultFloat,
+                        }
+                    );
             }
             if (((MizukiReframe)target).DrinkFlg)
             {
-                var layer = paryi_FX.layers.First(l => l.name == "Right Hand");
+                var layer = paryi_Gesture.layers.First(l => l.name == "Right Hand");
                 if (layer != null)
                 {
                     var anyStateTransitions = layer.stateMachine.anyStateTransitions;
