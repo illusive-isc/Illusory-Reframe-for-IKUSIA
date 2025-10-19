@@ -219,7 +219,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             GUILayout.EndHorizontal();
             Quest();
 
-            // Execute ボタンの追加
             serializedObject.ApplyModifiedProperties();
             if (GUILayout.Button("Execute"))
             {

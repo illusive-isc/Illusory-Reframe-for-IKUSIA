@@ -180,7 +180,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             params AnimatorState[] statesToRemove
         )
         {
-            // Remove transitions leading to states to be removed
             foreach (var state in stateMachine.states)
             {
                 state.state.transitions = state
@@ -189,13 +188,11 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
                     )
                     .ToArray();
             }
-            // Remove AnyState transitions leading to states to be removed
             stateMachine.anyStateTransitions = stateMachine
                 .anyStateTransitions.Where(t =>
                     t.destinationState == null || !statesToRemove.Contains(t.destinationState)
                 )
                 .ToArray();
-            // Filter out states to keep
             stateMachine.states = stateMachine
                 .states.Where(s => !statesToRemove.Contains(s.state))
                 .ToArray();

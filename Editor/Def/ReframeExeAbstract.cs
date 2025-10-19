@@ -177,7 +177,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         {
             var step2 = Stopwatch.StartNew();
 
-            // 共通処理
             foreach (var config in configs)
                 if (config.condition)
                     InvokeProcessParamByType(this, config.processType, descriptor);
@@ -455,7 +454,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         {
             Exe instance = ScriptableObject.CreateInstance<Exe>();
 
-            // virtualメソッドを使用して継承先の値を取得
             List<string> parameters = instance.GetParameters();
             List<string> menuPath = instance.GetMenuPath();
             List<string> delPath = instance.GetDelPath();
@@ -485,7 +483,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             ParamProcessConfig[] configs = types
                 .Select(t =>
                 {
-                    // フィールド名は {TypeName}Flg を期待
                     var flagField = typeof(Reframe).GetField(
                         t.Name + "Flg",
                         BindingFlags.Instance
@@ -494,7 +491,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
                             | BindingFlags.NonPublic
                     );
 
-                    // targetインスタンスからフィールドの値を取得
                     bool condition = GetBoolFieldFromInstance(flagField, target);
 
                     return new ParamProcessConfig { condition = condition, processType = t };
@@ -511,9 +507,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         )
         {
             foreach (var path in paths)
-            {
                 ReframeExe.DestroyComponent<VRCPhysBoneBase>(descriptor.transform.Find(path));
-            }
         }
 
         protected static void DelPBColliderByPathArray(
@@ -522,11 +516,9 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         )
         {
             foreach (var path in paths)
-            {
                 ReframeExe.DestroyComponent<VRCPhysBoneColliderBase>(
                     descriptor.transform.Find(path)
                 );
-            }
         }
 
         protected static void DelColliderSettingByPathArray(
@@ -622,7 +614,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             if (thisObj == null || genericParamType == null)
                 return;
 
-            // ProcessParam<Exe, Reframe>を探す（2つのジェネリック型パラメータ）
             var mi = thisObj
                 .GetType()
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
@@ -640,11 +631,9 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 
             try
             {
-                // ReframeAbstractの型を取得（2番目のジェネリック引数用）
                 var reframeType = typeof(ReframeAbstract);
                 var targetType = thisObj.GetType();
 
-                // targetのフィールドから適切なReframe型を推定
                 var targetField = targetType.GetField(
                     "target",
                     BindingFlags.Instance | BindingFlags.NonPublic
@@ -711,7 +700,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 
             foreach (var layer in paryi_FX.layers)
             {
-                // states
                 foreach (var s in layer.stateMachine.states)
                 {
                     var state = s.state;
@@ -729,7 +717,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
                         CollectBlendTreeParams(bt);
                     }
 
-                    // transitions from this state
                     foreach (var tr in state.transitions)
                     {
                         if (tr.conditions == null)
@@ -739,14 +726,12 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
                             if (!string.IsNullOrEmpty(c.parameter))
                                 used.Add(c.parameter);
                         }
-                        // destination state's motion may also reference params
                         var dst = tr.destinationState;
                         if (dst != null && dst.motion is BlendTree dstBT)
                             CollectBlendTreeParams(dstBT);
                     }
                 }
 
-                // anyState transitions
                 foreach (var tr in layer.stateMachine.anyStateTransitions)
                 {
                     if (tr.conditions == null)
@@ -770,7 +755,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             if (menu == null)
                 return;
 
-            // 再帰的にサブメニューを処理
             for (int i = 0; i < menu.controls.Count; i++)
             {
                 var control = menu.controls[i];
@@ -781,10 +765,8 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
                 {
                     var subMenu = control.subMenu;
 
-                    // 再帰的に処理
                     PromoteSingleSubMenu(subMenu);
 
-                    // 子メニューが1件しかない場合、親メニューの同じ位置に置き換える
                     if (subMenu.controls.Count == 1)
                     {
                         var singleControl = subMenu.controls[0];

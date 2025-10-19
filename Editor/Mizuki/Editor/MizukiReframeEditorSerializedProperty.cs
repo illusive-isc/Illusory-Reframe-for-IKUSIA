@@ -4,7 +4,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     internal partial class MizukiReframeEditor : ReframeEditor
     {
-        // 多重実行防止用フラグ
         static bool isExecuting = false;
         SerializedProperty ClothFlg;
         SerializedProperty ClothDelFlg;

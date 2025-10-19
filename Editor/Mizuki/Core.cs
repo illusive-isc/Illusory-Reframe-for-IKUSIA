@@ -167,10 +167,8 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                                     minThreshold = 0.0f,
                                 };
                                 blendTree.AddChild(newBlendTree);
-                                // BlendTreeの子モーションを取得
                                 var children = blendTree.children;
 
-                                // "LipSynk" のモーションがある場合、threshold を変更
                                 for (int i = 0; i < children.Length; i++)
                                 {
                                     if (children[i].motion.name == "VRMode")
@@ -178,7 +176,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                                         children[i].threshold = 1;
                                     }
                                 }
-                                // 修正した children 配列を再代入（これをしないと変更が反映されない）
                                 blendTree.children = children;
 
                                 newBlendTree.children = new ChildMotion[]
@@ -210,7 +207,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                         }
                 }
             }
-            // "VRMode" パラメータが Float でない場合は再設定
             var VRMode = paryi_FX.parameters.FirstOrDefault(p => p.name == "VRMode");
             if (VRMode != null)
             {
