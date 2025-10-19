@@ -22,6 +22,12 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
     public abstract class ExeAbstract : ScriptableObject
     {
         protected Reframe target { get; set; }
+        protected readonly string[] stepNames = new[]
+        {
+            "InitializeAssets",
+            "EditProcessing",
+            "FinalizeAssets",
+        };
 
         protected virtual string GetPathDirPrefix() => "Assets/IllusoryReframe/";
 
@@ -30,6 +36,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         protected virtual string GetMenuGuid() => "";
 
         protected virtual string GetParamGuid() => "";
+
         protected virtual string GetNameSpace() => GetType().Namespace;
 
         protected string pathDirSuffix = "/FX/";

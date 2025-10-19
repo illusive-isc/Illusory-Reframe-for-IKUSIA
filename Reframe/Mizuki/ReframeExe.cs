@@ -25,15 +25,12 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             var stopwatch = Stopwatch.StartNew();
             var stepTimes = new Dictionary<string, long>
             {
-                ["InitializeAssets"] = InitializeAssets<MizukiReframe>(
-                    descriptor,
-                    GetPathDirPrefix()
-                ),
-                ["EditProcessing"] = Edit<MizukiReframe>(
+                [stepNames[0]] = InitializeAssets<MizukiReframe>(descriptor, GetPathDirPrefix()),
+                [stepNames[1]] = Edit<MizukiReframe>(
                     descriptor,
                     GetParamConfigs<Base, MizukiReframe>(target as MizukiReframe, GetNameSpace())
                 ),
-                ["FinalizeAssets"] = FinalizeAssets(descriptor),
+                [stepNames[2]] = FinalizeAssets(descriptor),
             };
             stopwatch.Stop();
             Debug.Log(
