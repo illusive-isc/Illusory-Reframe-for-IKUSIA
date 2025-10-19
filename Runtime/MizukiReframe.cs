@@ -3,7 +3,7 @@ using UnityEngine;
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 {
     [AddComponentMenu("MizukiReframe")]
-    public class MizukiReframe : ReframeAbstract
+    public class MizukiReframe : Reframe
     {
         [SerializeField]
         private bool ClothFlg = false;

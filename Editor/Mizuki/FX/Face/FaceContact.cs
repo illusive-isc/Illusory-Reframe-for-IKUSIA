@@ -8,7 +8,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         public bool kamitukiFlg = false;
         public bool nadeFlg = false;
 
-        internal override void InitializeFlags(ReframeAbstract reframe)
+        internal override void InitializeFlags(Reframe reframe)
         {
             kamitukiFlg = ((MizukiReframe)reframe).kamitukiFlg;
             nadeFlg = ((MizukiReframe)reframe).nadeFlg;

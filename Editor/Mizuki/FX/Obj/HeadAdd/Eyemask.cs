@@ -11,7 +11,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 
         bool EyemaskFlg2;
 
-        internal override void InitializeFlags(ReframeAbstract reframe)
+        internal override void InitializeFlags(Reframe reframe)
         {
             EyemaskFlg2 = ((MizukiReframe)reframe).EyemaskFlg2;
         }

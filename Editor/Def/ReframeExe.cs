@@ -160,7 +160,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             this.paryi_FX = paryi_FX;
         }
 
-        internal virtual void InitializeFlags(ReframeAbstract reframe) { }
+        internal virtual void InitializeFlags(Reframe reframe) { }
 
         internal virtual void ChangeObj(List<string> delPath)
         {

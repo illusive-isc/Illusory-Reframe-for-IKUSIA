@@ -10,7 +10,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 
         bool EarTailFlg2;
 
-        internal override void InitializeFlags(ReframeAbstract reframe)
+        internal override void InitializeFlags(Reframe reframe)
         {
             EarTailFlg2 = ((MizukiReframe)reframe).EarTailFlg2;
         }

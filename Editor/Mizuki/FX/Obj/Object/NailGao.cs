@@ -7,7 +7,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
     {
         bool NailGaoFlg2;
 
-        internal override void InitializeFlags(ReframeAbstract reframe)
+        internal override void InitializeFlags(Reframe reframe)
         {
             NailGaoFlg2 = ((MizukiReframe)reframe).NailGaoFlg2;
         }

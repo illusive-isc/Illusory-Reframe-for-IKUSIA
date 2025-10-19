@@ -9,7 +9,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         protected override void Execute(BuildContext context)
         {
             foreach (
-                ReframeAbstract Override in context.AvatarRootObject.GetComponentsInChildren<ReframeAbstract>()
+                Reframe Override in context.AvatarRootObject.GetComponentsInChildren<Reframe>()
             )
                 Object.DestroyImmediate(Override.gameObject);
         }

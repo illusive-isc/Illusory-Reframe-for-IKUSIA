@@ -12,7 +12,7 @@ using VRC.Dynamics;
 using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
 using VRC.SDKBase;
-using static jp.illusive_isc.IllusoryReframe.IKUSIA.ReframeAbstract;
+using static jp.illusive_isc.IllusoryReframe.IKUSIA.Reframe;
 using Debug = UnityEngine.Debug;
 #if AVATAR_OPTIMIZER_FOUND
 using Anatawa12.AvatarOptimizer;
@@ -22,7 +22,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 {
     public abstract class ReframeExeAbstract : MonoBehaviour, IEditorOnly
     {
-        protected ReframeAbstract target { get; set; }
+        protected Reframe target { get; set; }
         protected string pathDirSuffix = "/FX/";
         protected string pathName = "paryi_FX.controller";
         protected string pathDir;
@@ -97,7 +97,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             string menuGuid,
             string paramGuid
         )
-            where Reframe : ReframeAbstract
+            where Reframe : IKUSIA.Reframe
         {
             var step1 = Stopwatch.StartNew();
             pathDir = pathDirPrefix + descriptor.gameObject.name + pathDirSuffix;
@@ -173,7 +173,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         }
 
         protected long Edit<T>(VRCAvatarDescriptor descriptor, ParamProcessConfig[] configs)
-            where T : ReframeAbstract
+            where T : Reframe
         {
             var step2 = Stopwatch.StartNew();
 
@@ -212,7 +212,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         }
 
         protected void ExecuteSpecificEdit<T>()
-            where T : ReframeAbstract
+            where T : Reframe
         {
             if ((target as T).IKUSIA_emote)
                 foreach (var control in target.menu.controls)
@@ -450,7 +450,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 
         protected void ProcessParam<Exe, Reframe>(VRCAvatarDescriptor descriptor)
             where Exe : ReframeExe, new()
-            where Reframe : ReframeAbstract
+            where Reframe : IKUSIA.Reframe
         {
             Exe instance = ScriptableObject.CreateInstance<Exe>();
 
@@ -477,7 +477,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             string TargetNamespace
         )
             where Exe : ReframeExe
-            where Reframe : ReframeAbstract
+            where Reframe : IKUSIA.Reframe
         {
             var types = GetDerivedTypes<Exe>(TargetNamespace);
             ParamProcessConfig[] configs = types
@@ -631,7 +631,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 
             try
             {
-                var reframeType = typeof(ReframeAbstract);
+                var reframeType = typeof(Reframe);
                 var targetType = thisObj.GetType();
 
                 var targetField = targetType.GetField(

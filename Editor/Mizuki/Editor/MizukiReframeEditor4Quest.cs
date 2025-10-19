@@ -214,7 +214,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             if (questArea)
             {
                 QuestDialog(
-                    target as ReframeAbstract,
+                    target as Reframe,
                     questFlg1,
                     "Quest化に対応してないコンポーネントやシェーダーを使っているためTPS、透視、コライダー・ジャンプ、撮影ギミック、ライトガン、ホワイトブレス、8bit、ペン操作、ハートガンなどを削除します。\n"
                 );

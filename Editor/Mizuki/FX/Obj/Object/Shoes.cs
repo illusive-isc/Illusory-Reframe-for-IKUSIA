@@ -11,7 +11,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 
         bool ArmAcceFlg2;
 
-        internal override void InitializeFlags(ReframeAbstract reframe)
+        internal override void InitializeFlags(Reframe reframe)
         {
             ArmAcceFlg2 = ((MizukiReframe)reframe).ArmAcceFlg2;
         }

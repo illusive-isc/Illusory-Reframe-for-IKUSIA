@@ -73,7 +73,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         }
 
         protected static void CreateObj<T>(MenuCommand menuCommand, string name)
-            where T : ReframeAbstract
+            where T : Reframe
         {
             GameObject go = new(name);
             go.AddComponent<T>();
@@ -174,7 +174,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         }
 
         protected void QuestDialog(
-            ReframeAbstract target,
+            Reframe target,
             SerializedProperty questFlg1,
             string questHelp
         )

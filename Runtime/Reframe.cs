@@ -6,7 +6,7 @@ using VRC.SDKBase;
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 {
     [AddComponentMenu("")]
-    public abstract class ReframeAbstract : MonoBehaviour, IEditorOnly
+    public abstract class Reframe : MonoBehaviour, IEditorOnly
     {
         public AnimatorController paryi_FXDef;
         public VRCExpressionsMenu menuDef;

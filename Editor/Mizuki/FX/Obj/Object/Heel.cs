@@ -8,7 +8,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         bool heelFlg1,
             heelFlg2;
 
-        internal override void InitializeFlags(ReframeAbstract reframe)
+        internal override void InitializeFlags(Reframe reframe)
         {
             heelFlg1 = ((MizukiReframe)reframe).heelFlg1;
             heelFlg2 = ((MizukiReframe)reframe).heelFlg2;
