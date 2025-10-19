@@ -12,7 +12,13 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             this.target = target;
         }
 
-        string pathDirPrefix = "Assets/IllusoryReframe/Mizuki";
+        protected override string GetPathDirPrefix() => base.GetPathDirPrefix() + "Mizuki/";
+
+        protected override string GetFxGuid() => "eabec4db12bc4574c996310914852639";
+
+        protected override string GetMenuGuid() => "2e95f28830e406047b35e7e58b3c0e79";
+
+        protected override string GetParamGuid() => "ca37a7e2249e6404ea1893c197866705";
 
         public override void Execute(VRCAvatarDescriptor descriptor)
         {
@@ -21,17 +27,11 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             {
                 ["InitializeAssets"] = InitializeAssets<MizukiReframe>(
                     descriptor,
-                    pathDirPrefix,
-                    "eabec4db12bc4574c996310914852639",
-                    "2e95f28830e406047b35e7e58b3c0e79",
-                    "ca37a7e2249e6404ea1893c197866705"
+                    GetPathDirPrefix()
                 ),
                 ["EditProcessing"] = Edit<MizukiReframe>(
                     descriptor,
-                    GetParamConfigs<Base, MizukiReframe>(
-                        target as MizukiReframe,
-                        "jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki"
-                    )
+                    GetParamConfigs<Base, MizukiReframe>(target as MizukiReframe, GetNameSpace())
                 ),
                 ["FinalizeAssets"] = FinalizeAssets(descriptor),
             };

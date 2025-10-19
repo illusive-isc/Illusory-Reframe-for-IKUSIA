@@ -22,6 +22,16 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
     public abstract class ExeAbstract : ScriptableObject
     {
         protected Reframe target { get; set; }
+
+        protected virtual string GetPathDirPrefix() => "Assets/IllusoryReframe/";
+
+        protected virtual string GetFxGuid() => "";
+
+        protected virtual string GetMenuGuid() => "";
+
+        protected virtual string GetParamGuid() => "";
+        protected virtual string GetNameSpace() => GetType().Namespace;
+
         protected string pathDirSuffix = "/FX/";
         protected string pathName = "paryi_FX.controller";
         protected string pathDir;
@@ -91,10 +101,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 
         protected long InitializeAssets<Reframe>(
             VRCAvatarDescriptor descriptor,
-            string pathDirPrefix,
-            string fxGuid,
-            string menuGuid,
-            string paramGuid
+            string pathDirPrefix
         )
             where Reframe : IKUSIA.Reframe
         {
@@ -116,7 +123,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
                 if (!descriptor.baseAnimationLayers[4].animatorController)
                     descriptor.baseAnimationLayers[4].animatorController =
                         AssetDatabase.LoadAssetAtPath<AnimatorController>(
-                            AssetDatabase.GUIDToAssetPath(fxGuid)
+                            AssetDatabase.GUIDToAssetPath(GetFxGuid())
                         );
                 target.paryi_FXDef =
                     descriptor.baseAnimationLayers[4].animatorController as AnimatorController;
@@ -132,7 +139,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             {
                 if (!descriptor.expressionsMenu)
                     descriptor.expressionsMenu = AssetDatabase.LoadAssetAtPath<VRCExpressionsMenu>(
-                        AssetDatabase.GUIDToAssetPath(menuGuid)
+                        AssetDatabase.GUIDToAssetPath(GetMenuGuid())
                     );
                 target.menuDef = descriptor.expressionsMenu;
             }
@@ -155,7 +162,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
                 if (!descriptor.expressionParameters)
                     descriptor.expressionParameters =
                         AssetDatabase.LoadAssetAtPath<VRCExpressionParameters>(
-                            AssetDatabase.GUIDToAssetPath(paramGuid)
+                            AssetDatabase.GUIDToAssetPath(GetParamGuid())
                         );
                 target.paramDef = descriptor.expressionParameters;
                 target.paramDef.name = descriptor.expressionParameters.name;
@@ -479,7 +486,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
                 instance.ParticleOptimize();
             instance.ChangeObj(delPath);
             if (
-                instance.GetType().Namespace == "jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki"
+                instance.GetType().Namespace == GetNameSpace() + ".Mizuki"
                 && instance.GetType().Name == "Reframe"
             )
                 (instance as Base)?.DeleteMenuButtonCtrl(parameters);
