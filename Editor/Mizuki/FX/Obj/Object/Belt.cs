@@ -1,29 +1,21 @@
 using System.Collections.Generic;
-using UnityEditor.Animations;
-using VRC.SDK3.Avatars.Components;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     internal class Belt : MizukiBase
     {
-        internal static new readonly List<string> Parameters = new() { "Object4" };
+        internal override List<string> GetParameters() => new() { "Object4" };
 
-        internal static new readonly List<string> menuPath = new() { "Object", "belt" };
+        internal override List<string> GetMenuPath() => new() { "Object", "belt" };
 
         bool BeltFlg2;
 
-        internal void Initialize(
-            VRCAvatarDescriptor descriptor,
-            AnimatorController paryi_FX,
-            MizukiReframe optimizer
-        )
+        internal override void InitializeFlags(ReframeAbstract reframe)
         {
-            this.descriptor = descriptor;
-            this.paryi_FX = paryi_FX;
-            BeltFlg2 = optimizer.BeltFlg2;
+            BeltFlg2 = ((MizukiReframe)reframe).BeltFlg2;
         }
 
-        internal new void ChangeObj(List<string> delPath)
+        internal override void ChangeObj(List<string> delPath)
         {
             if (BeltFlg2)
                 DestroyObj(descriptor.transform.Find("add-belt"));

@@ -7,15 +7,18 @@ using VRC.SDK3.Avatars.ScriptableObjects;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 {
-    public class ReframeCore : ScriptableObject
+    public abstract class ReframeExe : ScriptableObject
     {
         protected VRCAvatarDescriptor descriptor;
         protected AnimatorController paryi_FX;
 
-        internal readonly List<string> Parameters = new();
-        internal readonly List<string> menuPath = new();
-        internal readonly List<string> delPath = new();
-        internal readonly List<string> Layers = new();
+        internal virtual List<string> GetParameters() => new();
+
+        internal virtual List<string> GetMenuPath() => new();
+
+        internal virtual List<string> GetDelPath() => new();
+
+        internal virtual List<string> GetLayers() => new();
 
         public static void EditorOnly(Transform obj)
         {
@@ -90,7 +93,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             }
         }
 
-        protected void DeleteFxBT(List<string> Parameters)
+        internal virtual void DeleteFxBT(List<string> Parameters)
         {
             foreach (var layer in paryi_FX.layers.Where(layer => layer.name == "MainCtrlTree"))
             {
@@ -106,7 +109,9 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             }
         }
 
-        protected void EditVRCExpressions(VRCExpressionsMenu menu, List<string> menuPath)
+        internal abstract void ParticleOptimize();
+
+        internal virtual void EditVRCExpressions(VRCExpressionsMenu menu, List<string> menuPath)
         {
             if (menu == null || menuPath == null || menuPath.Count == 0)
                 return;
@@ -149,26 +154,28 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             return false;
         }
 
-        protected void Initialize(VRCAvatarDescriptor descriptor, AnimatorController paryi_FX)
+        internal void Initialize(VRCAvatarDescriptor descriptor, AnimatorController paryi_FX)
         {
             this.descriptor = descriptor;
             this.paryi_FX = paryi_FX;
         }
 
-        protected void ChangeObj(List<string> delPath)
+        internal virtual void InitializeFlags(ReframeAbstract reframe) { }
+
+        internal virtual void ChangeObj(List<string> delPath)
         {
             foreach (var path in delPath)
                 DestroyObj(descriptor.transform.Find(path));
         }
 
-        protected void DeleteFx(List<string> Layers)
+        internal virtual void DeleteFx(List<string> Layers)
         {
             paryi_FX.layers = paryi_FX
                 .layers.Where(layer => !Layers.Contains(layer.name))
                 .ToArray();
         }
 
-        protected void RemoveStatesAndTransitions(
+        protected virtual void RemoveStatesAndTransitions(
             AnimatorStateMachine stateMachine,
             params AnimatorState[] statesToRemove
         )
@@ -192,6 +199,16 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             stateMachine.states = stateMachine
                 .states.Where(s => !statesToRemove.Contains(s.state))
                 .ToArray();
+        }
+
+        protected void SetMaxParticle(string path, int max)
+        {
+            var particleobj = descriptor.transform.Find(path);
+            if (particleobj)
+            {
+                var mainModule = particleobj.GetComponent<ParticleSystem>().main;
+                mainModule.maxParticles = max;
+            }
         }
     }
 }

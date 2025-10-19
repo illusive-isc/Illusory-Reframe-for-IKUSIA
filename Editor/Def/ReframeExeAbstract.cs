@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -87,31 +88,143 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             "AvatarVersion",
         };
 
-        public void Execute(VRCAvatarDescriptor descriptor)
+        public abstract void Execute(VRCAvatarDescriptor descriptor);
+
+        protected long InitializeAssets<Reframe>(
+            VRCAvatarDescriptor descriptor,
+            string pathDirPrefix,
+            string fxGuid,
+            string menuGuid,
+            string paramGuid
+        )
+            where Reframe : ReframeAbstract
         {
-            var stopwatch = Stopwatch.StartNew();
-            var stepTimes = new Dictionary<string, long>
+            var step1 = Stopwatch.StartNew();
+            pathDir = pathDirPrefix + descriptor.gameObject.name + pathDirSuffix;
+            if (AssetDatabase.LoadAssetAtPath<AnimatorController>(pathDir + pathName) != null)
             {
-                ["InitializeAssets"] = InitializeAssets(descriptor),
-                ["EditProcessing"] = Edit(descriptor),
-                ["FinalizeAssets"] = FinalizeAssets(descriptor),
-            };
-            stopwatch.Stop();
-            Debug.Log(
-                $"最適化を実行しました！総処理時間: {stopwatch.ElapsedMilliseconds}ms ({stopwatch.Elapsed.TotalSeconds:F2}秒)"
+                AssetDatabase.DeleteAsset(pathDir + pathName);
+                AssetDatabase.DeleteAsset(pathDir + "Menu");
+                AssetDatabase.DeleteAsset(pathDir + "paryi_paraments.asset");
+            }
+            if (!Directory.Exists(pathDir))
+            {
+                Directory.CreateDirectory(pathDir);
+            }
+
+            if (!target.paryi_FXDef)
+            {
+                if (!descriptor.baseAnimationLayers[4].animatorController)
+                    descriptor.baseAnimationLayers[4].animatorController =
+                        AssetDatabase.LoadAssetAtPath<AnimatorController>(
+                            AssetDatabase.GUIDToAssetPath(fxGuid)
+                        );
+                target.paryi_FXDef =
+                    descriptor.baseAnimationLayers[4].animatorController as AnimatorController;
+            }
+            AssetDatabase.CopyAsset(
+                AssetDatabase.GetAssetPath(target.paryi_FXDef),
+                pathDir + pathName
             );
 
-            foreach (var kvp in stepTimes)
+            target.paryi_FX = AssetDatabase.LoadAssetAtPath<AnimatorController>(pathDir + pathName);
+
+            if (!target.menuDef)
             {
-                Debug.Log($"[Performance] {kvp.Key}: {kvp.Value}ms");
+                if (!descriptor.expressionsMenu)
+                    descriptor.expressionsMenu = AssetDatabase.LoadAssetAtPath<VRCExpressionsMenu>(
+                        AssetDatabase.GUIDToAssetPath(menuGuid)
+                    );
+                target.menuDef = descriptor.expressionsMenu;
             }
+
+            var iconPath = pathDir + "/icon";
+            if (!Directory.Exists(iconPath))
+            {
+                Directory.CreateDirectory(iconPath);
+            }
+            target.menu = DuplicateExpressionMenu(
+                target.menuDef,
+                pathDir,
+                iconPath,
+                (target as Reframe).questFlg1,
+                target.textureResize
+            );
+
+            if (!target.paramDef)
+            {
+                if (!descriptor.expressionParameters)
+                    descriptor.expressionParameters =
+                        AssetDatabase.LoadAssetAtPath<VRCExpressionParameters>(
+                            AssetDatabase.GUIDToAssetPath(paramGuid)
+                        );
+                target.paramDef = descriptor.expressionParameters;
+                target.paramDef.name = descriptor.expressionParameters.name;
+            }
+            target.param = ScriptableObject.CreateInstance<VRCExpressionParameters>();
+            EditorUtility.CopySerialized(target.paramDef, target.param);
+            target.param.name = target.paramDef.name;
+
+            SetNotSyncParameter(target.param);
+            EditorUtility.SetDirty(target.param);
+            AssetDatabase.CreateAsset(target.param, pathDir + target.param.name + ".asset");
+            step1.Stop();
+            return step1.ElapsedMilliseconds;
         }
 
-        protected abstract long InitializeAssets(VRCAvatarDescriptor descriptor);
+        protected long Edit<T>(VRCAvatarDescriptor descriptor, ParamProcessConfig[] configs)
+            where T : ReframeAbstract
+        {
+            var step2 = Stopwatch.StartNew();
 
-        protected abstract long Edit(VRCAvatarDescriptor descriptor);
+            // 共通処理
+            foreach (var config in configs)
+                if (config.condition)
+                    InvokeProcessParamByType(this, config.processType, descriptor);
 
-        private long FinalizeAssets(VRCAvatarDescriptor descriptor)
+            var baseLayers = descriptor.baseAnimationLayers;
+            var paryi_LocoParam = GetUseParams(
+                baseLayers[0].animatorController as AnimatorController
+            );
+
+            var paryi_GestureParam = GetUseParams(
+                baseLayers[2].animatorController as AnimatorController
+            );
+            var paryi_ActionParam = GetUseParams(
+                baseLayers[3].animatorController as AnimatorController
+            );
+            var paryi_FXParam = EditFXParam(target.paryi_FX);
+
+            HashSet<string> allParams = new HashSet<string>();
+            allParams.UnionWith(paryi_LocoParam);
+            allParams.UnionWith(paryi_GestureParam);
+            allParams.UnionWith(paryi_ActionParam);
+            allParams.UnionWith(paryi_FXParam);
+            target.param.parameters = target
+                .param.parameters.Where(param => allParams.Contains(param.name))
+                .ToArray();
+
+            ExecuteSpecificEdit<T>();
+
+            Edit4Quest(descriptor);
+
+            step2.Stop();
+            return step2.ElapsedMilliseconds;
+        }
+
+        protected void ExecuteSpecificEdit<T>()
+            where T : ReframeAbstract
+        {
+            if ((target as T).IKUSIA_emote)
+                foreach (var control in target.menu.controls)
+                    if (control.name == "IKUSIA_emote")
+                    {
+                        target.menu.controls.Remove(control);
+                        break;
+                    }
+        }
+
+        protected long FinalizeAssets(VRCAvatarDescriptor descriptor)
         {
             var step4 = Stopwatch.StartNew();
             RemoveUnusedMenuControls(target.menu, target.param);
@@ -330,135 +443,64 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             return newMenu;
         }
 
-        protected static readonly Dictionary<Type, MethodInfo[]> methodCache = new();
-
         protected struct ParamProcessConfig
         {
-            public Func<bool> condition;
-            public Action processAction;
-            public Action afterAction;
+            public bool condition;
+            public Type processType;
         }
 
-        protected void ProcessParam<T>(VRCAvatarDescriptor descriptor)
-            where T : ReframeCore, new()
+        protected void ProcessParam<Exe, Reframe>(VRCAvatarDescriptor descriptor)
+            where Exe : ReframeExe, new()
+            where Reframe : ReframeAbstract
         {
-            var type = typeof(T);
-            const BindingFlags bindingFlags =
-                BindingFlags.Public
-                | BindingFlags.NonPublic
-                | BindingFlags.Instance
-                | BindingFlags.Static;
+            Exe instance = ScriptableObject.CreateInstance<Exe>();
 
-            if (!methodCache.TryGetValue(type, out var methods))
-            {
-                var initializeMethods = type.GetMethods(bindingFlags)
-                    .Where(m => m.Name == "Initialize")
-                    .ToArray();
-                var Method =
-                    initializeMethods.FirstOrDefault(m => m.GetParameters().Length == 3)
-                    ?? initializeMethods.FirstOrDefault();
-                methods = new[]
-                {
-                    Method,
-                    type.GetMethod("DeleteFx", bindingFlags),
-                    type.GetMethod("DeleteFxBT", bindingFlags),
-                    type.GetMethod("EditVRCExpressions", bindingFlags),
-                    type.GetMethod("ParticleOptimize", bindingFlags),
-                    type.GetMethod("ChangeObj", bindingFlags),
-                    type.GetMethod("DeleteMenuButtonCtrl", bindingFlags),
-                };
-                methodCache[type] = methods;
-            }
+            // virtualメソッドを使用して継承先の値を取得
+            List<string> parameters = instance.GetParameters();
+            List<string> menuPath = instance.GetMenuPath();
+            List<string> delPath = instance.GetDelPath();
+            List<string> Layers = instance.GetLayers();
 
-            var parametersField = type.GetField("Parameters", bindingFlags);
-            var menuPathField = type.GetField("menuPath", bindingFlags);
-            var delPathField = type.GetField("delPath", bindingFlags);
-            var layersField = type.GetField("Layers", bindingFlags);
-
-            var instance = ScriptableObject.CreateInstance<T>();
-            try
-            {
-                var parameters =
-                    GetFieldValue<List<string>>(parametersField, instance) ?? new List<string>();
-                var menuPath =
-                    GetFieldValue<List<string>>(menuPathField, instance) ?? new List<string>();
-                var delPath =
-                    GetFieldValue<List<string>>(delPathField, instance) ?? new List<string>();
-                var layers =
-                    GetFieldValue<List<string>>(layersField, instance) ?? new List<string>();
-
-                var initializeMethod = methods[0];
-
-                if (initializeMethod != null)
-                {
-                    var paramCount = initializeMethod.GetParameters().Length;
-                    var args =
-                        paramCount == 3
-                            ? new object[] { descriptor, target.paryi_FX, this }
-                            : new object[] { descriptor, target.paryi_FX };
-                    initializeMethod.Invoke(instance, args);
-                }
-
-                methods[1]?.Invoke(instance, new object[] { layers });
-                methods[2]?.Invoke(instance, new object[] { parameters });
-                methods[3]?.Invoke(instance, new object[] { target.menu, menuPath });
-                methods[4]?.Invoke(instance, null);
-                methods[5]?.Invoke(instance, new object[] { delPath });
-                methods[6]?.Invoke(instance, new object[] { parameters });
-            }
-            finally
-            {
-                if (instance != null)
-                    DestroyImmediate(instance);
-            }
+            instance.Initialize(descriptor, target.paryi_FX);
+            instance.InitializeFlags(target);
+            instance.DeleteFx(Layers);
+            instance.DeleteFxBT(parameters);
+            instance.EditVRCExpressions(target.menu, menuPath);
+            if (instance.GetType().Name == "Core")
+                instance.ParticleOptimize();
+            instance.ChangeObj(delPath);
+            if (instance.GetType().Name == "Core")
+                (instance as MizukiBase)?.DeleteMenuButtonCtrl(parameters);
         }
 
-        private static TFieldType GetFieldValue<TFieldType>(FieldInfo field, object instance)
-            where TFieldType : class
-        {
-            if (field == null)
-                return null;
-
-            if (field.IsStatic)
-            {
-                return field.GetValue(null) as TFieldType;
-            }
-            else
-            {
-                return field.GetValue(instance) as TFieldType;
-            }
-        }
-
-        protected ParamProcessConfig[] GetParamConfigs<T>(
+        protected ParamProcessConfig[] GetParamConfigs<Exe, Reframe>(
             VRCAvatarDescriptor descriptor,
+            Reframe target,
             string TargetNamespace
         )
-            where T : ReframeCore
+            where Exe : ReframeExe
+            where Reframe : ReframeAbstract
         {
-            var types = GetDerivedTypes<T>(TargetNamespace);
-            return types
+            var types = GetDerivedTypes<Exe>(TargetNamespace);
+            ParamProcessConfig[] configs = types
                 .Select(t =>
                 {
                     // フィールド名は {TypeName}Flg を期待
-                    var flagField = GetType()
-                        .GetField(
-                            t.Name + "Flg",
-                            BindingFlags.Instance
-                                | BindingFlags.Static
-                                | BindingFlags.Public
-                                | BindingFlags.NonPublic
-                        );
+                    var flagField = typeof(Reframe).GetField(
+                        t.Name + "Flg",
+                        BindingFlags.Instance
+                            | BindingFlags.Static
+                            | BindingFlags.Public
+                            | BindingFlags.NonPublic
+                    );
 
-                    bool condition() => GetBoolField(flagField);
-                    void processAction() => InvokeProcessParamByType(this, t, descriptor);
+                    // targetインスタンスからフィールドの値を取得
+                    bool condition = GetBoolFieldFromInstance(flagField, target);
 
-                    return new ParamProcessConfig
-                    {
-                        condition = condition,
-                        processAction = processAction,
-                    };
+                    return new ParamProcessConfig { condition = condition, processType = t };
                 })
                 .ToArray();
+            return configs;
         }
 
         protected abstract void Edit4Quest(VRCAvatarDescriptor descriptor);
@@ -470,7 +512,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         {
             foreach (var path in paths)
             {
-                ReframeCore.DestroyComponent<VRCPhysBoneBase>(descriptor.transform.Find(path));
+                ReframeExe.DestroyComponent<VRCPhysBoneBase>(descriptor.transform.Find(path));
             }
         }
 
@@ -481,7 +523,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         {
             foreach (var path in paths)
             {
-                ReframeCore.DestroyComponent<VRCPhysBoneColliderBase>(
+                ReframeExe.DestroyComponent<VRCPhysBoneColliderBase>(
                     descriptor.transform.Find(path)
                 );
             }
@@ -536,7 +578,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         }
 
         protected static Type[] GetDerivedTypes<T>(string TargetNamespace)
-            where T : ReframeCore
+            where T : ReframeExe
         {
             var baseType = typeof(T);
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
@@ -554,81 +596,21 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             return types;
         }
 
-        protected static ReframeCore CreateInstanceForType(Type t)
+        protected bool GetBoolFieldFromInstance(FieldInfo field, object instance)
         {
-            if (t == null)
-                return null;
-            if (!typeof(ReframeCore).IsAssignableFrom(t))
-                return null;
-
-            if (typeof(ScriptableObject).IsAssignableFrom(t))
-            {
-#if UNITY_EDITOR
-                return ScriptableObject.CreateInstance(t) as ReframeCore;
-#else
-                return null;
-#endif
-            }
-
-            try
-            {
-                return Activator.CreateInstance(t) as ReframeCore;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        protected static void InvokeProcessParamByType(
-            object thisObj,
-            Type genericParamType,
-            object descriptor
-        )
-        {
-            if (thisObj == null || genericParamType == null)
-                return;
-
-            var mi = thisObj
-                .GetType()
-                .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                .FirstOrDefault(m => m.Name == "ProcessParam" && m.IsGenericMethodDefinition);
-            if (mi == null)
-                return;
-
-            var gm = mi.MakeGenericMethod(genericParamType);
-            gm.Invoke(thisObj, new object[] { descriptor });
-        }
-
-        protected bool GetBoolField(FieldInfo field)
-        {
-            if (field == null)
+            if (field == null || instance == null)
                 return false;
             try
             {
                 if (field.IsStatic)
                     return field.GetValue(null) is bool b && b;
                 else
-                    return field.GetValue(this) is bool b2 && b2;
+                    return field.GetValue(instance) is bool b2 && b2;
             }
             catch
             {
                 return false;
             }
-        }
-
-        protected void SetBoolField(FieldInfo field, bool value)
-        {
-            if (field == null)
-                return;
-            try
-            {
-                if (field.IsStatic)
-                    field.SetValue(null, value);
-                else
-                    field.SetValue(this, value);
-            }
-            catch { }
         }
 
         protected static void InvokeProcessParamByType(
@@ -639,28 +621,53 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         {
             if (thisObj == null || genericParamType == null)
                 return;
+
+            // ProcessParam<Exe, Reframe>を探す（2つのジェネリック型パラメータ）
             var mi = thisObj
                 .GetType()
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                 .FirstOrDefault(m =>
                     m.Name == "ProcessParam"
                     && m.IsGenericMethodDefinition
-                    && m.GetGenericArguments().Length == 1
+                    && m.GetGenericArguments().Length == 2
                 );
+
             if (mi == null)
+            {
+                Debug.LogError("ProcessParam<Exe, Reframe> メソッドが見つかりません");
                 return;
+            }
+
             try
             {
-                var gm = mi.MakeGenericMethod(genericParamType);
+                // ReframeAbstractの型を取得（2番目のジェネリック引数用）
+                var reframeType = typeof(ReframeAbstract);
+                var targetType = thisObj.GetType();
+
+                // targetのフィールドから適切なReframe型を推定
+                var targetField = targetType.GetField(
+                    "target",
+                    BindingFlags.Instance | BindingFlags.NonPublic
+                );
+                if (targetField != null)
+                {
+                    var targetValue = targetField.GetValue(thisObj);
+                    if (targetValue != null)
+                    {
+                        reframeType = targetValue.GetType();
+                    }
+                }
+
+                var gm = mi.MakeGenericMethod(genericParamType, reframeType);
                 gm.Invoke(thisObj, new object[] { descriptor });
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Debug.LogError($"ProcessParam呼び出しエラー: {ex.Message}");
+            }
         }
 
-        protected void SetNotSyncParameter(
-            VRCExpressionParameters Parameters,
-            List<string> NotSyncParameter
-        )
+        protected void SetNotSyncParameter(VRCExpressionParameters Parameters)
         {
             foreach (var parameter in Parameters.parameters)
             {
@@ -668,19 +675,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
                 {
                     parameter.networkSynced = false;
                 }
-            }
-        }
-
-        protected void AddIfNotInParameters(
-            HashSet<string> paramList,
-            List<string> exeistParams,
-            string parameter,
-            bool isActive = true
-        )
-        {
-            if (isActive && !VRCParameters.Contains(parameter) && !exeistParams.Contains(parameter))
-            {
-                paramList.Add(parameter);
             }
         }
 

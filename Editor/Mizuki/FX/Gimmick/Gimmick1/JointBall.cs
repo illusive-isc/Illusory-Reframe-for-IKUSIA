@@ -4,8 +4,10 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     internal class JointBall : MizukiBase
     {
-        internal static new readonly List<string> Parameters = new() { "Gimmick1_8" };
-        internal static new readonly List<string> menuPath = new() { "Gimmick", "JointBall" };
-        internal static new readonly List<string> delPath = new() { "Advanced/Gimmick1/8" };
+        internal override List<string> GetParameters() => new() { "Gimmick1_8" };
+
+        internal override List<string> GetMenuPath() => new() { "Gimmick", "JointBall" };
+
+        internal override List<string> GetDelPath() => new() { "Advanced/Gimmick1/8" };
     }
 }

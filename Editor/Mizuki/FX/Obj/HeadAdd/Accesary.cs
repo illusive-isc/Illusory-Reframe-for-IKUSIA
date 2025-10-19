@@ -1,34 +1,21 @@
 using System.Collections.Generic;
-using UnityEditor.Animations;
-using VRC.SDK3.Avatars.Components;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     internal class Accesary : MizukiBase
     {
-        internal static new readonly List<string> Parameters = new() { "OBJ7_8" };
+        internal override List<string> GetParameters() => new() { "OBJ7_8" };
 
-        internal static new readonly List<string> menuPath = new()
-        {
-            "Object",
-            "Head add",
-            "accesary",
-        };
+        internal override List<string> GetMenuPath() => new() { "Object", "Head add", "accesary" };
 
         bool AccesaryFlg2;
 
-        internal void Initialize(
-            VRCAvatarDescriptor descriptor,
-            AnimatorController paryi_FX,
-            MizukiReframe optimizer
-        )
+        internal override void InitializeFlags(ReframeAbstract reframe)
         {
-            this.descriptor = descriptor;
-            this.paryi_FX = paryi_FX;
-            AccesaryFlg2 = optimizer.AccesaryFlg2;
+            AccesaryFlg2 = ((MizukiReframe)reframe).AccesaryFlg2;
         }
 
-        internal new void ChangeObj(List<string> delPath)
+        internal override void ChangeObj(List<string> delPath)
         {
             if (AccesaryFlg2)
                 DestroyObj(descriptor.transform.Find("Add-Ribbon"));

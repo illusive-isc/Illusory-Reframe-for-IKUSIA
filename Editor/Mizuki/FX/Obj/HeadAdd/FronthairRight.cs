@@ -4,13 +4,9 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     internal class FronthairRight : MizukiBase
     {
-        internal static new readonly List<string> Parameters = new() { "OBJ7_3" };
+        internal override List<string> GetParameters() => new() { "OBJ7_3" };
 
-        internal static new readonly List<string> menuPath = new()
-        {
-            "Object",
-            "Head add",
-            "fronthair_right",
-        };
+        internal override List<string> GetMenuPath() =>
+            new() { "Object", "Head add", "fronthair_right" };
     }
 }

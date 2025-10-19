@@ -4,9 +4,10 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     internal class Help : MizukiBase
     {
-        internal static new readonly List<string> Parameters = new() { "Help" };
+        internal override List<string> GetParameters() => new() { "Help" };
 
-        internal static new readonly List<string> menuPath = new() { "Gimmick2", "Help" };
-        internal static new readonly List<string> delPath = new() { "Menu/MainMenu/help" };
+        internal override List<string> GetMenuPath() => new() { "Gimmick2", "Help" };
+
+        internal override List<string> GetDelPath() => new() { "Menu/MainMenu/help" };
     }
 }

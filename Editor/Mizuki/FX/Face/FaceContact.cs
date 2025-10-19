@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor.Animations;
-using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
@@ -10,19 +8,13 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         public bool kamitukiFlg = false;
         public bool nadeFlg = false;
 
-        public void Initialize(
-            VRCAvatarDescriptor descriptor,
-            AnimatorController paryi_FX,
-            MizukiReframe optimizer
-        )
+        internal override void InitializeFlags(ReframeAbstract reframe)
         {
-            this.descriptor = descriptor;
-            this.paryi_FX = paryi_FX;
-            kamitukiFlg = optimizer.kamitukiFlg;
-            nadeFlg = optimizer.nadeFlg;
+            kamitukiFlg = ((MizukiReframe)reframe).kamitukiFlg;
+            nadeFlg = ((MizukiReframe)reframe).nadeFlg;
         }
 
-        public new void DeleteFx(List<string> Layers)
+        internal override void DeleteFx(List<string> Layers)
         {
             if (nadeFlg)
                 DeleteMenuButtonCtrl(new() { "NadeNade" });
@@ -30,7 +22,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 DeleteMenuButtonCtrl(new() { "Gimmick2_5" });
         }
 
-        protected new void DeleteFxBT(List<string> Parameters)
+        internal override void DeleteFxBT(List<string> Parameters)
         {
             if (nadeFlg)
                 base.DeleteFxBT(new() { "NadeNade" });
@@ -38,7 +30,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 base.DeleteFxBT(new() { "Gimmick2_5" });
         }
 
-        public new void EditVRCExpressions(VRCExpressionsMenu menu, List<string> menuPath)
+        internal override void EditVRCExpressions(VRCExpressionsMenu menu, List<string> menuPath)
         {
             if (nadeFlg)
                 RemoveMenuItemRecursivelyInternal(
@@ -50,7 +42,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 RemoveMenuItemRecursivelyInternal(menu, new() { "Gimmick2", "噛みつき禁止" }, 0);
         }
 
-        protected new void ChangeObj(List<string> delPath)
+        internal override void ChangeObj(List<string> delPath)
         {
             if (nadeFlg)
                 descriptor.transform.Find("Advanced/Gimmick2/Face2").gameObject.SetActive(true);

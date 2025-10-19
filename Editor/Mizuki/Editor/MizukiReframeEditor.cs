@@ -18,6 +18,8 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             EditorGUILayout.PropertyField(heelFlg1, new GUIContent("ヒールON"));
             EditorGUILayout.PropertyField(heelFlg2, new GUIContent("ハイヒールON"));
 
+            HeelFlg.boolValue = heelFlg1.boolValue || heelFlg2.boolValue;
+
             EditorGUILayout.PropertyField(FreeClothFlg, new GUIContent("フリー衣装削除"));
             EditorGUILayout.PropertyField(FreeObjFlg, new GUIContent("フリーオブジェクト削除"));
 

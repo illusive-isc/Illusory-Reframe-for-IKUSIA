@@ -5,20 +5,23 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     internal class LightGun : MizukiBase
     {
-        internal static new readonly List<string> Layers = new() { "butterfly" };
+        internal override List<string> GetLayers() => new() { "butterfly" };
 
-        internal static new readonly List<string> Parameters = new()
-        {
-            "LightGun",
-            "LightColor",
-            "LightStrength",
-            "butterfly_Set",
-            "butterfly_Shot",
-            "butterfly_stand",
-            "butterfly_FingerIndexL",
-            "butterfly_Gesture_Set",
-        };
-        internal static new readonly List<string> delPath = new() { "Advanced/butterfly" };
+        internal override List<string> GetParameters() =>
+            new()
+            {
+                "LightGun",
+                "LightColor",
+                "LightStrength",
+                "butterfly_Set",
+                "butterfly_Shot",
+                "butterfly_stand",
+                "butterfly_FingerIndexL",
+                "butterfly_Gesture_Set",
+            };
+
+        internal override List<string> GetDelPath() => new() { "Advanced/butterfly" };
+
         internal static readonly List<List<string>> menuPathList = new()
         {
             new() { "Gimmick", "Light_Gun", "Light_Gun_On" },
@@ -28,16 +31,16 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             new() { "Gimmick", "Light_Gun" },
         };
 
-        public new void EditVRCExpressions(VRCExpressionsMenu menu, List<string> menuPath)
+        internal override void EditVRCExpressions(VRCExpressionsMenu menu, List<string> menuPath)
         {
             foreach (var item in menuPathList)
                 base.EditVRCExpressions(menu, item);
         }
 
-        protected new void DeleteFx(List<string> Layers)
+        internal override void DeleteFx(List<string> Layers)
         {
             base.DeleteFx(Layers);
-            DeleteBarCtrlHandHit(Parameters, "LightRange", "LightStrength");
+            DeleteBarCtrlHandHit(GetParameters(), "LightRange", "LightStrength");
             DeleteBarCtrl(
                 "BarOff 0 0 0 0 0 0",
                 "BarOpen 0 0 0 0 0 0",

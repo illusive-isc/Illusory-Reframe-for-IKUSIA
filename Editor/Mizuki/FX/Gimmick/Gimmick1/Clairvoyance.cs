@@ -4,9 +4,10 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     internal class Clairvoyance : MizukiBase
     {
-        internal static new readonly List<string> Parameters = new() { "clairvoyance" };
+        internal override List<string> GetParameters() => new() { "clairvoyance" };
 
-        internal static new readonly List<string> menuPath = new() { "Gimmick", "Clairvoyance" };
-        internal static new readonly List<string> delPath = new() { "Advanced/clairvoyance" };
+        internal override List<string> GetMenuPath() => new() { "Gimmick", "Clairvoyance" };
+
+        internal override List<string> GetDelPath() => new() { "Advanced/clairvoyance" };
     }
 }

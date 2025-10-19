@@ -4,14 +4,11 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     internal class FaceEffect : MizukiBase
     {
-        internal static new readonly List<string> Parameters = new() { "faceeffect" };
+        internal override List<string> GetParameters() => new() { "faceeffect" };
 
-        internal static new readonly List<string> menuPath = new()
-        {
-            "Gimmick2",
-            "Gesture_change",
-            "faceeffect",
-        };
-        internal static new readonly List<string> delPath = new() { "Advanced/FaceEffect" };
+        internal override List<string> GetMenuPath() =>
+            new() { "Gimmick2", "Gesture_change", "faceeffect" };
+
+        internal override List<string> GetDelPath() => new() { "Advanced/FaceEffect" };
     }
 }

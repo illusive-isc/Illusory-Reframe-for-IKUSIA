@@ -11,29 +11,24 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             breastSizeFlg2,
             breastSizeFlg3;
 
-        internal static new readonly List<string> Parameters = new() { "BreastSize" };
-        internal static new readonly List<string> menuPath = new() { "Gimmick2", "Breast_size" };
+        internal override List<string> GetParameters() => new() { "BreastSize" };
 
-        internal void Initialize(
-            VRCAvatarDescriptor descriptor,
-            AnimatorController paryi_FX,
-            MizukiReframe optimizer
-        )
+        internal override List<string> GetMenuPath() => new() { "Gimmick2", "Breast_size" };
+
+        internal override void InitializeFlags(ReframeAbstract reframe)
         {
-            this.descriptor = descriptor;
-            this.paryi_FX = paryi_FX;
-            breastSizeFlg1 = optimizer.BreastSizeFlg1;
-            breastSizeFlg2 = optimizer.BreastSizeFlg2;
-            breastSizeFlg3 = optimizer.BreastSizeFlg3;
+            breastSizeFlg1 = ((MizukiReframe)reframe).BreastSizeFlg1;
+            breastSizeFlg2 = ((MizukiReframe)reframe).BreastSizeFlg2;
+            breastSizeFlg3 = ((MizukiReframe)reframe).BreastSizeFlg3;
         }
 
-        protected new void DeleteFx(List<string> Layers)
+        internal override void DeleteFx(List<string> Layers)
         {
-            DeleteBarCtrlHandHit(Parameters, "BreastSize");
+            DeleteBarCtrlHandHit(GetParameters(), "BreastSize");
             DeleteBarCtrl("BarOff", "BarOpen", "BreastSize");
         }
 
-        internal new void ChangeObj(List<string> delPath)
+        internal override void ChangeObj(List<string> delPath)
         {
             var Body_b = descriptor.transform.Find("Body_b");
             if (Body_b)

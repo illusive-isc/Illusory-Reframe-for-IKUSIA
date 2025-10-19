@@ -1,35 +1,22 @@
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
-using VRC.SDK3.Avatars.Components;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     internal class Eyemask : MizukiBase
     {
-        internal static new readonly List<string> Parameters = new() { "OBJ7_6" };
+        internal override List<string> GetParameters() => new() { "OBJ7_6" };
 
-        internal static new readonly List<string> menuPath = new()
-        {
-            "Object",
-            "Head add",
-            "eyemask",
-        };
+        internal override List<string> GetMenuPath() => new() { "Object", "Head add", "eyemask" };
 
         bool EyemaskFlg2;
 
-        internal void Initialize(
-            VRCAvatarDescriptor descriptor,
-            AnimatorController paryi_FX,
-            MizukiReframe optimizer
-        )
+        internal override void InitializeFlags(ReframeAbstract reframe)
         {
-            this.descriptor = descriptor;
-            this.paryi_FX = paryi_FX;
-            EyemaskFlg2 = optimizer.EyemaskFlg2;
+            EyemaskFlg2 = ((MizukiReframe)reframe).EyemaskFlg2;
         }
 
-        internal new void ChangeObj(List<string> delPath)
+        internal override void ChangeObj(List<string> delPath)
         {
             var maid = descriptor.transform.Find("Maid");
 

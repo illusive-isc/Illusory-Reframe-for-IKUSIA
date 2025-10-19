@@ -5,10 +5,11 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     internal class Teleport : MizukiBase
     {
-        internal static new readonly List<string> Parameters = new() { "warpA", "warpB" };
-        internal static new readonly List<string> delPath = new() { "Advanced/Teleport_World" };
+        internal override List<string> GetParameters() => new() { "warpA", "warpB" };
 
-        protected new void EditVRCExpressions(VRCExpressionsMenu menu, List<string> menuPath)
+        internal override List<string> GetDelPath() => new() { "Advanced/Teleport_World" };
+
+        internal override void EditVRCExpressions(VRCExpressionsMenu menu, List<string> menuPath)
         {
             if (menu == null || menuPath == null)
                 return;

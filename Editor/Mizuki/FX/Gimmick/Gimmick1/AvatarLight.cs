@@ -4,12 +4,13 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     internal class AvatarLight : MizukiBase
     {
-        internal static new readonly List<string> Parameters = new() { "AvatarLightStrength" };
-        internal static new readonly List<string> menuPath = new() { "Gimmick", "Avatar_Light" };
+        internal override List<string> GetParameters() => new() { "AvatarLightStrength" };
 
-        protected new void DeleteFx(List<string> Layers)
+        internal override List<string> GetMenuPath() => new() { "Gimmick", "Avatar_Light" };
+
+        internal override void DeleteFx(List<string> Layers)
         {
-            DeleteBarCtrlHandHit(Parameters, "AvatarLightStrength");
+            DeleteBarCtrlHandHit(GetParameters(), "AvatarLightStrength");
             DeleteBarCtrl("BarOff 0 0", "BarOpen 0 0", "AvatarLightStrength", "Color 0");
         }
     }

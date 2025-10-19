@@ -14,7 +14,10 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         public AnimatorController paryi_FX;
         public VRCExpressionsMenu menu;
         public VRCExpressionParameters param;
-        public bool AAORemoveFlg;
+        public bool IKUSIA_emote = false;
+        public bool AAORemoveFlg = false;
+        public bool questFlg1 = false;
+        public readonly bool CoreFlg = true;
         public TextureResizeOption textureResize = TextureResizeOption.LowerResolution;
 
         public enum TextureResizeOption

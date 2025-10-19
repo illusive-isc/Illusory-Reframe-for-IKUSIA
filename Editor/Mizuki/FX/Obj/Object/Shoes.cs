@@ -1,30 +1,22 @@
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
-using VRC.SDK3.Avatars.Components;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     internal class Shoes : MizukiBase
     {
-        internal static new readonly List<string> Parameters = new() { "Object6" };
+        internal override List<string> GetParameters() => new() { "Object6" };
 
-        internal static new readonly List<string> menuPath = new() { "Object", "shoes" };
+        internal override List<string> GetMenuPath() => new() { "Object", "shoes" };
 
         bool ArmAcceFlg2;
 
-        internal void Initialize(
-            VRCAvatarDescriptor descriptor,
-            AnimatorController paryi_FX,
-            MizukiReframe optimizer
-        )
+        internal override void InitializeFlags(ReframeAbstract reframe)
         {
-            this.descriptor = descriptor;
-            this.paryi_FX = paryi_FX;
-            ArmAcceFlg2 = optimizer.ArmAcceFlg2;
+            ArmAcceFlg2 = ((MizukiReframe)reframe).ArmAcceFlg2;
         }
 
-        internal new void ChangeObj(List<string> delPath)
+        internal override void ChangeObj(List<string> delPath)
         {
             var maid = descriptor.transform.Find("Maid");
 

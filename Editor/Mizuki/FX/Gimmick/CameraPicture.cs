@@ -4,14 +4,13 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     internal class CameraPicture : MizukiBase
     {
-        internal static new readonly List<string> Layers = new() { "CameraPicture" };
+        internal override List<string> GetLayers() => new() { "CameraPicture" };
 
-        internal static new readonly List<string> Parameters = new()
-        {
-            "Gimmick1_7",
-            "CameraPictureDistance",
-        };
-        internal static new readonly List<string> menuPath = new() { "Gimmick", "Camera" };
-        internal static new readonly List<string> delPath = new() { "Advanced/CameraPictureWorld" };
+        internal override List<string> GetParameters() =>
+            new() { "Gimmick1_7", "CameraPictureDistance" };
+
+        internal override List<string> GetMenuPath() => new() { "Gimmick", "Camera" };
+
+        internal override List<string> GetDelPath() => new() { "Advanced/CameraPictureWorld" };
     }
 }

@@ -3,7 +3,6 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
-using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
@@ -13,46 +12,31 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         public bool FaceGestureFlg = false;
         public bool FaceLockFlg = false;
         public bool FaceValFlg = false;
-        public bool kamitukiFlg = false;
-        public bool nadeFlg = false;
-        public bool blinkFlg = false;
-        internal static new readonly List<string> Layers = new()
-        {
-            "Left Right Hand",
-            "Blink_Control",
-            "FaceCtrl",
-            "LipSynk",
-        };
+
+        internal override List<string> GetLayers() =>
+            new() { "Left Right Hand", "Blink_Control", "FaceCtrl", "LipSynk" };
+
         internal static readonly List<string> FaceVariation = new()
         {
             "FaceVariation1",
             "FaceVariation2",
             "FaceVariation3",
         };
-        internal static new readonly List<string> Parameters = new()
-        {
-            "FaceLock",
-            "FaceVariation1",
-            "FaceVariation2",
-            "FaceVariation3",
-        };
+
+        internal override List<string> GetParameters() =>
+            new() { "FaceLock", "FaceVariation1", "FaceVariation2", "FaceVariation3" };
+
         private static readonly List<string> FistR = new() { "Fist R1", "Fist R2", "Fist R3" };
         private static readonly List<string> FistL = new() { "Fist L1", "Fist L2", "Fist L3" };
 
-        public void Initialize(
-            VRCAvatarDescriptor descriptor,
-            AnimatorController paryi_FX,
-            MizukiReframe optimizer
-        )
+        internal override void InitializeFlags(ReframeAbstract reframe)
         {
-            this.descriptor = descriptor;
-            this.paryi_FX = paryi_FX;
-            FaceGestureFlg = optimizer.FaceGestureFlg2;
-            FaceLockFlg = optimizer.FaceLockFlg;
-            FaceValFlg = optimizer.FaceValFlg;
+            FaceGestureFlg = ((MizukiReframe)reframe).FaceGestureFlg;
+            FaceLockFlg = ((MizukiReframe)reframe).FaceLockFlg;
+            FaceValFlg = ((MizukiReframe)reframe).FaceValFlg;
         }
 
-        public new void DeleteFx(List<string> Layers)
+        internal override void DeleteFx(List<string> Layers)
         {
             if (!FaceGestureFlg && FaceLockFlg)
                 foreach (
@@ -197,7 +181,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 .ToArray();
         }
 
-        public new void EditVRCExpressions(VRCExpressionsMenu menu, List<string> menuPath)
+        internal override void EditVRCExpressions(VRCExpressionsMenu menu, List<string> menuPath)
         {
             var def = new List<string> { "Gimmick2", "Gesture_change" };
             if (FaceGestureFlg || FaceLockFlg)

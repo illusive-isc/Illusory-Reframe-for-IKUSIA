@@ -20,6 +20,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         public bool heelFlg1 = true;
 
         public bool heelFlg2 = false;
+        public bool HeelFlg = false;
 
         [SerializeField]
         private bool FreeClothFlg = false;
@@ -152,11 +153,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         public bool HeadDressFlg2 = false;
         public bool MenuFlg = false;
         public bool FreeMenuFlg = false;
-
-        public bool IKUSIA_emote = false;
-        public readonly bool CoreFlg = true;
-
-        public bool questFlg1 = false;
 
         public bool Butt;
         public bool Skirt_Root;

@@ -65,6 +65,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         SerializedProperty IKUSIA_emote;
         SerializedProperty heelFlg1;
         SerializedProperty heelFlg2;
+        SerializedProperty HeelFlg;
         SerializedProperty FreeClothFlg;
         SerializedProperty BreastSizeFlg1;
         SerializedProperty BreastSizeFlg2;

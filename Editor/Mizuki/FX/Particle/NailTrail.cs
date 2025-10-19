@@ -4,9 +4,10 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     internal class NailTrail : MizukiBase
     {
-        internal static new readonly List<string> Parameters = new() { "Particle3" };
+        internal override List<string> GetParameters() => new() { "Particle3" };
 
-        internal static new readonly List<string> menuPath = new() { "Particle", "Nail_trail" };
-        internal static new readonly List<string> delPath = new() { "Advanced/Particle/3" };
+        internal override List<string> GetMenuPath() => new() { "Particle", "Nail_trail" };
+
+        internal override List<string> GetDelPath() => new() { "Advanced/Particle/3" };
     }
 }

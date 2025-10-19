@@ -1,36 +1,29 @@
 using System.Collections.Generic;
-using UnityEditor.Animations;
-using VRC.SDK3.Avatars.Components;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     internal class Outer : MizukiBase
     {
-        internal static new readonly List<string> Parameters = new() { "Object3" };
+        internal override List<string> GetParameters() => new() { "Object3" };
 
-        internal static new readonly List<string> menuPath = new() { "Object", "outer" };
+        internal override List<string> GetMenuPath() => new() { "Object", "outer" };
+
+        internal override List<string> GetDelPath() =>
+            new()
+            {
+                "Outer",
+                "Armature/Hips/Spine/Chest/Shoulder_R/Upperarm_R/Lowerarm_R/Right Hand/coat_hand_root_R",
+                "Armature/Hips/Spine/Chest/Shoulder_L/Upperarm_L/Lowerarm_L/Left Hand/coat_hand_root_L",
+            };
 
         bool OuterFlg2;
 
-        internal void Initialize(
-            VRCAvatarDescriptor descriptor,
-            AnimatorController paryi_FX,
-            MizukiReframe optimizer
-        )
+        internal override void InitializeFlags(ReframeAbstract reframe)
         {
-            this.descriptor = descriptor;
-            this.paryi_FX = paryi_FX;
-            OuterFlg2 = optimizer.OuterFlg2;
+            OuterFlg2 = ((MizukiReframe)reframe).OuterFlg2;
         }
 
-        internal new readonly List<string> delPath = new()
-        {
-            "Outer",
-            "Armature/Hips/Spine/Chest/Shoulder_R/Upperarm_R/Lowerarm_R/Right Hand/coat_hand_root_R",
-            "Armature/Hips/Spine/Chest/Shoulder_L/Upperarm_L/Lowerarm_L/Left Hand/coat_hand_root_L",
-        };
-
-        internal new void ChangeObj(List<string> delPath)
+        internal override void ChangeObj(List<string> delPath)
         {
             if (OuterFlg2)
                 base.ChangeObj(delPath);
