@@ -26,6 +26,9 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         }
 
         protected SerializedProperty executeMode;
+        protected SerializedProperty paryi_Loco;
+        protected SerializedProperty paryi_Gesture;
+        protected SerializedProperty paryi_Action;
         protected SerializedProperty paryi_FX;
         protected SerializedProperty menu;
         protected SerializedProperty param;
@@ -163,22 +166,10 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 
         protected void EditData()
         {
+            if (executeMode.enumValueIndex == 1)
+                return;
             EditorGUILayout.Space();
-            GUILayout.TextField(
-                "生成する元Asset",
-                new GUIStyle
-                {
-                    fontStyle = FontStyle.Bold,
-                    fontSize = 24,
-                    normal = new GUIStyleState { textColor = Color.white },
-                }
-            );
-            GUI.enabled = false;
-            EditorGUILayout.Space();
-            EditorGUILayout.PropertyField(paryi_FXDef, new GUIContent("Animator Controller"));
-            EditorGUILayout.PropertyField(menuDef, new GUIContent("Expressions Menu"));
-            EditorGUILayout.PropertyField(paramDef, new GUIContent("Expression Parameters"));
-            GUI.enabled = true;
+
             EditorGUILayout.Space();
             GUILayout.TextField(
                 "生成されたAsset",
@@ -190,19 +181,30 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
                 }
             );
             EditorGUILayout.Space();
-            EditorGUILayout.PropertyField(paryi_FX, new GUIContent("Animator Controller"));
+            EditorGUILayout.PropertyField(paryi_Loco, new GUIContent("paryi_Loco Controller"));
+            EditorGUILayout.PropertyField(paryi_Gesture, new GUIContent("paryi_Gesture Controller"));
+            EditorGUILayout.PropertyField(paryi_Action, new GUIContent("paryi_Action Controller"));
+            EditorGUILayout.PropertyField(paryi_FX, new GUIContent("paryi_FX Controller"));
             EditorGUILayout.PropertyField(menu, new GUIContent("Expressions Menu"));
             EditorGUILayout.PropertyField(param, new GUIContent("Expression Parameters"));
         }
 
         protected void ExecuteMode()
         {
+#if NDMF_FOUND
             int selected = executeMode.enumValueIndex;
             executeMode.enumValueIndex = EditorGUILayout.Popup(
                 "FX、EXメニュー編集動作モード",
                 selected,
                 new[] { "事前実行", "ビルド時" }
             );
+#else
+            selected = 0;
+            EditorGUILayout.HelpBox(
+                "NDMFがインストールされている場合のみ実行モードの変更が有効になります。",
+                MessageType.Info
+            );
+#endif
         }
 
         protected void DelMenu(SerializedProperty textureResize, SerializedProperty AAORemoveFlg)

@@ -12,7 +12,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 
         internal override List<string> GetDelPath() => new() { "Advanced/Gimmick2/6" };
 
-        internal override void DeleteFx(List<string> Layers)
+        internal override void ChangeFx(List<string> Layers)
         {
             paryi_FX
                 .layers.Where(layer => layer.name == "LipSynk")

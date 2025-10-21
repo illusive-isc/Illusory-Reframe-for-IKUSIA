@@ -18,11 +18,11 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         internal override List<string> GetDelPath() =>
             new() { "Armature/Hips/tail", "Armature/Hips/Spine/Chest/Neck/Head/TigerEar" };
 
-        internal override void ChangeObj(List<string> delPath)
+        internal override void ChangeObj(params string[] delPath)
         {
             base.ChangeObj(delPath);
             if (EarTailFlg2)
-                DestroyObj(descriptor.transform.Find("eartail"));
+                DestroyObj(avatarRoot.Find("eartail"));
         }
     }
 }

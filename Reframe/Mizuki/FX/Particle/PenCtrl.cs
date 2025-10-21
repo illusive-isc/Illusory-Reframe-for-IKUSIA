@@ -21,9 +21,9 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 "Advanced/Constraint/Hand_L_Constraint0",
             };
 
-        internal override void DeleteFx(List<string> Layers)
+        internal override void ChangeFx(List<string> Layers)
         {
-            base.DeleteFx(Layers);
+            base.ChangeFx(Layers);
             DeleteBarCtrlHandHit(GetParameters(), "PenColor");
             DeleteBarCtrl("BarOff 0 0 0 0", "BarOpen 0 0 0 0", "Color", "Color 0");
         }

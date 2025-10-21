@@ -36,7 +36,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             FaceValFlg = ((MizukiReframe)reframe).FaceValFlg;
         }
 
-        internal override void DeleteFx(List<string> Layers)
+        internal override void ChangeFx(List<string> Layers)
         {
             if (!FaceGestureFlg2 && FaceLockFlg)
                 foreach (

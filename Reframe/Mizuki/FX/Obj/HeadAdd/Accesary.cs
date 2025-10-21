@@ -15,10 +15,10 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             AccesaryFlg2 = ((MizukiReframe)reframe).AccesaryFlg2;
         }
 
-        internal override void ChangeObj(List<string> delPath)
+        internal override void ChangeObj(params string[] delPath)
         {
             if (AccesaryFlg2)
-                DestroyObj(descriptor.transform.Find("Add-Ribbon"));
+                DestroyObj(avatarRoot.Find("Add-Ribbon"));
         }
     }
 }

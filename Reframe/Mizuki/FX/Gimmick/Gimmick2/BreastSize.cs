@@ -20,15 +20,15 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             breastSizeFlg3 = ((MizukiReframe)reframe).BreastSizeFlg3;
         }
 
-        internal override void DeleteFx(List<string> Layers)
+        internal override void ChangeFx(List<string> Layers)
         {
             DeleteBarCtrlHandHit(GetParameters(), "BreastSize");
             DeleteBarCtrl("BarOff", "BarOpen", "BreastSize");
         }
 
-        internal override void ChangeObj(List<string> delPath)
+        internal override void ChangeObj(params string[] delPath)
         {
-            var Body_b = descriptor.transform.Find("Body_b");
+            var Body_b = avatarRoot.Find("Body_b");
             if (Body_b)
                 if (Body_b.TryGetComponent<SkinnedMeshRenderer>(out var Body_bSMR))
                 {
@@ -36,7 +36,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                     SetWeight(Body_bSMR, "Breast_Big_____胸_大", breastSizeFlg2 ? 50 : 0);
                     SetWeight(Body_bSMR, "Breast_Big_____胸_大", breastSizeFlg3 ? 100 : 0);
                 }
-            var maid = descriptor.transform.Find("Maid");
+            var maid = avatarRoot.Find("Maid");
             if (maid)
                 if (maid.TryGetComponent<SkinnedMeshRenderer>(out var maidSMR))
                 {
@@ -49,7 +49,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                             : 0
                     );
                 }
-            var outer = descriptor.transform.Find("Outer");
+            var outer = avatarRoot.Find("Outer");
             if (outer)
                 if (outer.TryGetComponent<SkinnedMeshRenderer>(out var outerSMR))
                 {
@@ -62,7 +62,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                             : 0
                     );
                 }
-            var jacket = descriptor.transform.Find("jacket");
+            var jacket = avatarRoot.Find("jacket");
             if (jacket)
                 if (jacket.TryGetComponent<SkinnedMeshRenderer>(out var jacketSMR))
                 {

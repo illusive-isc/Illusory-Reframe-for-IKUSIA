@@ -1,16 +1,21 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
-using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
+using Control = VRC.SDK3.Avatars.ScriptableObjects.VRCExpressionsMenu.Control;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 {
     public abstract class BaseAbstract : ScriptableObject
     {
-        protected VRCAvatarDescriptor descriptor;
+        // protected VRCAvatarDescriptor descriptor;
+        protected Transform avatarRoot;
         protected AnimatorController paryi_FX;
+        protected ReframeRuntime reframe;
+
+        protected Object AssetContainer;
 
         internal virtual List<string> GetParameters() => new();
 
@@ -81,19 +86,26 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             }
         }
 
-        protected bool CheckBT(Motion motion, List<string> strings)
+        public static void SetWeight(Transform obj, string weightName, float weight)
         {
-            if (motion is BlendTree blendTree)
+            if (obj)
             {
-                return !strings.Contains(blendTree.blendParameter);
-            }
-            else
-            {
-                return false;
+                if (obj.TryGetComponent<SkinnedMeshRenderer>(out var smr))
+                {
+                    SetWeight(smr, weightName, weight);
+                }
             }
         }
 
-        internal virtual void DeleteFxBT(List<string> Parameters)
+        protected bool CheckBT(Motion motion, List<string> strings)
+        {
+            if (motion is BlendTree blendTree)
+                return !strings.Contains(blendTree.blendParameter);
+            else
+                return true;
+        }
+
+        internal virtual void ChangeFxBT(List<string> Parameters)
         {
             foreach (var layer in paryi_FX.layers.Where(layer => layer.name == "MainCtrlTree"))
             {
@@ -154,28 +166,35 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             return false;
         }
 
-        internal void Initialize(VRCAvatarDescriptor descriptor, AnimatorController paryi_FX)
+        internal void Initialize(
+            Transform avatarRoot,
+            AnimatorController paryi_FX,
+            ReframeRuntime reframe,
+            Object AssetContainer = null
+        )
         {
-            this.descriptor = descriptor;
+            this.avatarRoot = avatarRoot;
             this.paryi_FX = paryi_FX;
+            this.reframe = reframe;
+            this.AssetContainer = AssetContainer;
         }
 
         internal virtual void InitializeFlags(ReframeRuntime reframe) { }
 
-        internal virtual void ChangeObj(List<string> delPath)
+        internal virtual void ChangeObj(params string[] delPath)
         {
             foreach (var path in delPath)
-                DestroyObj(descriptor.transform.Find(path));
+                DestroyObj(avatarRoot.Find(path));
         }
 
-        internal virtual void DeleteFx(List<string> Layers)
+        internal virtual void ChangeFx(List<string> Layers)
         {
             paryi_FX.layers = paryi_FX
                 .layers.Where(layer => !Layers.Contains(layer.name))
                 .ToArray();
         }
 
-        protected virtual void RemoveStatesAndTransitions(
+        public static void RemoveStatesAndTransitions(
             AnimatorStateMachine stateMachine,
             params AnimatorState[] statesToRemove
         )
@@ -198,14 +217,321 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
                 .ToArray();
         }
 
+        public static void RemoveStatesAndTransitions(
+            AnimatorController controller,
+            string layerName,
+            params string[] statesToRemove
+        )
+        {
+            var layer = controller.layers.First(l => l.name == layerName);
+            if (layer != null)
+            {
+                AnimatorState[] state = layer
+                    .stateMachine.states.Select(cs => cs.state)
+                    .Where(s => s != null && statesToRemove.Contains(s.name))
+                    .ToArray();
+                RemoveStatesAndTransitions(layer.stateMachine, state);
+            }
+        }
+
         protected void SetMaxParticle(string path, int max)
         {
-            var particleobj = descriptor.transform.Find(path);
+            var particleobj = avatarRoot.Find(path);
             if (particleobj)
             {
                 var mainModule = particleobj.GetComponent<ParticleSystem>().main;
                 mainModule.maxParticles = max;
             }
+        }
+
+        public static void RemoveState4AnyState(
+            AnimatorController controller,
+            string layerName,
+            params string[] excludeParams
+        )
+        {
+            var layer = controller.layers.First(l => l.name == layerName);
+            if (layer != null)
+            {
+                var anyStateTransitions = layer.stateMachine.anyStateTransitions;
+
+                foreach (var transition in anyStateTransitions)
+                {
+                    transition.conditions = transition
+                        .conditions.Where(c => !excludeParams.Contains(c.parameter))
+                        .ToArray();
+                }
+                layer.stateMachine.anyStateTransitions = anyStateTransitions;
+            }
+        }
+
+        protected void CreateMainCtrlTree(
+            AnimatorController controller,
+            string childBlendTreeName,
+            string ParameterName,
+            ChildMotion[] childMotion
+        )
+        {
+            CreateMainCtrlTree(
+                controller.layers.First(l => l.name == "MainCtrlTree"),
+                childBlendTreeName,
+                ParameterName,
+                childMotion
+            );
+        }
+
+        protected void CreateMainCtrlTree(
+            AnimatorControllerLayer layer,
+            string childBlendTreeName,
+            string ParameterName,
+            ChildMotion[] childMotion
+        )
+        {
+            CreateMainCtrlTree(
+                layer.stateMachine.states.First(l => l.state.name == "MainCtrlTree"),
+                childBlendTreeName,
+                ParameterName,
+                childMotion
+            );
+        }
+
+        private void CreateMainCtrlTree(
+            ChildAnimatorState state,
+            string childBlendTreeName,
+            string ParameterName,
+            ChildMotion[] childMotion
+        )
+        {
+            if (state.state.motion is BlendTree blendTree)
+            {
+                if (blendTree.children.Any(c => c.motion.name == childBlendTreeName))
+                    return;
+                BlendTree newBlendTree = new()
+                {
+                    name = childBlendTreeName,
+                    blendParameter = ParameterName,
+                    blendParameterY = "Blend",
+                    blendType = BlendTreeType.Simple1D,
+                    useAutomaticThresholds = false,
+                    maxThreshold = 1.0f,
+                    minThreshold = 0.0f,
+                };
+                blendTree.AddChild(newBlendTree);
+                var children = blendTree.children;
+
+                for (int i = 0; i < children.Length; i++)
+                {
+                    if (children[i].motion.name == childBlendTreeName)
+                    {
+                        children[i].threshold = 1;
+                    }
+                }
+                blendTree.children = children;
+
+                newBlendTree.children = childMotion;
+
+                if (!paryi_FX.parameters.Any(p => p.name == ParameterName))
+                {
+                    paryi_FX.AddParameter(
+                        new AnimatorControllerParameter()
+                        {
+                            name = ParameterName,
+                            type = AnimatorControllerParameterType.Float,
+                        }
+                    );
+                }
+                AssetDatabase.AddObjectToAsset(
+                    newBlendTree,
+                    AssetContainer ? AssetContainer : paryi_FX
+                );
+                AssetDatabase.SaveAssets();
+            }
+        }
+
+        protected void SetUpMenuToggle(
+            string menuName,
+            string ParameterName,
+            ChildMotion[] childMotion,
+            params string[] menuPath
+        )
+        {
+            var targetMenu = GetMenuByPath(reframe.menu, menuPath);
+
+            AddParameterIfNotExists(reframe.param, menuName);
+
+            targetMenu.Parameters = reframe.param;
+            if (targetMenu.controls.Where(c => c.name != menuName).Any())
+            {
+                targetMenu.controls.Add(
+                    new Control
+                    {
+                        type = Control.ControlType.Toggle,
+                        name = menuName,
+                        parameter = new Control.Parameter() { name = menuName },
+                    }
+                );
+            }
+
+            CreateMainCtrlTree(paryi_FX, menuName, ParameterName, childMotion);
+        }
+
+        protected void SetUpMenuSubMenu(
+            string menuName,
+            string[] subMenuNames,
+            string ParameterName,
+            ChildMotion[] childMotion,
+            params string[] menuPath
+        )
+        {
+            var targetMenu = GetMenuByPath(reframe.menu, menuPath);
+
+            AddParameterIfNotExistsInt(reframe.param, ParameterName);
+
+            targetMenu.Parameters = reframe.param;
+            if (targetMenu.controls.Where(c => c.name != menuName).Any())
+            {
+                var subMenu = new Control { type = Control.ControlType.SubMenu, name = menuName };
+                VRCExpressionsMenu subExpressionsMenu = CreateInstance<VRCExpressionsMenu>();
+                subExpressionsMenu.name = menuName;
+                subExpressionsMenu.Parameters = reframe.param;
+                for (int i = 0; i < subMenuNames.Length; i++)
+                {
+                    var subMenuName = subMenuNames[i];
+                    subExpressionsMenu.controls.Add(
+                        new Control
+                        {
+                            type = Control.ControlType.Toggle,
+
+                            name = subMenuName,
+                            value = i + 1,
+                            parameter = new Control.Parameter() { name = ParameterName },
+                        }
+                    );
+                }
+                AssetDatabase.AddObjectToAsset(
+                    subExpressionsMenu,
+                    AssetContainer ? AssetContainer : paryi_FX
+                );
+                subMenu.subMenu = subExpressionsMenu;
+                targetMenu.controls.Add(subMenu);
+            }
+
+            CreateMainCtrlTree(paryi_FX, menuName, ParameterName, childMotion);
+        }
+
+        private void AddParameterIfNotExists(
+            VRCExpressionParameters expressionParameters,
+            string parameterName
+        )
+        {
+            foreach (var param in expressionParameters.parameters)
+            {
+                if (param.name == parameterName)
+                    return;
+            }
+            var newParameter = new VRCExpressionParameters.Parameter
+            {
+                name = parameterName,
+                valueType = VRCExpressionParameters.ValueType.Bool,
+                defaultValue = 0f,
+                saved = true,
+            };
+
+            var parametersList = expressionParameters.parameters.ToList();
+            parametersList.Add(newParameter);
+            expressionParameters.parameters = parametersList.ToArray();
+        }
+
+        private void AddParameterIfNotExistsInt(
+            VRCExpressionParameters expressionParameters,
+            string parameterName
+        )
+        {
+            // 既存のパラメータをチェック
+            foreach (var param in expressionParameters.parameters)
+            {
+                if (param.name == parameterName)
+                    return;
+            }
+
+            var newParameter = new VRCExpressionParameters.Parameter
+            {
+                name = parameterName,
+                valueType = VRCExpressionParameters.ValueType.Int,
+                defaultValue = 0f,
+                saved = true,
+                networkSynced = false,
+            };
+
+            var parametersList = expressionParameters.parameters.ToList();
+            parametersList.Add(newParameter);
+            expressionParameters.parameters = parametersList.ToArray();
+        }
+
+        private VRCExpressionsMenu GetMenuByPath(
+            VRCExpressionsMenu rootMenu,
+            params string[] menuPath
+        )
+        {
+            if (rootMenu == null || menuPath == null || menuPath.Length == 0)
+                return rootMenu;
+
+            var currentMenu = rootMenu;
+
+            foreach (var pathSegment in menuPath)
+            {
+                VRCExpressionsMenu foundSubMenu = null;
+
+                foreach (var control in currentMenu.controls)
+                {
+                    if (control.name == pathSegment && control.type == Control.ControlType.SubMenu)
+                    {
+                        foundSubMenu = control.subMenu;
+                        break;
+                    }
+                }
+
+                if (foundSubMenu == null)
+                    return null;
+
+                currentMenu = foundSubMenu;
+            }
+
+            return currentMenu;
+        }
+
+        protected ChildMotion[] CreateChildMotions(string motionName, string motionPath)
+        {
+            AnimationClip clip1 = new() { name = $"{motionName}_OFF" };
+            var offCurve = new AnimationCurve();
+            offCurve.AddKey(0f, 0f);
+            clip1.SetCurve(motionPath, typeof(GameObject), "m_IsActive", offCurve);
+
+            AnimationClip clip2 = new() { name = $"{motionName}_ON" };
+            var onCurve = new AnimationCurve();
+            onCurve.AddKey(0f, 1f);
+            clip2.SetCurve(motionPath, typeof(GameObject), "m_IsActive", onCurve);
+
+            AssetDatabase.AddObjectToAsset(clip1, AssetContainer ? AssetContainer : paryi_FX);
+            AssetDatabase.AddObjectToAsset(clip2, AssetContainer ? AssetContainer : paryi_FX);
+            AssetDatabase.SaveAssets();
+
+            var childMotions = new ChildMotion[]
+            {
+                new()
+                {
+                    motion = clip1,
+                    threshold = 0.0f,
+                    timeScale = 1,
+                },
+                new()
+                {
+                    motion = clip2,
+                    threshold = 1.0f,
+                    timeScale = 1,
+                },
+            };
+            return childMotions;
         }
     }
 }

@@ -8,18 +8,29 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 {
     internal class Reframe : Base
     {
-        private static readonly List<string> NotUseParameters = new() { "Mirror Toggle" };
+        private static readonly List<string> NotUseParameters = new()
+        {
+            "butterfly_Gesture_Set",
+            "AvatarScale",
+            "Mirror Toggle",
+            "koukando",
+            "Look_Y",
+            "Look_X",
+            "blink",
+        };
 
         internal override List<string> GetDelPath() =>
             new()
             {
                 "Advanced/Object",
-                "Advanced/cameraLight&eyeLookHide",
+                "Advanced/FaceEffect",
+                "Advanced/Particle/6",
+                "Advanced/Gimmick1/8",
+                "Advanced/Gimmick2/3",
                 "Advanced/Gimmick2/5",
-                "Advanced/Particle/7/1",
-                "Advanced/Particle/7/3",
-                "Advanced/Particle/7/5",
-                "Advanced/Particle/6/Head",
+                "Advanced/Gimmick2/6",
+                "Advanced/Gimmick2/7",
+                "Advanced/cameraLight&eyeLookHide",
             };
 
         private bool TPSFlg;
@@ -31,7 +42,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             ClairvoyanceFlg = ((MizukiReframe)reframe).ClairvoyanceFlg;
         }
 
-        internal override void DeleteFx(List<string> Layers)
+        internal override void ChangeFx(List<string> Layers)
         {
             foreach (var layer in paryi_FX.layers)
             {
@@ -177,7 +188,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                                     {
                                         motion = AssetDatabase.LoadAssetAtPath<Motion>(
                                             AssetDatabase.GUIDToAssetPath(
-                                                AssetDatabase.FindAssets("VRMode0")[0]
+                                                "f9530a93f4a5d4845b11eb2e5cd883f8"
                                             )
                                         ),
                                         threshold = 0.0f,
@@ -187,14 +198,17 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                                     {
                                         motion = AssetDatabase.LoadAssetAtPath<Motion>(
                                             AssetDatabase.GUIDToAssetPath(
-                                                AssetDatabase.FindAssets("VRMode1")[0]
+                                                "0a648115c24411e45a2ff52191e987be"
                                             )
                                         ),
                                         threshold = 1.0f,
                                         timeScale = 1,
                                     },
                                 };
-                                AssetDatabase.AddObjectToAsset(newBlendTree, paryi_FX);
+                                AssetDatabase.AddObjectToAsset(
+                                    newBlendTree,
+                                    AssetContainer ? AssetContainer : paryi_FX
+                                );
                                 AssetDatabase.SaveAssets();
                             }
                         }
@@ -211,7 +225,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             }
         }
 
-        internal override void DeleteFxBT(List<string> Parameters)
+        internal override void ChangeFxBT(List<string> Parameters)
         {
             foreach (var layer in paryi_FX.layers.Where(layer => layer.name == "MainCtrlTree"))
             {

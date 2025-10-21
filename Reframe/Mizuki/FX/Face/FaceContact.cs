@@ -14,7 +14,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             nadeFlg = ((MizukiReframe)reframe).nadeFlg;
         }
 
-        internal override void DeleteFx(List<string> Layers)
+        internal override void ChangeFx(List<string> Layers)
         {
             if (nadeFlg)
                 DeleteMenuButtonCtrl(new() { "NadeNade" });
@@ -22,12 +22,12 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 DeleteMenuButtonCtrl(new() { "Gimmick2_5" });
         }
 
-        internal override void DeleteFxBT(List<string> Parameters)
+        internal override void ChangeFxBT(List<string> Parameters)
         {
             if (nadeFlg)
-                base.DeleteFxBT(new() { "NadeNade" });
+                base.ChangeFxBT(new() { "NadeNade" });
             if (kamitukiFlg)
-                base.DeleteFxBT(new() { "Gimmick2_5" });
+                base.ChangeFxBT(new() { "Gimmick2_5" });
         }
 
         internal override void EditVRCExpressions(VRCExpressionsMenu menu, List<string> menuPath)
@@ -42,13 +42,13 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 RemoveMenuItemRecursivelyInternal(menu, new() { "Gimmick2", "噛みつき禁止" }, 0);
         }
 
-        internal override void ChangeObj(List<string> delPath)
+        internal override void ChangeObj(params string[] delPath)
         {
             if (nadeFlg)
-                descriptor.transform.Find("Advanced/Gimmick2/Face2").gameObject.SetActive(true);
+                avatarRoot.Find("Advanced/Gimmick2/Face2").gameObject.SetActive(true);
 
             if (kamitukiFlg)
-                descriptor.transform.Find("Advanced/Gimmick2/3").gameObject.SetActive(true);
+                avatarRoot.Find("Advanced/Gimmick2/3").gameObject.SetActive(true);
         }
     }
 }

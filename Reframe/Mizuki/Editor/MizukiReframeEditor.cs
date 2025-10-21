@@ -19,8 +19,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             EditorGUILayout.PropertyField(heelFlg1, new GUIContent("ヒールON"));
             EditorGUILayout.PropertyField(heelFlg2, new GUIContent("ハイヒールON"));
 
-            HeelFlg.boolValue = heelFlg1.boolValue || heelFlg2.boolValue;
-
             EditorGUILayout.PropertyField(FreeClothFlg, new GUIContent("フリー衣装削除"));
             EditorGUILayout.PropertyField(FreeObjFlg, new GUIContent("フリーオブジェクト削除"));
 
@@ -232,7 +230,13 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         protected bool ExecuteButton<T>(T target)
             where T : ReframeRuntime
         {
-            if (GUILayout.Button("Execute"))
+            if (
+                GUILayout.Button(
+                    target.executeMode == ReframeRuntime.ExecuteModeOption.NDMF
+                        ? "選択したオブジェクトのみ削除（実行時にアニメーションを削除）"
+                        : "選択しギミックを削除"
+                )
+            )
             {
                 if (isExecuting)
                 {
@@ -245,7 +249,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 {
                     try
                     {
-                        ReframeExe reframe = new();
+                        ReframeExe reframe = CreateInstance<ReframeExe>();
                         reframe.SetTarget(target);
                         reframe.Execute(descriptor);
                     }

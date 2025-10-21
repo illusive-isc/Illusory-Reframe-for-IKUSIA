@@ -23,7 +23,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             OuterFlg2 = ((MizukiReframe)reframe).OuterFlg2;
         }
 
-        internal override void ChangeObj(List<string> delPath)
+        internal override void ChangeObj(params string[] delPath)
         {
             if (OuterFlg2)
                 base.ChangeObj(delPath);

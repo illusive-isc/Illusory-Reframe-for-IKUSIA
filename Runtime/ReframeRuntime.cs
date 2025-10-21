@@ -8,9 +8,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
     [AddComponentMenu("")]
     public abstract class ReframeRuntime : MonoBehaviour, IEditorOnly
     {
-        public AnimatorController paryi_FXDef;
-        public VRCExpressionsMenu menuDef;
-        public VRCExpressionParameters paramDef;
         public AnimatorController paryi_FX;
         public AnimatorController paryi_Loco;
         public AnimatorController paryi_Action;
@@ -20,6 +17,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         public bool IKUSIA_emote = false;
         public bool AAORemoveFlg = false;
         public bool questFlg1 = false;
+        public bool HeelFlg = true;
         public readonly bool ReframeFlg = true;
         public ExecuteModeOption executeMode = ExecuteModeOption.NDMF;
         public TextureResizeOption textureResize = TextureResizeOption.LowerResolution;
@@ -32,7 +30,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 
         public enum ExecuteModeOption
         {
-            notNDMF,
+            nonNDMF,
             NDMF,
         }
     }

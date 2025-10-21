@@ -18,13 +18,13 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 
         protected override string GetParamGuid() => "ca37a7e2249e6404ea1893c197866705";
 
-        protected override void EditAnimatorParams(
-            AnimatorController paryi_Loco,
-            AnimatorController paryi_Gesture,
-            AnimatorController paryi_Action,
-            AnimatorController paryi_FX
-        )
+        protected override void EditAnimatorParams()
         {
+            AnimatorController paryi_Loco = target.paryi_Loco;
+            AnimatorController paryi_Gesture = target.paryi_Gesture;
+            AnimatorController paryi_Action = target.paryi_Action;
+            AnimatorController paryi_FX = target.paryi_FX;
+
             foreach (var p in paryi_Loco.parameters.Where(p => p.name == "leg fixed").ToArray())
             {
                 paryi_Loco.RemoveParameter(p);

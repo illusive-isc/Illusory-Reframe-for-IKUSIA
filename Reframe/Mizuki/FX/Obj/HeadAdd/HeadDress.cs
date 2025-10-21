@@ -17,9 +17,9 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             HeadDressFlg2 = ((MizukiReframe)reframe).HeadDressFlg2;
         }
 
-        internal override void ChangeObj(List<string> delPath)
+        internal override void ChangeObj(params string[] delPath)
         {
-            var maid = descriptor.transform.Find("Maid");
+            var maid = avatarRoot.Find("Maid");
 
             if (maid)
                 if (maid.TryGetComponent<SkinnedMeshRenderer>(out var maidSMR))

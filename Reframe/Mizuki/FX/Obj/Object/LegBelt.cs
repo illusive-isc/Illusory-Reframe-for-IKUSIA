@@ -15,10 +15,10 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             LegBeltFlg2 = ((MizukiReframe)reframe).LegBeltFlg2;
         }
 
-        internal override void ChangeObj(List<string> delPath)
+        internal override void ChangeObj(params string[] delPath)
         {
             if (LegBeltFlg2)
-                DestroyObj(descriptor.transform.Find("leg-garter"));
+                DestroyObj(avatarRoot.Find("leg-garter"));
         }
     }
 }

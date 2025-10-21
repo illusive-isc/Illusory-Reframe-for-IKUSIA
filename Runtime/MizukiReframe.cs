@@ -20,7 +20,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         public bool heelFlg1 = true;
 
         public bool heelFlg2 = false;
-        public bool HeelFlg = false;
 
         [SerializeField]
         private bool FreeClothFlg = false;

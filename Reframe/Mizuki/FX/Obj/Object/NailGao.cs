@@ -16,9 +16,9 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 
         internal override List<string> GetMenuPath() => new() { "Object", "nail gao~" };
 
-        internal override void ChangeObj(List<string> delPath)
+        internal override void ChangeObj(params string[] delPath)
         {
-            var body_b = descriptor.transform.Find("Body_b");
+            var body_b = avatarRoot.Find("Body_b");
 
             if (body_b)
                 if (body_b.TryGetComponent<SkinnedMeshRenderer>(out var body_bSMR))

@@ -37,9 +37,9 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 base.EditVRCExpressions(menu, item);
         }
 
-        internal override void DeleteFx(List<string> Layers)
+        internal override void ChangeFx(List<string> Layers)
         {
-            base.DeleteFx(Layers);
+            base.ChangeFx(Layers);
             DeleteBarCtrlHandHit(GetParameters(), "LightRange", "LightStrength");
             DeleteBarCtrl(
                 "BarOff 0 0 0 0 0 0",

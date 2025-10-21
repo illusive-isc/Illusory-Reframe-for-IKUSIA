@@ -30,10 +30,10 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 "Armature/Hips/Upperleg_L/Lowerleg_L/Foot_L/Leg_frills_Root_L",
             };
 
-        internal override void ChangeObj(List<string> delPath)
+        internal override void ChangeObj(params string[] delPath)
         {
             base.ChangeObj(delPath);
-            var Body_b = descriptor.transform.Find("Body_b");
+            var Body_b = avatarRoot.Find("Body_b");
 
             if (Body_b)
                 if (Body_b.TryGetComponent<SkinnedMeshRenderer>(out var Body_bSMR))
