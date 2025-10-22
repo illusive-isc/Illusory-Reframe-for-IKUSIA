@@ -14,6 +14,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         public AnimatorController paryi_Gesture;
         public VRCExpressionsMenu menu;
         public VRCExpressionParameters param;
+        public bool maxParticleLimitFlg = false;
         public bool IKUSIA_emote = false;
         public bool AAORemoveFlg = false;
         public bool questFlg1 = false;

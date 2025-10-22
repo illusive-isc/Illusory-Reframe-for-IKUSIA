@@ -179,7 +179,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             this.AssetContainer = AssetContainer;
         }
 
-        internal virtual void InitializeFlags(ReframeRuntime reframe) { }
+        internal virtual void InitializePlus(ReframeRuntime reframe) { }
 
         internal virtual void ChangeObj(params string[] delPath)
         {

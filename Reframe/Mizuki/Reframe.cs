@@ -36,7 +36,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         private bool TPSFlg;
         private bool ClairvoyanceFlg;
 
-        internal override void InitializeFlags(ReframeRuntime reframe)
+        internal override void InitializePlus(ReframeRuntime reframe)
         {
             TPSFlg = ((MizukiReframe)reframe).TPSFlg;
             ClairvoyanceFlg = ((MizukiReframe)reframe).ClairvoyanceFlg;

@@ -634,14 +634,14 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             List<string> Layers = instance.GetLayers();
 
             instance.Initialize(descriptor.transform, target.paryi_FX, target, AssetContainer);
-            instance.InitializeFlags(target);
+            instance.InitializePlus(target);
             if (IsEdit())
                 instance.ChangeFx(Layers);
             if (IsEdit())
                 instance.ChangeFxBT(parameters);
             if (IsEdit())
                 instance.EditVRCExpressions(target.menu, menuPath);
-            if (instance.GetType().Name == "Reframe")
+            if (instance.GetType().Name == "Reframe" && target.maxParticleLimitFlg)
                 instance.ParticleOptimize();
             instance.ChangeObj(delPath.ToArray());
             if (

@@ -137,6 +137,8 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         public bool FaceLockFlg;
 
         public bool FaceValFlg;
+        public bool blinkFlg;
+        public bool blinkDelFlg;
 
         public bool kamitukiFlg;
 
@@ -151,73 +153,52 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 
         public bool Breast;
 
-        [SerializeField]
-        private bool backhair;
+        public bool backhair;
 
-        [SerializeField]
-        private bool back_side_root;
+        public bool back_side_root;
 
-        [SerializeField]
-        private bool Head_002;
+        public bool Head_002;
 
-        [SerializeField]
-        private bool Front_hair2_root;
+        public bool Front_hair2_root;
 
-        [SerializeField]
-        private bool side_1_root;
+        public bool side_1_root;
 
-        [SerializeField]
-        private bool hair_2;
+        public bool hair_2;
 
-        [SerializeField]
-        private bool sidehair;
+        public bool sidehair;
 
-        [SerializeField]
-        private bool side_3_root;
+        public bool side_3_root;
 
-        [SerializeField]
-        private bool Side_root;
+        public bool Side_root;
 
-        [SerializeField]
-        private bool tail_044;
+        public bool tail_044;
 
-        [SerializeField]
-        private bool tail_022;
+        public bool tail_022;
 
         [SerializeField]
         private bool tail_024;
 
-        [SerializeField]
-        private bool chest_collider1;
+        public bool chest_collider1;
 
-        [SerializeField]
-        private bool chest_collider2;
+        public bool chest_collider2;
 
-        [SerializeField]
-        private bool upperleg_collider1;
+        public bool upperleg_collider1;
 
-        [SerializeField]
-        private bool upperleg_collider2;
+        public bool upperleg_collider2;
 
-        [SerializeField]
-        private bool upperleg_collider3;
+        public bool upperleg_collider3;
 
-        [SerializeField]
-        private bool upperArm_collider;
+        public bool upperArm_collider;
 
-        [SerializeField]
-        private bool head_collider1;
+        public bool head_collider1;
 
-        [SerializeField]
-        private bool head_collider2;
+        public bool head_collider2;
 
-        [SerializeField]
-        private bool Breast_collider;
+        public bool Breast_collider;
 
-        [SerializeField]
-        private bool plane_collider;
+        public bool plane_collider;
 
-        [SerializeField]
-        private bool plane_tail_collider;
+        public bool plane_tail_collider;
+        public bool particle_headphone = true;
     }
 }

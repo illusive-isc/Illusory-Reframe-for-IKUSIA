@@ -29,7 +29,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         private static readonly List<string> FistR = new() { "Fist R1", "Fist R2", "Fist R3" };
         private static readonly List<string> FistL = new() { "Fist L1", "Fist L2", "Fist L3" };
 
-        internal override void InitializeFlags(ReframeRuntime reframe)
+        internal override void InitializePlus(ReframeRuntime reframe)
         {
             FaceGestureFlg2 = ((MizukiReframe)reframe).FaceGestureFlg2;
             FaceLockFlg = ((MizukiReframe)reframe).FaceLockFlg;

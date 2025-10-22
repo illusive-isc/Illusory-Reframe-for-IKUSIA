@@ -13,7 +13,10 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         {
             serializedObject.Update();
             ExecuteMode();
-
+            EditorGUILayout.PropertyField(
+                maxParticleLimitFlg,
+                new GUIContent("パーティクル上限制限")
+            );
             GUILayout.BeginHorizontal();
             GUILayout.BeginVertical();
             EditorGUILayout.PropertyField(heelFlg1, new GUIContent("ヒールON"));

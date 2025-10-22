@@ -8,7 +8,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune
         public bool kamitukiFlg = false;
         public bool nadeFlg = false;
 
-        internal override void InitializeFlags(ReframeRuntime reframe)
+        internal override void InitializePlus(ReframeRuntime reframe)
         {
             kamitukiFlg = ((RuruneReframe)reframe).kamitukiFlg;
             nadeFlg = ((RuruneReframe)reframe).nadeFlg;

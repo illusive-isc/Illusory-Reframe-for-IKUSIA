@@ -10,7 +10,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 
         bool BeltFlg2;
 
-        internal override void InitializeFlags(ReframeRuntime reframe)
+        internal override void InitializePlus(ReframeRuntime reframe)
         {
             BeltFlg2 = ((MizukiReframe)reframe).BeltFlg2;
         }

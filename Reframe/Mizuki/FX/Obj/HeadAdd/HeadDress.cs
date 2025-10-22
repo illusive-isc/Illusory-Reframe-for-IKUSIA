@@ -12,7 +12,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 
         bool HeadDressFlg2;
 
-        internal override void InitializeFlags(ReframeRuntime reframe)
+        internal override void InitializePlus(ReframeRuntime reframe)
         {
             HeadDressFlg2 = ((MizukiReframe)reframe).HeadDressFlg2;
         }

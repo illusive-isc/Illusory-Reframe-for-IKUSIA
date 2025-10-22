@@ -57,6 +57,8 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune
         SerializedProperty FaceGestureFlg2;
         SerializedProperty FaceLockFlg;
         SerializedProperty FaceValFlg;
+        SerializedProperty blinkFlg;
+        SerializedProperty blinkDelFlg;
         SerializedProperty kamitukiFlg;
         SerializedProperty nadeFlg;
         SerializedProperty FaceContactFlg;

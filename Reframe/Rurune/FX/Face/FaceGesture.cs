@@ -12,28 +12,35 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune
         public bool FaceGestureFlg2 = false;
         public bool FaceLockFlg = false;
         public bool FaceValFlg = false;
+        public bool blinkFlg = false;
+        public bool blinkDelFlg = false;
 
         internal override List<string> GetLayers() =>
-            new() { "Left Right Hand", "Blink_Control", "FaceCtrl", "LipSynk" };
+            new() { "LeftHand", "RightHand", "LipSynk", "Blink_Control" };
 
-        internal static readonly List<string> FaceVariation = new()
+        internal static readonly List<string> FaceVariation = new() { "Face_variation" };
+
+        internal override List<string> GetParameters() => new() { "FaceLock", "Face_variation" };
+
+        private static readonly List<string> Fist = new() { "Fist", "Fist 0" };
+        private static readonly List<string> Gesture = new()
         {
-            "FaceVariation1",
-            "FaceVariation2",
-            "FaceVariation3",
+            "Fist 0",
+            "Open 0",
+            "Point 0",
+            "Peace 0",
+            "RockNRoll 0",
+            "Gun 0",
+            "Thumbs up 0",
         };
 
-        internal override List<string> GetParameters() =>
-            new() { "FaceLock", "FaceVariation1", "FaceVariation2", "FaceVariation3" };
-
-        private static readonly List<string> FistR = new() { "Fist R1", "Fist R2", "Fist R3" };
-        private static readonly List<string> FistL = new() { "Fist L1", "Fist L2", "Fist L3" };
-
-        internal override void InitializeFlags(ReframeRuntime reframe)
+        internal override void InitializePlus(ReframeRuntime reframe)
         {
             FaceGestureFlg2 = ((RuruneReframe)reframe).FaceGestureFlg2;
             FaceLockFlg = ((RuruneReframe)reframe).FaceLockFlg;
             FaceValFlg = ((RuruneReframe)reframe).FaceValFlg;
+            blinkFlg = ((RuruneReframe)reframe).blinkFlg;
+            blinkDelFlg = ((RuruneReframe)reframe).blinkDelFlg;
         }
 
         internal override void ChangeFx(List<string> Layers)
@@ -41,7 +48,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune
             if (!FaceGestureFlg2 && FaceLockFlg)
                 foreach (
                     var layer in paryi_FX.layers.Where(layer =>
-                        layer.name is "Left Right Hand" or "Blink_Control"
+                        layer.name is "LeftHand" or "RightHand" or "Blink_Control"
                     )
                 )
                 {
@@ -61,13 +68,13 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune
                         }
                         layer.stateMachine.states = states;
                     }
-                    if (layer.name is "Left Right Hand")
+                    if (layer.name is "RightHand")
                     {
                         var states = layer.stateMachine.states;
 
                         foreach (var state in states)
                         {
-                            if (FistR.Contains(state.state.name))
+                            if (Fist.Contains(state.state.name))
                             {
                                 var parentBlendTree = state.state.motion as BlendTree;
                                 var newMotion = AssetDatabase.LoadAssetAtPath<Motion>(
@@ -77,12 +84,20 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune
                                 );
                                 state.state.motion = newMotion;
                             }
-                            if (FistL.Contains(state.state.name))
+                        }
+                    }
+                    if (layer.name is "LeftHand")
+                    {
+                        var states = layer.stateMachine.states;
+
+                        foreach (var state in states)
+                        {
+                            if (Fist.Contains(state.state.name))
                             {
                                 var parentBlendTree = state.state.motion as BlendTree;
                                 var newMotion = AssetDatabase.LoadAssetAtPath<Motion>(
                                     AssetDatabase.GUIDToAssetPath(
-                                        "55f0b1192a1fe4646916b6c9274f7f37"
+                                        "df86b31028c0faa419461abeea3fba9f"
                                     )
                                 );
                                 state.state.motion = newMotion;
@@ -96,44 +111,14 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune
             if (!FaceGestureFlg2 && FaceValFlg)
                 foreach (
                     var layer in paryi_FX.layers.Where(layer =>
-                        layer.name is "Left Right Hand" or "Blink_Control" or "FaceCtrl"
+                        layer.name is "LeftHand" or "RightHand" or "Blink_Control"
                     )
                 )
                 {
                     RemoveStatesAndTransitions(
                         layer.stateMachine,
                         layer
-                            .stateMachine.states.Where(state =>
-                                state.state.name
-                                    is "Fist L2"
-                                        or "Open L2"
-                                        or "Point L2"
-                                        or "Peace L2"
-                                        or "RockNRoll L2"
-                                        or "Gun L2"
-                                        or "Thumbs up L2"
-                                        or "Fist R2"
-                                        or "Open R2"
-                                        or "Point R2"
-                                        or "Peace R2"
-                                        or "RockNRoll R2"
-                                        or "Gun R2"
-                                        or "Thumbs up R2"
-                                        or "Fist L3"
-                                        or "Open L3"
-                                        or "Point L3"
-                                        or "Peace L3"
-                                        or "RockNRoll L3"
-                                        or "Gun L3"
-                                        or "Thumbs up L3"
-                                        or "Fist R3"
-                                        or "Open R3"
-                                        or "Point R3"
-                                        or "Peace R3"
-                                        or "RockNRoll R3"
-                                        or "Gun R3"
-                                        or "Thumbs up R3"
-                            )
+                            .stateMachine.states.Where(state => Gesture.Contains(state.state.name))
                             .Select(s => s.state)
                             .ToArray()
                     );
@@ -155,7 +140,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune
                         }
                         layer.stateMachine.states = states;
                     }
-                    if (layer.name is "Left Right Hand")
+                    if (layer.name is "LeftHand" or "RightHand")
                     {
                         var anyStateTransitions = layer.stateMachine.anyStateTransitions;
 
@@ -167,10 +152,42 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune
                         }
                         layer.stateMachine.anyStateTransitions = anyStateTransitions;
                     }
+                }
+            if (!FaceGestureFlg2 && blinkDelFlg)
+                foreach (var layer in paryi_FX.layers.Where(layer => layer.name is "Blink_Control"))
+                {
+                    if (layer.name is "Blink_Control")
+                    {
+                        RemoveStatesAndTransitions(
+                            layer.stateMachine,
+                            layer
+                                .stateMachine.states.Where(state =>
+                                    state.state.name is "blinkctrl" or "blink"
+                                )
+                                .Select(s => s.state)
+                                .ToArray()
+                        );
+                    }
+                }
+            if (!FaceGestureFlg2 && blinkDelFlg)
+                foreach (var layer in paryi_FX.layers.Where(layer => layer.name is "Blink_Control"))
+                {
+                    if (layer.name is "Blink_Control")
+                    {
+                        var states = layer.stateMachine.states;
 
-                    paryi_FX.layers = paryi_FX
-                        .layers.Where(layer => !("FaceCtrl" == layer.name))
-                        .ToArray();
+                        foreach (var state in states)
+                        {
+                            if (state.state.name == "blinkctrl")
+                            {
+                                foreach (var t in state.state.transitions)
+                                    t.conditions = t
+                                        .conditions.Where(c => c.parameter != "Blink off")
+                                        .ToArray();
+                            }
+                        }
+                        layer.stateMachine.states = states;
+                    }
                 }
 
             if (!FaceGestureFlg2)
@@ -183,15 +200,19 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune
 
         internal override void EditVRCExpressions(VRCExpressionsMenu menu, List<string> menuPath)
         {
-            var def = new List<string> { "Gimmick2", "Gesture_change" };
+            var def = new List<string> { "Gimmick", "Face" };
             if (FaceGestureFlg2 || FaceLockFlg)
                 base.EditVRCExpressions(menu, def.Concat(new List<string> { "FaceLock" }).ToList());
             if (FaceGestureFlg2 || FaceValFlg)
-            {
-                base.EditVRCExpressions(menu, def.Concat(new List<string> { "Face1" }).ToList());
-                base.EditVRCExpressions(menu, def.Concat(new List<string> { "Face2" }).ToList());
-                base.EditVRCExpressions(menu, def.Concat(new List<string> { "Face3" }).ToList());
-            }
+                base.EditVRCExpressions(
+                    menu,
+                    def.Concat(new List<string> { "Face_variation" }).ToList()
+                );
+            if (FaceGestureFlg2 || blinkFlg)
+                base.EditVRCExpressions(
+                    menu,
+                    def.Concat(new List<string> { "Blink off" }).ToList()
+                );
         }
     }
 }

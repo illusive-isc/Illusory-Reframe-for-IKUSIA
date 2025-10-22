@@ -13,7 +13,10 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune
         {
             serializedObject.Update();
             ExecuteMode();
-
+            EditorGUILayout.PropertyField(
+                maxParticleLimitFlg,
+                new GUIContent("パーティクル上限制限")
+            );
             GUILayout.BeginHorizontal();
             GUILayout.BeginVertical();
             EditorGUILayout.PropertyField(heelFlg1, new GUIContent("ヒールON"));
@@ -188,6 +191,13 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune
             if (FaceGestureFlg.boolValue != prevFaceGestureFlg)
                 FaceGestureFlg.boolValue = prevFaceGestureFlg;
 
+            EditorGUILayout.PropertyField(
+                blinkFlg,
+                new GUIContent("まばたきをメニューから削除して常にON")
+            );
+            EditorGUILayout.PropertyField(blinkDelFlg, new GUIContent("  └ まばたきを削除"));
+            if (blinkDelFlg.boolValue)
+                blinkFlg.boolValue = true;
             EditorGUILayout.PropertyField(
                 nadeFlg,
                 new GUIContent("なでギミックをメニューから削除して常にON")

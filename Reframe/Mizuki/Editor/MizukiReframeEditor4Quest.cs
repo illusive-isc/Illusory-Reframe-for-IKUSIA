@@ -35,8 +35,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
         SerializedProperty UpperArm_collider1;
         SerializedProperty UpperArm_collider2;
         SerializedProperty Shoulder_collider;
-        SerializedProperty textureResize;
-        SerializedProperty AAORemoveFlg;
         private int pbTCount = 373;
         private int pbCCount = 252;
         private int pbCount = 55;
@@ -47,7 +45,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             {
                 name = "ヒップ",
                 flgName = "Butt",
-                AffectedCount = 4,
+                TransformCount = 4,
                 ColliderCount = 0,
                 PBCount = 2,
             },
@@ -56,7 +54,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 name = "スカート",
                 autodeletePropName = "ClothDelFlg",
                 flgName = "Skirt_Root",
-                AffectedCount = 79,
+                TransformCount = 79,
                 ColliderCount = 132,
                 titlesAndNames = new[] { ("脚コライダー", "Upperleg_collider1", 1f) },
                 PBCount = 3,
@@ -65,7 +63,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             {
                 name = "バスト",
                 flgName = "Breast",
-                AffectedCount = 6,
+                TransformCount = 6,
                 ColliderCount = 12,
                 titlesAndNames = new[]
                 {
@@ -78,7 +76,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             {
                 name = "頬",
                 flgName = "Cheek",
-                AffectedCount = 4,
+                TransformCount = 4,
                 ColliderCount = 0,
                 PBCount = 2,
             },
@@ -87,7 +85,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 name = "あほげ",
                 autodeletePropName = "HairFlg",
                 flgName = "ahoge",
-                AffectedCount = 5,
+                TransformCount = 5,
                 ColliderCount = 0,
                 PBCount = 1,
             },
@@ -96,7 +94,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 name = "後ろ髪",
                 autodeletePropName = "HairFlg",
                 flgName = "Backhair",
-                AffectedCount = 63,
+                TransformCount = 63,
                 ColliderCount = 30,
                 titlesAndNames = new[]
                 {
@@ -110,7 +108,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 name = "前髪",
                 autodeletePropName = "HairFlg",
                 flgName = "Front",
-                AffectedCount = 19,
+                TransformCount = 19,
                 ColliderCount = 0,
                 PBCount = 4,
             },
@@ -119,7 +117,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 name = "前髪サイド",
                 autodeletePropName = "HairFlg",
                 flgName = "Frontside",
-                AffectedCount = 16,
+                TransformCount = 16,
                 ColliderCount = 0,
                 PBCount = 4,
             },
@@ -128,7 +126,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 name = "サイド",
                 autodeletePropName = "HairFlg",
                 flgName = "side",
-                AffectedCount = 92,
+                TransformCount = 92,
                 ColliderCount = 0,
                 PBCount = 12,
             },
@@ -137,7 +135,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 name = "ヘッドバンド",
                 autodeletePropName = "ClothDelFlg",
                 flgName = "headband_Root",
-                AffectedCount = 17,
+                TransformCount = 17,
                 ColliderCount = 0,
                 PBCount = 1,
             },
@@ -145,7 +143,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
             {
                 name = "舌",
                 flgName = "tang",
-                AffectedCount = 3,
+                TransformCount = 3,
                 ColliderCount = 0,
                 PBCount = 1,
             },
@@ -154,7 +152,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 name = "虎耳",
                 autodeletePropName = "EarTailFlg2",
                 flgName = "TigerEar",
-                AffectedCount = 8,
+                TransformCount = 8,
                 ColliderCount = 13,
                 PBCount = 2,
             },
@@ -163,7 +161,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 name = "肩リボン",
                 autodeletePropName = "ClothDelFlg",
                 flgName = "Shoulder_Ribbon",
-                AffectedCount = 24,
+                TransformCount = 24,
                 ColliderCount = 10,
                 titlesAndNames = new[] { ("上腕コライダー", "UpperArm_collider2", 1f) },
                 PBCount = 4,
@@ -173,7 +171,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 name = "萌え袖",
                 autodeletePropName = "OuterFlg2",
                 flgName = "coat_hand",
-                AffectedCount = 10,
+                TransformCount = 10,
                 ColliderCount = 18,
                 PBCount = 2,
             },
@@ -182,7 +180,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 name = "手フリル",
                 autodeletePropName = "ClothDelFlg",
                 flgName = "Hand_frills",
-                AffectedCount = 4,
+                TransformCount = 4,
                 ColliderCount = 18,
                 PBCount = 2,
             },
@@ -191,7 +189,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 name = "尻尾",
                 autodeletePropName = "EarTailFlg2",
                 flgName = "tail",
-                AffectedCount = 14,
+                TransformCount = 14,
                 ColliderCount = 26,
                 titlesAndNames = new[] { ("脚コライダー", "Upperleg_collider2", 1f) },
                 PBCount = 1,
@@ -201,7 +199,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
                 name = "脚フリル",
                 autodeletePropName = "ClothDelFlg",
                 flgName = "Leg_frills",
-                AffectedCount = 5,
+                TransformCount = 5,
                 ColliderCount = 18,
                 PBCount = 1,
             },

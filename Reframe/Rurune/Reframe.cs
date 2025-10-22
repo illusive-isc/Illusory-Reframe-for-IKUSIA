@@ -12,7 +12,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune
         {
             "Mirror Toggle",
             "PlayerCollisionHit",
-            "FaceLock",
         };
 
         internal override List<string> GetDelPath() =>
@@ -30,7 +29,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune
         private bool TPSFlg;
         private bool ClairvoyanceFlg;
 
-        internal override void InitializeFlags(ReframeRuntime reframe)
+        internal override void InitializePlus(ReframeRuntime reframe)
         {
             TPSFlg = ((RuruneReframe)reframe).TPSFlg;
             ClairvoyanceFlg = ((RuruneReframe)reframe).ClairvoyanceFlg;

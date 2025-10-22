@@ -8,7 +8,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune
         bool heelFlg1,
             heelFlg2;
 
-        internal override void InitializeFlags(ReframeRuntime reframe)
+        internal override void InitializePlus(ReframeRuntime reframe)
         {
             heelFlg1 = ((RuruneReframe)reframe).heelFlg1;
             heelFlg2 = ((RuruneReframe)reframe).heelFlg2;

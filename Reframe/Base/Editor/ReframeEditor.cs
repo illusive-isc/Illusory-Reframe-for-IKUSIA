@@ -18,7 +18,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             public string name;
             public string autodeletePropName;
             public string flgName;
-            public int AffectedCount;
+            public int TransformCount;
             public int PBCount;
             public (string title, string flgName, float countWeight)[] titlesAndNames;
             public int Count;
@@ -36,6 +36,9 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
         protected SerializedProperty menuDef;
         protected SerializedProperty paramDef;
         protected SerializedProperty IKUSIA_emote;
+        protected SerializedProperty maxParticleLimitFlg;
+        protected SerializedProperty textureResize;
+        protected SerializedProperty AAORemoveFlg;
         static Dictionary<Type, FieldInfo[]> _propertyFieldCache = new();
 
         protected void AutoInitializeSerializedProperties(ReframeEditor editorInstance)
@@ -103,7 +106,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
                 EditorGUILayout.PropertyField(
                     prop,
                     new GUIContent(
-                        $"{physBoneInfo.name}【PB : {physBoneInfo.PBCount},Transform : {physBoneInfo.AffectedCount}】"
+                        $"{physBoneInfo.name}【PB : {physBoneInfo.PBCount},Transform : {physBoneInfo.TransformCount}】"
                     )
                 );
             }
@@ -182,7 +185,10 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             );
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(paryi_Loco, new GUIContent("paryi_Loco Controller"));
-            EditorGUILayout.PropertyField(paryi_Gesture, new GUIContent("paryi_Gesture Controller"));
+            EditorGUILayout.PropertyField(
+                paryi_Gesture,
+                new GUIContent("paryi_Gesture Controller")
+            );
             EditorGUILayout.PropertyField(paryi_Action, new GUIContent("paryi_Action Controller"));
             EditorGUILayout.PropertyField(paryi_FX, new GUIContent("paryi_FX Controller"));
             EditorGUILayout.PropertyField(menu, new GUIContent("Expressions Menu"));
@@ -284,7 +290,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
                 if (GetSerializedProperty(physBone.flgName).boolValue)
                 {
                     count -= physBone.PBCount;
-                    count1 -= physBone.AffectedCount;
+                    count1 -= physBone.TransformCount;
                 }
                 if (physBone.titlesAndNames != null)
                     foreach (var (title, flgName, countWeight) in physBone.titlesAndNames)

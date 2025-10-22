@@ -10,7 +10,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
 
         bool AccesaryFlg2;
 
-        internal override void InitializeFlags(ReframeRuntime reframe)
+        internal override void InitializePlus(ReframeRuntime reframe)
         {
             AccesaryFlg2 = ((MizukiReframe)reframe).AccesaryFlg2;
         }
