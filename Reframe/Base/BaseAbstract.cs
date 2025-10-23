@@ -533,5 +533,113 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
             };
             return childMotions;
         }
+
+        public static bool CreateDuplicateBSKey(
+            SkinnedMeshRenderer smr,
+            string fromKey,
+            string toKey,
+            out Mesh newMesh,
+            float ratio = 1f,
+            params string[] additionalCheckKeys
+        )
+        {
+            var mesh = smr.sharedMesh;
+            if (mesh == null)
+            {
+                newMesh = null;
+                return false;
+            }
+
+            int targetIndex = -1;
+            for (int i = 0; i < mesh.blendShapeCount; i++)
+            {
+                if (mesh.GetBlendShapeName(i) == fromKey)
+                {
+                    targetIndex = i;
+                    break;
+                }
+            }
+            if (targetIndex == -1)
+            {
+                newMesh = null;
+                return false;
+            }
+
+            int frameCount = mesh.GetBlendShapeFrameCount(targetIndex);
+
+            bool alreadyExists = false;
+            for (int i = 0; i < mesh.blendShapeCount; i++)
+            {
+                if (additionalCheckKeys.Contains(mesh.GetBlendShapeName(i)))
+                {
+                    alreadyExists = true;
+                    break;
+                }
+            }
+            if (alreadyExists)
+            {
+                newMesh = null;
+                return false;
+            }
+
+            newMesh = Instantiate(mesh);
+            var deltaVerts = new Vector3[newMesh.vertexCount];
+            var deltaNormals = new Vector3[newMesh.vertexCount];
+            var deltaTangents = new Vector3[newMesh.vertexCount];
+
+            for (int f = 0; f < frameCount; f++)
+            {
+                newMesh.GetBlendShapeFrameVertices(
+                    targetIndex,
+                    f,
+                    deltaVerts,
+                    deltaNormals,
+                    deltaTangents
+                );
+                for (int v = 0; v < deltaVerts.Length; v++)
+                {
+                    deltaVerts[v] *= ratio;
+                    deltaNormals[v] *= ratio;
+                    deltaTangents[v] = new Vector3(
+                        deltaTangents[v].x * ratio,
+                        deltaTangents[v].y * ratio,
+                        deltaTangents[v].z * ratio
+                    );
+                }
+
+                // 元のフレームウェイトを取得
+                float originalWeight = newMesh.GetBlendShapeFrameWeight(targetIndex, f);
+
+                newMesh.AddBlendShapeFrame(
+                    toKey,
+                    originalWeight,
+                    deltaVerts,
+                    deltaNormals,
+                    deltaTangents
+                );
+            }
+
+            smr.sharedMesh = newMesh;
+            return true;
+        }
+        public Mesh GetOriginalMeshFromPrefab(string part, string prefabGuid)
+        {
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(
+                AssetDatabase.GUIDToAssetPath(prefabGuid)
+            );
+            if (prefab != null)
+            {
+                Transform partTransform = prefab.transform.Find(part);
+                if (partTransform != null)
+                {
+                    SkinnedMeshRenderer smr = partTransform.GetComponent<SkinnedMeshRenderer>();
+                    if (smr != null && smr.sharedMesh != null)
+                    {
+                        return smr.sharedMesh;
+                    }
+                }
+            }
+            return null;
+        }
     }
 }

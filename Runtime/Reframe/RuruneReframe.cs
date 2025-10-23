@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 {
-    [AddComponentMenu("RuruneReframe")]
+    [AddComponentMenu("ILLUSORY OVERRIDE/IllusoryReframe/RuruneReframe")]
     public class RuruneReframe : ReframeRuntime
     {
         public bool Zapu_nFlg;

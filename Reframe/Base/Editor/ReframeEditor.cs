@@ -94,7 +94,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 
             GameObjectUtility.SetParentAndAlign(go, menuCommand.context as GameObject);
             Undo.RegisterCreatedObjectUndo(go, "Create " + go.name);
-            Selection.activeObject = go;
+            EditorGUIUtility.PingObject(go);
         }
 
         protected void PropTransform(PhysBoneInfo physBoneInfo)

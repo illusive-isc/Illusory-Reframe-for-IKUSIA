@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA
 {
-    [AddComponentMenu("MizukiReframe")]
+    [AddComponentMenu("ILLUSORY OVERRIDE/IllusoryReframe/MizukiReframe")]
     public class MizukiReframe : ReframeRuntime
     {
         [SerializeField]
