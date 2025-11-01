@@ -5,8 +5,7 @@ using VRC.SDK3.Avatars.ScriptableObjects;
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 	internal class Hair : Base {
 		internal override List<string> GetParameters() =>
-			new()
-			{
+			new() {
 				"Object1",
 				"Object2",
 				"Object3",

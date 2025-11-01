@@ -6,15 +6,13 @@ using UnityEngine;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 	internal class Reframe : Base {
-		private static readonly List<string> NotUseParameters = new()
-		{
+		private static readonly List<string> NotUseParameters = new() {
 			"Mirror Toggle",
 			"PlayerCollisionHit",
 		};
 
 		internal override List<string> GetDelPath() =>
-			new()
-			{
+			new() {
 				"Advanced/Object",
 				"Advanced/cameraLight&eyeLookHide",
 				"Advanced/Gimmick2/5",
@@ -54,10 +52,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 					var stateObj = s.state;
 					var transitions = stateObj.transitions.ToArray();
 					foreach (var tr in transitions) {
-						if (
-							tr.conditions != null
-							&& tr.conditions.Any(c => NotUseParameters.Contains(c.parameter))
-						) {
+						if (tr.conditions != null && tr.conditions.Any(c => NotUseParameters.Contains(c.parameter))) {
 							transitionsToRemove.Add((stateObj, tr));
 							var dst = tr.destinationState;
 							if (dst != null)
@@ -68,10 +63,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 
 				var anyTransitions = layer.stateMachine.anyStateTransitions.ToArray();
 				foreach (var tr in anyTransitions) {
-					if (
-						tr.conditions != null
-						&& tr.conditions.Any(c => NotUseParameters.Contains(c.parameter))
-					) {
+					if (tr.conditions != null && tr.conditions.Any(c => NotUseParameters.Contains(c.parameter))) {
 						transitionsToRemove.Add((null, tr));
 						var dst = tr.destinationState;
 						if (dst != null)
@@ -99,10 +91,8 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 							foreach (var transition in state.state.transitions) {
 								foreach (var condition in transition.conditions) {
 									if (condition.parameter == "VRMode") {
-										transition.conditions = new AnimatorCondition[]
-										{
-											new()
-											{
+										transition.conditions = new AnimatorCondition[] {
+											new() {
 												mode = AnimatorConditionMode.Greater,
 												parameter = "VRMode",
 												threshold = 0.5f,
@@ -133,25 +123,14 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 							layer,
 							"VRMode",
 							"VRMode",
-							new ChildMotion[]
-							{
-								new()
-								{
-									motion = AssetDatabase.LoadAssetAtPath<Motion>(
-										AssetDatabase.GUIDToAssetPath(
-											"c5c466dc7db945441aee55c5650877a0"
-										)
-									),
+							new ChildMotion[] {
+								new() {
+									motion = AssetDatabase.LoadAssetAtPath<Motion>( AssetDatabase.GUIDToAssetPath( "c5c466dc7db945441aee55c5650877a0" ) ),
 									threshold = 0.0f,
 									timeScale = 1,
 								},
-								new()
-								{
-									motion = AssetDatabase.LoadAssetAtPath<Motion>(
-										AssetDatabase.GUIDToAssetPath(
-											"ebde9bbeee5f36048bb6de04d594ab8d"
-										)
-									),
+								new() {
+									motion = AssetDatabase.LoadAssetAtPath<Motion>( AssetDatabase.GUIDToAssetPath( "ebde9bbeee5f36048bb6de04d594ab8d" ) ),
 									threshold = 1.0f,
 									timeScale = 1,
 								},

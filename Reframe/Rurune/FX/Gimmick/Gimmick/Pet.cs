@@ -5,8 +5,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 		internal override List<string> GetLayers() => new() { "Pet", "Pet_Animation", "Pet_Sleep" };
 
 		internal override List<string> GetParameters() =>
-			new()
-			{
+			new() {
 				"Pet_position.X",
 				"Pet_position.Y",
 				"Pet_position.Z",
@@ -38,8 +37,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 		internal override List<string> GetMenuPath() => new() { "Gimmick", "Pet" };
 
 		internal override List<string> GetDelPath() =>
-			new()
-			{
+			new() {
 				"Advanced/Pet model",
 				"Advanced/Pet_Player_Position",
 				"Advanced/Pet_follow",

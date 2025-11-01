@@ -21,8 +21,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 		internal override List<string> GetParameters() => new() { "FaceLock", "Face_variation" };
 
 		private static readonly List<string> Fist = new() { "Fist", "Fist 0" };
-		private static readonly List<string> Gesture = new()
-		{
+		private static readonly List<string> Gesture = new() {
 			"Fist 0",
 			"Open 0",
 			"Point 0",

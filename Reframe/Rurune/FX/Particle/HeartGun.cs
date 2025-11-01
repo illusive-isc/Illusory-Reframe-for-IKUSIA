@@ -11,8 +11,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 		internal override List<string> GetMenuPath() => new() { "Particle", "HartGun" };
 
 		internal override List<string> GetDelPath() =>
-			new()
-			{
+			new() {
 				"Advanced/HeartGunR",
 				"Advanced/HeartGunL",
 				"Advanced/HeartGunR2",

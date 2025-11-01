@@ -99,8 +99,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Ririka {
 									if (condition.parameter == "VRMode") {
 										transition.conditions = new AnimatorCondition[]
 										{
-											new()
-											{
+											new() {
 												mode = AnimatorConditionMode.Greater,
 												parameter = "VRMode",
 												threshold = 0.5f,
@@ -133,8 +132,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Ririka {
 							"VRMode",
 							new ChildMotion[]
 							{
-								new()
-								{
+								new() {
 									motion = AssetDatabase.LoadAssetAtPath<Motion>(
 										AssetDatabase.GUIDToAssetPath(
 											"c5c466dc7db945441aee55c5650877a0"
@@ -143,8 +141,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Ririka {
 									threshold = 0.0f,
 									timeScale = 1,
 								},
-								new()
-								{
+								new() {
 									motion = AssetDatabase.LoadAssetAtPath<Motion>(
 										AssetDatabase.GUIDToAssetPath(
 											"ebde9bbeee5f36048bb6de04d594ab8d"

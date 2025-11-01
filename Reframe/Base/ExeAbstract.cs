@@ -57,8 +57,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 		protected string pathName = ".controller";
 		protected string pathDir = "";
 
-		public readonly List<string> NotSyncParameters = new()
-		{
+		public readonly List<string> NotSyncParameters = new() {
 			"takasa",
 			"takasa_Toggle",
 			"Action_Mode_Reset",
@@ -91,8 +90,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 		};
 
 		protected static List<string> exsistParams = new() { "TRUE", "paryi_AFK" };
-		protected static readonly List<string> VRCParameters = new()
-		{
+		protected static readonly List<string> VRCParameters = new() {
 			"IsLocal",
 			"PreviewMode",
 			"Viseme",

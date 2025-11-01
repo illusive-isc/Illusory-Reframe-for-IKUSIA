@@ -9,8 +9,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki {
 		internal override List<string> GetDelPath() =>
 			new() { "Advanced/LookOBJHead", "Advanced/CametaLightOBJ_World" };
 
-		internal static readonly List<List<string>> menuPathList = new()
-		{
+		internal static readonly List<List<string>> menuPathList = new() {
 			new() { "Gimmick", "Light_Gun", "Light_camera_on" },
 			new() { "Gimmick", "Light_Gun", "eyeLook" },
 			new() { "Gimmick", "Light_Gun", "cameraLight&eyeLookHide" },

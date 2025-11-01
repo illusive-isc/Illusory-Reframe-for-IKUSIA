@@ -3,8 +3,7 @@ using System.Collections.Generic;
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki {
 	internal class FreeGimmick : Base {
 		internal override List<string> GetParameters() =>
-			new()
-			{
+			new() {
 				"Gimmick2_8_1",
 				"Gimmick2_8_2",
 				"Gimmick2_8_3",

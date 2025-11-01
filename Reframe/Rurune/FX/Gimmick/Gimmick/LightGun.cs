@@ -20,8 +20,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 
 		internal override List<string> GetDelPath() => new() { "Advanced/butterfly" };
 
-		internal static readonly List<List<string>> menuPathList = new()
-		{
+		internal static readonly List<List<string>> menuPathList = new(){
 			new() { "Gimmick", "Light_Gun", "Light_Gun_On" },
 			new() { "Gimmick", "Light_Gun", "Light_Gun_Option" },
 			new() { "Gimmick", "Light_Gun", "Light_color" },

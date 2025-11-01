@@ -14,8 +14,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki {
 		internal override List<string> GetLayers() =>
 			new() { "Left Right Hand", "Blink_Control", "FaceCtrl", "LipSynk" };
 
-		internal static readonly List<string> FaceVariation = new()
-		{
+		internal static readonly List<string> FaceVariation = new() {
 			"FaceVariation1",
 			"FaceVariation2",
 			"FaceVariation3",

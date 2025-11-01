@@ -38,18 +38,15 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 		private int pbCCount = 271;
 		private int pbCount = 20;
 
-		protected static readonly List<PhysBoneInfo> PhysBoneInfoList = new()
-		{
-			new()
-			{
+		protected static readonly List<PhysBoneInfo> PhysBoneInfoList = new() {
+			new() {
 				name = "胸",
 				flgName = "Breast",
 				TransformCount = 6,
 				ColliderCount = 0,
 				PBCount = 2,
 			},
-			new()
-			{
+			new() {
 				name = "尻尾",
 				autodeletePropName = "TailDelFlg",
 				flgName = "tail_044",
@@ -64,8 +61,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 				},
 				PBCount = 1,
 			},
-			new()
-			{
+			new() {
 				name = "尻尾リボン",
 				autodeletePropName = "TailRibbonFlg",
 				flgName = "tail_022",
@@ -73,8 +69,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 				ColliderCount = 0,
 				PBCount = 2,
 			},
-			new()
-			{
+			new() {
 				name = "スカート",
 				autodeletePropName = "HairFlg",
 				flgName = "Skirt_Root",
@@ -83,8 +78,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 				titlesAndNames = new[] { ("脚干渉", "upperleg_collider2", 1f) },
 				PBCount = 2,
 			},
-			new()
-			{
+			new() {
 				name = "前髪",
 				autodeletePropName = "HairFlg",
 				flgName = "Head_002",
@@ -92,8 +86,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 				ColliderCount = 0,
 				PBCount = 1,
 			},
-			new()
-			{
+			new() {
 				name = "前髪小",
 				autodeletePropName = "HairFlg",
 				flgName = "side_1_root",
@@ -101,8 +94,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 				ColliderCount = 0,
 				PBCount = 1,
 			},
-			new()
-			{
+			new() {
 				name = "横髪小",
 				autodeletePropName = "HairFlg",
 				flgName = "sidehair",
@@ -110,8 +102,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 				ColliderCount = 0,
 				PBCount = 2,
 			},
-			new()
-			{
+			new() {
 				name = "ぱっつん前髪",
 				autodeletePropName = "HairFlg",
 				flgName = "Front_hair2_root",
@@ -119,8 +110,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 				ColliderCount = 0,
 				PBCount = 1,
 			},
-			new()
-			{
+			new() {
 				name = "前髪サイド",
 				autodeletePropName = "HairFlg",
 				flgName = "side_3_root",
@@ -128,8 +118,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 				ColliderCount = 0,
 				PBCount = 1,
 			},
-			new()
-			{
+			new() {
 				name = "サイド",
 				autodeletePropName = "HairFlg",
 				flgName = "Side_root",
@@ -138,8 +127,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 				titlesAndNames = new[] { ("胸部干渉", "Breast_collider", 1f) },
 				PBCount = 1,
 			},
-			new()
-			{
+			new() {
 				name = "後ろ髪",
 				autodeletePropName = "HairFlg",
 				flgName = "backhair",
@@ -155,8 +143,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 				},
 				PBCount = 3,
 			},
-			new()
-			{
+			new() {
 				name = "後髪小",
 				autodeletePropName = "HairFlg",
 				flgName = "back_side_root",
@@ -164,8 +151,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 				ColliderCount = 0,
 				PBCount = 1,
 			},
-			new()
-			{
+			new() {
 				name = "hair_2",
 				autodeletePropName = "HairFlg40",
 				flgName = "hair_2",

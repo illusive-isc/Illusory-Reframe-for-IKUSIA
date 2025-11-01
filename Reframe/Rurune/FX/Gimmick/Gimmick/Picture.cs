@@ -9,8 +9,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 		internal override List<string> GetDelPath() =>
 			new() { "Advanced/LookOBJHead", "Advanced/CametaLightOBJ_World" };
 
-		internal static readonly List<List<string>> menuPathList = new()
-		{
+		internal static readonly List<List<string>> menuPathList = new() {
 			new() { "Gimmick", "Picture", "Light_camera_on" },
 			new() { "Gimmick", "Picture", "eye tracking" },
 			new() { "Gimmick", "Picture", "Camera_eye_hide" },

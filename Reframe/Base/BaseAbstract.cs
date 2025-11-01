@@ -361,14 +361,12 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 
 			var childMotions = new ChildMotion[]
 			{
-				new()
-				{
+				new() {
 					motion = clip1,
 					threshold = 0.0f,
 					timeScale = 1,
 				},
-				new()
-				{
+				new() {
 					motion = clip2,
 					threshold = 1.0f,
 					timeScale = 1,
