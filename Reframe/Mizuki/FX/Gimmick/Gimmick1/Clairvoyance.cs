@@ -1,13 +1,11 @@
 using System.Collections.Generic;
 
-namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki
-{
-    internal class Clairvoyance : Base
-    {
-        internal override List<string> GetParameters() => new() { "clairvoyance" };
+namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki {
+	internal class Clairvoyance : Base {
+		internal override List<string> GetParameters() => new() { "clairvoyance" };
 
-        internal override List<string> GetMenuPath() => new() { "Gimmick", "Clairvoyance" };
+		internal override List<string> GetMenuPath() => new() { "Gimmick", "Clairvoyance" };
 
-        internal override List<string> GetDelPath() => new() { "Advanced/clairvoyance" };
-    }
+		internal override List<string> GetDelPath() => new() { "Advanced/clairvoyance" };
+	}
 }

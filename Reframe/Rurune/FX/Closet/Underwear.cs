@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 
-namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune
-{
-    internal class Underwear : Base
-    {
-        internal override List<string> GetDelPath() => new() { "underwear" };
-    }
+namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
+	internal class Underwear : Base {
+		internal override List<string> GetDelPath() => new() { "underwear" };
+	}
 }
