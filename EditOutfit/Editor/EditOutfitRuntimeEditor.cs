@@ -41,11 +41,27 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 					if (GUILayout.Button("Prefabのスケール調整を適用"))
 						switch (actualType.Name) {
 							case nameof(RuruneReframe):
-								SetUpScale(convertTargetPrefab.transform, 0.95f, 1.01f);
+								SetUpScale(convertTargetPrefab.transform,
+								 	new string[] { "Armature", "Hips", "Spine", "Chest", "Neck" },
+									0.95f, 1.01f);
+								RenameObj(convertTargetPrefab.transform,
+									"Armature/Hips/Spine/Chest/Shoulder_L/Upperarm_L/Lowerarm_L/LowerArm_twist_L", "Z_LowerArm_twist_L",
+									"Armature/Hips/Spine/Chest/Shoulder_R/Upperarm_R/Lowerarm_R/LowerArm_twist_R", "Z_LowerArm_twist_R",
+									"Armature/Hips/Upperleg_L/knees_L", "Z_knees_L",
+									"Armature/Hips/Upperleg_R/knees_R", "Z_knees_R"
+								);
 								break;
 
 							case nameof(MizukiReframe):
-								SetUpScale(convertTargetPrefab.transform, 1.05f, 0.98f);
+								SetUpScale(convertTargetPrefab.transform,
+									new string[] { "Armature", "Hips", "Spine", "Chest", "Neck" },
+									1.05f, 0.98f);
+								RenameObj(convertTargetPrefab.transform,
+									"Armature/Hips/Spine/Chest/Shoulder_L/Upperarm_L/Lowerarm_L/Z_LowerArm_twist_L", "LowerArm_twist_L",
+									"Armature/Hips/Spine/Chest/Shoulder_R/Upperarm_R/Lowerarm_R/Z_LowerArm_twist_R", "LowerArm_twist_R",
+									"Armature/Hips/Upperleg_L/Z_knees_L", "knees_L",
+									"Armature/Hips/Upperleg_R/Z_knees_R", "knees_R"
+								);
 								break;
 
 							default:
@@ -54,15 +70,32 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 			}
 		}
 
-		private static void SetUpScale(Transform targetTransform, float scale1, float scale2) {
+
+
+		private static void RenameObj(Transform targetTransform, params string[] names) {
+			var oldNamesPath = names.Where((name, index) => index % 2 == 0).ToArray();
+			foreach (var oldNamePath in oldNamesPath) {
+
+				var namePath = oldNamePath.Split("/");
+				Transform currentTransform = targetTransform;
+				var flg = true;
+				foreach (var name in namePath)
+					if (!GetArmatureTransformByName(currentTransform, name, out currentTransform))
+						flg = false;
+				if (flg)
+					currentTransform.name = names.Where((name, index) => index % 2 == 1).ToArray()[oldNamesPath.ToList().IndexOf(oldNamePath)];
+			}
+
+		}
+		private static void SetUpScale(Transform targetTransform, string[] path, float scale1, float scale2) {
 			targetTransform.localScale = Vector3.one * scale1;
-			//子のトランスフォームの中から小文字大文字ごちゃまぜの許容でArmatureの名前の奴を探したい
-			if (GetArmatureTransformByName(targetTransform, "Armature", out Transform armatureTransform))
-				if (GetArmatureTransformByName(armatureTransform, "Hips", out Transform hipsTransform))
-					if (GetArmatureTransformByName(hipsTransform, "Spine", out Transform spineTransform))
-						if (GetArmatureTransformByName(spineTransform, "Chest", out Transform chestTransform))
-							if (GetArmatureTransformByName(chestTransform, "Neck", out Transform neckTransform))
-								neckTransform.localScale = Vector3.one * scale2;
+			Transform currentTransform = targetTransform;
+			var flg = true;
+			foreach (var name in path)
+				if (!GetArmatureTransformByName(currentTransform, name, out currentTransform))
+					flg = false;
+			if (flg)
+				currentTransform.localScale = Vector3.one * scale2;
 		}
 
 		private static bool GetArmatureTransformByName(
@@ -85,10 +118,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 			) {
 				var mesh = targetScript.convertTargetSMR.sharedMesh;
 
-				EditorGUILayout.LabelField(
-					$"複製したいBlendShapeを選択してください。",
-					EditorStyles.boldLabel
-				);
+				EditorGUILayout.LabelField($"複製したいBlendShapeを選択してください。", EditorStyles.boldLabel);
 
 				if (mesh.blendShapeCount > 0) {
 					// スクロール可能なエリアを作成
@@ -103,30 +133,16 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 					for (int i = 0; i < mesh.blendShapeCount; i++) {
 						string key = $"EditOutfit_BlendShape_{mesh.name}_{i}";
 
-						EditorGUILayout.BeginHorizontal(
-							GUILayout.Height(EditorGUIUtility.singleLineHeight)
-						);
+						EditorGUILayout.BeginHorizontal(GUILayout.Height(EditorGUIUtility.singleLineHeight));
 
 						bool isSelected = EditorPrefs.GetBool(key, false);
-						bool newSelected = GUILayout.Toggle(
-							isSelected,
-							"",
-							"Radio",
-							GUILayout.Width(20)
-						);
-						if (newSelected != isSelected && newSelected) {
-							// 他のすべてのラジオボタンを解除
+						bool newSelected = GUILayout.Toggle(isSelected, "", "Radio", GUILayout.Width(20));
+						if (newSelected != isSelected && newSelected)
 							for (int j = 0; j < mesh.blendShapeCount; j++)
-								EditorPrefs.SetBool(
-									$"EditOutfit_BlendShape_{mesh.name}_{j}",
-									j == i
-								);
-						}
+								EditorPrefs.SetBool($"EditOutfit_BlendShape_{mesh.name}_{j}", j == i);
 
 						EditorGUILayout.LabelField($"{i}: {mesh.GetBlendShapeName(i)}");
-
 						EditorGUILayout.EndHorizontal();
-
 						GUILayout.Space(2);
 					}
 
@@ -137,11 +153,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 					// 選択されたBlendShapeがある場合のみ適用ボタンを表示
 					string selectedBlendShapeName = GetSelectedBlendShapeName(mesh);
 					if (!string.IsNullOrEmpty(selectedBlendShapeName)) {
-						if (
-							GUILayout.Button(
-								$"シェイプキーを複製して登録: {selectedBlendShapeName}"
-							)
-						) {
+						if (GUILayout.Button($"シェイプキーを複製して登録: {selectedBlendShapeName}")) {
 							// 保存先のパスをダイアログで選択
 							string defaultFileName = $"{mesh.name}_modified.asset";
 							string savePath = EditorUtility.SaveFilePanel(
@@ -152,9 +164,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 							);
 
 							if (!string.IsNullOrEmpty(savePath)) {
-								// プロジェクトの相対パスに変換
-								string relativePath =
-									"Assets" + savePath[Application.dataPath.Length..];
+								string relativePath = "Assets" + savePath[Application.dataPath.Length..];
 
 								bool result = BaseAbstract.CreateDuplicateBSKey(
 									targetScript.convertTargetSMR,
@@ -185,16 +195,10 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 							}
 						}
 					} else {
-						EditorGUILayout.HelpBox(
-							"BlendShapeを選択してください。",
-							MessageType.Warning
-						);
+						EditorGUILayout.HelpBox("BlendShapeを選択してください。", MessageType.Warning);
 					}
 				} else
-					EditorGUILayout.HelpBox(
-						"このメッシュにはBlendShapeがありません。",
-						MessageType.Info
-					);
+					EditorGUILayout.HelpBox("このメッシュにはBlendShapeがありません。", MessageType.Info);
 			}
 		}
 

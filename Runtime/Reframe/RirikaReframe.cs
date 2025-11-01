@@ -9,11 +9,9 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 
 		public bool colorFlg2 = false;
 
-		[SerializeField]
-		private bool heelFlg1 = false;
+		public bool heelFlg1 = false;
 
-		[SerializeField]
-		private bool heelFlg2 = false;
+		public bool heelFlg2 = false;
 
 		public bool ClothFlg = false;
 
@@ -116,7 +114,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 		private bool WhiteBreathFlg = false;
 
 		[SerializeField]
-		private bool eightBitFlg = false;
+		private bool EightBitFlg = false;
 
 		[SerializeField]
 		private bool PenCtrlFlg = false;

@@ -46,7 +46,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Ririka {
 		SerializedProperty BreastSizeFlg2;
 		SerializedProperty backlightFlg;
 		SerializedProperty WhiteBreathFlg;
-		SerializedProperty eightBitFlg;
+		SerializedProperty EightBitFlg;
 		SerializedProperty PenCtrlFlg;
 		SerializedProperty HeartGunFlg;
 

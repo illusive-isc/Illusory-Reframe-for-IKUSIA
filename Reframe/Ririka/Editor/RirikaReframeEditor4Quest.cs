@@ -197,7 +197,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Ririka {
 					ColliderFlg.boolValue = true;
 					backlightFlg.boolValue = true;
 					WhiteBreathFlg.boolValue = true;
-					eightBitFlg.boolValue = true;
+					EightBitFlg.boolValue = true;
 					PenCtrlFlg.boolValue = true;
 					HeartGunFlg.boolValue = true;
 					candyFlg.boolValue = true;

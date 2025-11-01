@@ -222,13 +222,8 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 							count2 -= (int)(physBone.ColliderCount * countWeight);
 			}
 			EditorGUILayout.HelpBox("PB数 :" + count + "/8 (8以下に調整してください)", count > 8 ? MessageType.Error : MessageType.Info);
-			EditorGUILayout.HelpBox(
-				"影響transform数 :" + count1 + "/64 (64以下に調整してください)",
-				count1 > 64 ? MessageType.Error : MessageType.Info
-			);
-			EditorGUILayout.HelpBox(
-				"コライダー干渉数 :" + count2 + "/64 (64以下に調整してください)",
-				count2 > 64 ? MessageType.Error : MessageType.Info
+			EditorGUILayout.HelpBox("影響transform数 :" + count1 + "/64 (64以下に調整してください)", count1 > 64 ? MessageType.Error : MessageType.Info);
+			EditorGUILayout.HelpBox("コライダー干渉数 :" + count2 + "/64 (64以下に調整してください)", count2 > 64 ? MessageType.Error : MessageType.Info
 			);
 		}
 	}

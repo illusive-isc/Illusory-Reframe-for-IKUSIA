@@ -201,7 +201,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Ririka {
 			EditorGUILayout.PropertyField(backlightFlg, new GUIContent("backlight削除"));
 
 			EditorGUILayout.PropertyField(WhiteBreathFlg, new GUIContent("ホワイトブレス削除"));
-			EditorGUILayout.PropertyField(eightBitFlg, new GUIContent("8bit削除"));
+			EditorGUILayout.PropertyField(EightBitFlg, new GUIContent("8bit削除"));
 			EditorGUILayout.PropertyField(PenCtrlFlg, new GUIContent("ペン操作削除"));
 			EditorGUILayout.PropertyField(HeartGunFlg, new GUIContent("ハートガン削除"));
 			// EditorGUILayout.PropertyField(

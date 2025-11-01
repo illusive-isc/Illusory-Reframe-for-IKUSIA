@@ -428,7 +428,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 					deltaTangents[v] = new Vector3(deltaTangents[v].x * ratio, deltaTangents[v].y * ratio, deltaTangents[v].z * ratio);
 				}
 
-				// 元のフレームウェイトを取得
 				float originalWeight = newMesh.GetBlendShapeFrameWeight(targetIndex, f);
 
 				newMesh.AddBlendShapeFrame(toKey, originalWeight, deltaVerts, deltaNormals, deltaTangents);

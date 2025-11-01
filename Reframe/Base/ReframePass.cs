@@ -46,8 +46,8 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 				exeType = typeof(Rurune.ReframeExe);
 			// if (reframename.Contains("Mao"))
 			//     exeType = typeof(Mao.ReframeExe);
-			// if (reframename.Contains("Ririka"))
-			//     exeType = typeof(Ririka.ReframeExe);
+			if (reframename.Contains("Ririka"))
+				exeType = typeof(Ririka.ReframeExe);
 
 			if (exeType == null)
 				return null;
