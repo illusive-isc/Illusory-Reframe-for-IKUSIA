@@ -1,140 +1,142 @@
 using System.Collections.Generic;
-using VRC.Dynamics;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
+using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
+using UnityEditor.Animations;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Ririka {
 	internal class Hair : Base {
-		internal override List<string> GetParameters() =>
-			new() {
-				"Object1",
-				"Object2",
-				"Object3",
-				"Object5",
-				"Object6",
-				"Object7",
-				"Hair_Ground",
-				"Object4",
-				"Particle4",
-			};
+		bool AccessoryFlg1;
+		bool HairFlg1;
+		bool HairFlg2;
+		bool HairFlg3;
+		bool HairFlg4;
+		bool HairFlg5;
+		bool HairFlg6;
+		bool HairFlg7;
+		bool HairFlg8;
+		bool HairFlg;
+		bool colorFlg0;
+		internal override List<string> GetParameters() => new()
+		{
+			"Object1",
+			"Object8",
+			"Object3",
+			"Object2",
+			"Object4",
+			"Object5",
+			"Object7",
+		};
+		internal override List<string> GetLayers() => new() { "hair ctrl" };
 
-		internal override void EditVRCExpressions(VRCExpressionsMenu menu, List<string> menuPath) {
-			base.EditVRCExpressions(menu, new() { "closet", "head etc" });
-			base.EditVRCExpressions(menu, new() { "Particle", "headphone" });
+		internal override List<string> GetMenuPath() => new() { "closet", "Hair" };
+
+		internal override void InitializePlus(ReframeRuntime reframe) {
+			AccessoryFlg1 = (reframe as RirikaReframe).AccessoryFlg1;
+			HairFlg1 = (reframe as RirikaReframe).HairFlg1;
+			HairFlg2 = (reframe as RirikaReframe).HairFlg2;
+			HairFlg3 = (reframe as RirikaReframe).HairFlg3;
+			HairFlg4 = (reframe as RirikaReframe).HairFlg4;
+			HairFlg5 = (reframe as RirikaReframe).HairFlg5;
+			HairFlg6 = (reframe as RirikaReframe).HairFlg6;
+			HairFlg7 = (reframe as RirikaReframe).HairFlg7;
+			HairFlg8 = (reframe as RirikaReframe).HairFlg8;
+			HairFlg = (reframe as RirikaReframe).HairDelFlg;
+			colorFlg0 = (reframe as RirikaReframe).colorFlg0;
+		}
+
+
+		internal override void ChangeFxBT(List<string> Parameters) {
+			foreach (var layer in paryi_FX.layers.Where(layer => layer.name == "MainCtrlTree")) {
+				foreach (var state in layer.stateMachine.states) {
+					if (state.state.motion is BlendTree blendTree) {
+						blendTree.children = blendTree
+							.children.Where(c => c.motion.name != "Object")
+							.ToArray();
+					}
+				}
+			}
 		}
 
 		internal override void ChangeObj(params string[] delPath) {
-			RirikaReframe reframe = (RirikaReframe)this.reframe;
-			// var hair = avatarRoot.Find("hair");
-			// SetWeight(hair, "Front_c", reframe.HairFlg10 ? 100 : 0);
-			// SetWeight(hair, "pattun_short", reframe.HairFlg11 ? 100 : 0);
-			// SetWeight(hair, "front_side_L", reframe.HairFlg20 ? 0 : 100);
-			// SetWeight(hair, "back_ribbon", reframe.HairFlg22 ? 100 : 0);
-			// SetWeight(hair, "Side_c", reframe.HairFlg12 ? 0 : 100);
-			// SetWeight(hair, "Side_off", reframe.HairFlg30 ? 0 : 100);
-
-			// SetWeight(hair, "headphone_c", reframe.HairFlg50 ? 0 : 100);
-
-			// SetHairPB(reframe, avatarRoot.Find("Armature/Hips/Spine/Chest/Neck/Head/Hair_root"));
-
-			// if (reframe.HairFlg40)
-			// 	base.ChangeObj("hair_2");
-			// if (reframe.HairFlg60) {
-			// 	base.ChangeObj(
-			// 		"hair",
-			// 		"Armature/plane_collider",
-			// 		"Advanced/Hair_Ground",
-			// 		"Advanced/Hair_Contact"
-			// 	);
-			// 	base.ChangeObj(
-			// 		"Armature/Hips/Spine/Chest/Neck/Head/Hair_root/back_hair_root",
-			// 		"Armature/Hips/Spine/Chest/Neck/Head/Hair_root/back_side_root",
-			// 		"Armature/Hips/Spine/Chest/Neck/Head/Hair_root/Front_hair1_root",
-			// 		"Armature/Hips/Spine/Chest/Neck/Head/Hair_root/Front_hair2_root",
-			// 		"Armature/Hips/Spine/Chest/Neck/Head/Hair_root/side_1_root",
-			// 		"Armature/Hips/Spine/Chest/Neck/Head/Hair_root/side_3_root",
-			// 		"Armature/Hips/Spine/Chest/Neck/Head/Hair_root/Side_root"
-			// 	);
-			// 	if (reframe.HairFlg40)
-			// 		base.ChangeObj("Armature/Hips/Spine/Chest/Neck/Head/Hair_root/side_2_root");
-			// 	foreach (
-			// 		var physBoneCollider in avatarRoot
-			// 			.Find("Armature")
-			// 			.GetComponentsInChildren<VRCPhysBoneColliderBase>()
-			// 	) {
-			// 		if (
-			// 			!(
-			// 				physBoneCollider.gameObject.name
-			// 					is "plane_tail_collider"
-			// 						or "Breast_L"
-			// 						or "Breast_R"
-			// 				|| !reframe.TailDelFlg
-			// 					&& physBoneCollider.gameObject.name
-			// 						is "head_collider"
-			// 							or "chest_collider"
-			// 							or "upperleg_L_collider"
-			// 							or "upperleg_R_collider"
-			// 			)
-			// 		)
-			// 			DestroyImmediate(physBoneCollider.gameObject);
-			// 		else if (physBoneCollider.gameObject.name is "Breast_L" or "Breast_R")
-			// 			DestroyImmediate(physBoneCollider);
-			// 	}
-			// }
-
-			// if (reframe.HairFlg50)
-			// 	base.ChangeObj("Armature/Hips/Spine/Chest/Neck/Head/Ririka_headphone");
-			// else
-			// 	avatarRoot
-			// 		.Find("Armature/Hips/Spine/Chest/Neck/Head/Ririka_headphone")
-			// 		.gameObject.SetActive(true);
-
-			// if (reframe.HairFlg51)
-			// 	base.ChangeObj(
-			// 		"Armature/Hips/Spine/Chest/Neck/Head/headphone_particle",
-			// 		"Advanced/Particle/4"
-			// 	);
-			// else
-			// 	avatarRoot.Find("Advanced/Particle/4").gameObject.SetActive(true);
-		}
-
-		private static void SetHairPB(RirikaReframe reframe, UnityEngine.Transform hairRoot) {
-			if (hairRoot) {
-				// if (
-				// 	hairRoot.Find("Front_hair1_root/Head.002")
-				// 	&& hairRoot
-				// 		.Find("Front_hair1_root/Head.002")
-				// 		.TryGetComponent<VRCPhysBoneBase>(out var Front_hair1_root)
-				// ) {
-				// 	Front_hair1_root.enabled = !reframe.HairFlg10;
-				// }
-
-				// if (
-				// 	hairRoot.Find("Front_hair2_root")
-				// 	&& hairRoot
-				// 		.Find("Front_hair2_root")
-				// 		.TryGetComponent<VRCPhysBoneBase>(out var Front_hair2_root)
-				// ) {
-				// 	Front_hair2_root.enabled = reframe.HairFlg10;
-				// }
-
-				// if (
-				// 	hairRoot.Find("side_1_root")
-				// 	&& hairRoot
-				// 		.Find("side_1_root")
-				// 		.TryGetComponent<VRCPhysBoneBase>(out var side_1_root)
-				// ) {
-				// 	side_1_root.enabled = reframe.HairFlg12;
-				// }
-
-				// if (
-				// 	hairRoot.Find("Side_root")
-				// 	&& hairRoot
-				// 		.Find("Side_root")
-				// 		.TryGetComponent<VRCPhysBoneBase>(out var Side_root)
-				// ) {
-				// 	Side_root.enabled = reframe.HairFlg30;
-				// }
+			if (avatarRoot.Find("hair_main") is Transform hair_main) {
+				SetWeight(hair_main, "front_short", HairFlg1 ? 100 : 0);
+				SetWeight(hair_main, "side_off", HairFlg2 ? 0 : 100);
+				SetWeight(hair_main, "twintail_on", HairFlg7 ? 100 : 0);
 			}
+			if (avatarRoot.Find("hair_bob") is Transform hair_bob) {
+				hair_bob.gameObject.SetActive(HairFlg5);
+				SetWeight(hair_bob, "bob_twin_off", HairFlg3 ? 0 : 100);
+				SetWeight(hair_bob, "bob_back_short", HairFlg6 ? 100 : 0);
+			}
+			if (avatarRoot.Find("hair_back_long") is Transform hair_back_long) {
+				hair_back_long.gameObject.SetActive(HairFlg4);
+				SetWeight(hair_back_long, "back_long_twin_off", HairFlg3 ? 0 : 100);
+			}
+			if (avatarRoot.Find("cloth_Accessories") is Transform cloth_Accessories) {
+				if (AccessoryFlg1) {
+					cloth_Accessories
+						.gameObject.GetComponent<SkinnedMeshRenderer>()
+						.SetBlendShapeWeight(3, HairFlg2 ? 0 : 100);
+					cloth_Accessories
+						.gameObject.GetComponent<SkinnedMeshRenderer>()
+						.SetBlendShapeWeight(4, HairFlg2 ? 0 : 100);
+				}
+				cloth_Accessories
+					.gameObject.GetComponent<SkinnedMeshRenderer>()
+					.SetBlendShapeWeight(2, HairFlg7 || HairFlg8 || HairFlg ? 100 : 0);
+			}
+
+			if (!HairFlg && HairFlg8) {
+				var prefab = AssetDatabase.LoadAssetAtPath<Object>(AssetDatabase.GUIDToAssetPath("b0fb802c479d39448bd81534f28ae96c"));
+				bool alreadyExists = false;
+				GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+				foreach (Transform child in avatarRoot)
+					if (child.name == prefab.name) {
+						alreadyExists = true;
+						DestroyImmediate(instance);
+						instance = child.gameObject;
+						break;
+					}
+				if (!alreadyExists) {
+					if (instance != null) {
+						instance.transform.SetParent(avatarRoot, false);
+
+						// Undo.RegisterCreatedObjectUndo(instance, "Instantiate Asset");
+					}
+				}
+				var twin = instance.transform.Find("Backhair_twin.003");
+				if (twin != null) {
+					if (twin.TryGetComponent<SkinnedMeshRenderer>(out var renderer)) {
+						var materials = renderer.sharedMaterials;
+						materials[0] = colorFlg0
+							? AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath("98b8fd92f51ca3643bf67a12ed2c7333"))
+							: AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath("47af70148badc2b4bb17d0632669cd67"));
+						renderer.sharedMaterials = materials;
+					}
+				}
+			}
+			if (!HairFlg)
+				return;
+			base.ChangeObj(
+				"hair_back_long",
+				"hair_bob",
+				"hair_main",
+				"Advanced/Hair rotation");
+			if (AccessoryFlg1)
+				base.ChangeObj("Armature/Hips/Spine/Chest/Neck/Head/Hair_root");
+			else {
+				base.ChangeObj(
+					"Armature/Hips/Spine/Chest/Neck/Head/Hair_root/bob_root",
+					"Armature/Hips/Spine/Chest/Neck/Head/Hair_root/front_root",
+					"Armature/Hips/Spine/Chest/Neck/Head/Hair_root/long_root",
+					"Armature/Hips/Spine/Chest/Neck/Head/Hair_root/twintail_root",
+					"Armature/Hips/Spine/Chest/Neck/Head/Hair_root/side_hair_R/");
+			}
+			if((reframe as RirikaReframe).HairDelFlg)
+				base.ChangeObj("Armature/Hips/Spine/Chest/Neck/Head/Hair_root");
 		}
 	}
 }

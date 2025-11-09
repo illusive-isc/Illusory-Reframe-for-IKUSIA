@@ -13,32 +13,32 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 
 		public bool heelFlg2 = false;
 
+		public bool ClosetFlg = false;
 		public bool ClothFlg = false;
 
-		public bool ClothFlg0 = false;
 
-		public bool ClothFlg1 = false;
+		public bool OuterFlg = false;
 
-		public bool ClothFlg2 = false;
+		public bool BagFlg = false;
 
-		public bool ClothFlg3 = false;
+		public bool SleeveFlg = false;
 
-		public bool ClothFlg4 = false;
+		public bool TailFlg = false;
 
-		public bool ClothFlg5 = false;
+		public bool CoverArmFlg = false;
 
-		public bool ClothFlg6 = false;
+		public bool ClothDelFlg = false;
 
-		public bool ClothFlg7 = false;
+		public bool OverKneeSocksFlg = false;
 
-		public bool ClothFlg8 = false;
+		public bool BootsFlg = false;
 
-		public bool ClothFlg9 = false;
+		public bool BraFlg = false;
 
-		public bool ClothFlg10 = false;
+		public bool AnotherClothFlg = false;
 
 		[SerializeField]
-		private bool AccessoryFlg0 = false;
+		private bool AccessoryFlg = false;
 
 		public bool AccessoryFlg1 = false;
 
@@ -47,9 +47,11 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 		public bool AccessoryFlg3 = false;
 
 		public bool AccessoryFlg4 = false;
+		public bool AccessoryFlg5 = false;
+		public bool AccessoryDelFlg = false;
 
 		[SerializeField]
-		private bool HairFlg0 = false;
+		private bool HairFlg = false;
 
 		public bool HairFlg1 = false;
 
@@ -67,48 +69,45 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 
 		public bool HairFlg8 = false;
 
-		public bool HairFlg = false;
+		public bool HairDelFlg = false;
 
 		[SerializeField]
 		private float petScale = 1.0f;
 
 		[SerializeField]
-		private bool petFlg = false;
+		private bool PetFlg = false;
 
 		public bool TPSFlg = false;
+		public bool IKUSIA_emote2 = false;
 
 		public bool ClairvoyanceFlg = false;
 
-		[SerializeField]
-		private bool phoneFlg = false;
+		public bool PhoneFlg = false;
+		public bool FaceGestureFlg2;
+		public bool blinkDelFlg;
 
-		[SerializeField]
-		private bool phoneFlg1 = false;
 
 		public bool ColliderFlg = false;
 
 		[SerializeField]
-		private bool teppekiFlg = false;
+		private bool TeppekiFlg = false;
 
 		[SerializeField]
-		private bool handHeartFlg = false;
+		private bool HandheartFlg = false;
 
 		[SerializeField]
-		private bool noisepanelFlg = false;
+		private bool NoisepanelFlg = false;
 
 		[SerializeField]
-		private bool neonFlg = false;
+		private bool NeonFlg = false;
 
 		[SerializeField]
-		private bool mesugakiFaceFlg = false;
-
-		[SerializeField]
-		private bool mesugakiFaceFlg1 = false;
+		private bool MesugakiFaceFlg = false;
 
 		[SerializeField]
 		private bool BreastSizeFlg = false;
 
-		public bool BreastSizeFlg2 = false;
+		public bool BreastSizeFlg1 = false;
 
 		[SerializeField]
 		private bool WhiteBreathFlg = false;
@@ -116,12 +115,13 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 		[SerializeField]
 		private bool EightBitFlg = false;
 
-		[SerializeField]
-		private bool PenCtrlFlg = false;
+		public bool PenCtrlFlg = false;
 
 		public bool HeartGunFlg = false;
 
 		public bool FaceGestureFlg = false;
+		[SerializeField]
+		private bool FaceContactFlg;
 
 		public bool FaceLockFlg = false;
 
@@ -134,60 +134,57 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 		public bool nadeFlg = false;
 
 		[SerializeField]
-		private bool candyFlg = false;
+		private bool CandyFlg = false;
+
+		public bool DoughnutFlg = false;
+
+		public bool CanDrinkFlg = false;
 
 		[SerializeField]
-		private bool doughnutFlg = false;
+		private bool GamFlg = false;
 
 		[SerializeField]
-		private bool drinkFlg = false;
+		private bool BacklightFlg;
+        public bool Butt;
+        public bool Breast;
+        public bool acce_wing;
+        public bool earring;
+        public bool Leg_acce;
+        public bool bob;
+        public bool bobtwin;
+        public bool front_root;
+        public bool twintail;
+        public bool stomach;
+        public bool side_root;
+        public bool ribbon;
+        public bool frill;
+        public bool bag;
+        public bool nuigurumi;
+        public bool long_hair;
+        public bool tail;
+        public bool bag_wing;
+        public bool bag_ribbon;
+        public bool Cloth;
 
-		[SerializeField]
-		private bool gamFlg = false;
+        public bool upperArm_collider1;
+        public bool upperArm_collider2;
+        public bool upperArm_collider3;
+        public bool upperArm_collider4;
+        public bool upperArm_collider5;
+        public bool upperArm_collider6;
+        public bool upperArm_collider7;
 
-		[SerializeField]
-		private bool backlightFlg;
+        public bool chest_collider1;
+        public bool chest_collider2;
 
-		public bool Butt;
-		public bool Breast;
-		public bool acce_wing;
-		public bool earring;
-		public bool Leg_acce;
-		public bool bob;
-		public bool bobtwin;
-		public bool front_root;
-		public bool twintail;
-		public bool stomach;
-		public bool side_root;
-		public bool ribbon;
-		public bool frill;
-		public bool bag;
-		public bool nuigurumi;
-		public bool long_hair;
-		public bool tail;
-		public bool bag_wing;
-		public bool bag_ribbon;
-		public bool Cloth;
+        public bool hip_collider1;
+        public bool hip_collider2;
+        public bool hip_collider3;
 
-		public bool upperArm_collider1;
-		public bool upperArm_collider2;
-		public bool upperArm_collider3;
-		public bool upperArm_collider4;
-		public bool upperArm_collider5;
-		public bool upperArm_collider6;
-		public bool upperArm_collider7;
-
-		public bool chest_collider1;
-		public bool chest_collider2;
-
-		public bool hip_collider1;
-		public bool hip_collider2;
-		public bool hip_collider3;
-
-		public bool upperleg_collider1;
-		public bool upperleg_collider2;
-		public bool upperleg_collider3;
-		public bool plane_collider;
+        public bool upperleg_collider1;
+        public bool upperleg_collider2;
+        public bool upperleg_collider3;
+        public bool plane_collider;
 
 		[SerializeField]
 		private bool LightGunFlg;

@@ -20,13 +20,9 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Ririka {
 
 		internal override void EditVRCExpressions(VRCExpressionsMenu menu, List<string> menuPath) {
 			if (nadeFlg)
-				RemoveMenuItemRecursivelyInternal(menu, new() { "Gimmick", "Face", "なでなで" }, 0);
+				base.EditVRCExpressions(menu, new() { "Gimmick", "Face", "なでなで" });
 			if (kamitukiFlg)
-				RemoveMenuItemRecursivelyInternal(
-					menu,
-					new() { "Gimmick", "Face", "噛みつき禁止" },
-					0
-				);
+				base.EditVRCExpressions(menu, new() { "Gimmick", "Face", "噛みつき禁止" });
 		}
 
 		// internal override void ChangeObj(params string[] delPath)

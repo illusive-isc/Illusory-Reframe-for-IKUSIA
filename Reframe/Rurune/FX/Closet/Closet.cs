@@ -16,12 +16,12 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 			SetWeight(
 				avatarRoot.Find("underwear"),
 				"string_off",
-				((RuruneReframe)reframe).ClothFlg4 ? 100 : 0
+				((RuruneReframe)reframe).StringFlg ? 100 : 0
 			);
 			SetWeight(
 				avatarRoot.Find("jacket"),
 				"tail_off",
-				((RuruneReframe)reframe).TailFlg ? 100 : 0
+				((RuruneReframe)reframe).StringFlg ? 100 : 0
 			);
 			SetWeight(
 				avatarRoot.Find("cloth"),

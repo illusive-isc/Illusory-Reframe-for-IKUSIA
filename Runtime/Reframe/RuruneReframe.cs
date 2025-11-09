@@ -25,7 +25,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 
 		public bool AcceFlg;
 
-		public bool ClothFlg4;
+		public bool StringFlg;
 
 		[SerializeField]
 		private bool GloveFlg;

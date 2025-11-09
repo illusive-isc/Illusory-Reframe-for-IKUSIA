@@ -18,6 +18,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 		public bool questFlg1 = false;
 		public bool HeelFlg = true;
 		public readonly bool ReframeFlg = true;
+		public readonly bool ConstraintFlg = true;
 		public ExecuteModeOption executeMode = ExecuteModeOption.NDMF;
 		public TextureResizeOption textureResize = TextureResizeOption.LowerResolution;
 

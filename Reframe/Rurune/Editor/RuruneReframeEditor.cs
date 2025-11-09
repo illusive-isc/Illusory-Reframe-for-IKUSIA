@@ -25,7 +25,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 					JacketFlg.boolValue =
 					ClothFlg.boolValue =
 					AcceFlg.boolValue =
-					ClothFlg4.boolValue =
+					StringFlg.boolValue =
 					GloveFlg.boolValue =
 					SocksFlg.boolValue =
 					BootsFlg.boolValue =
@@ -36,7 +36,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 
 			EditorGUILayout.PropertyField(ClothFlg, new GUIContent("  ├ シャツ＆スカート削除"));
 			EditorGUILayout.PropertyField(AcceFlg, new GUIContent("  ├ アクセサリ削除"));
-			EditorGUILayout.PropertyField(ClothFlg4, new GUIContent("  ├ string削除"));
+			EditorGUILayout.PropertyField(StringFlg, new GUIContent("  ├ string削除"));
 			EditorGUILayout.PropertyField(GloveFlg, new GUIContent("  ├ グローブ削除"));
 			EditorGUILayout.PropertyField(SocksFlg, new GUIContent("  ├ ソックス削除"));
 			EditorGUILayout.PropertyField(BootsFlg, new GUIContent("  ├ 靴削除"));
@@ -45,7 +45,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 				JacketFlg.boolValue = true;
 				ClothFlg.boolValue = true;
 				AcceFlg.boolValue = true;
-				ClothFlg4.boolValue = true;
+				StringFlg.boolValue = true;
 				GloveFlg.boolValue = true;
 				SocksFlg.boolValue = true;
 				BootsFlg.boolValue = true;

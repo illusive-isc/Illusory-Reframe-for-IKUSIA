@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 using VRC.SDK3.Avatars.ScriptableObjects;
+using static jp.illusive_isc.IllusoryReframe.IKUSIA.ReframeRuntime;
 using Control = VRC.SDK3.Avatars.ScriptableObjects.VRCExpressionsMenu.Control;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
@@ -22,6 +23,12 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 		internal virtual List<string> GetDelPath() => new();
 
 		internal virtual List<string> GetLayers() => new();
+		public bool IsEdit() {
+			return AssetContainer != null || reframe.executeMode != ExecuteModeOption.NDMF;
+		}
+		public bool IsNDMFEdit() {
+			return AssetContainer != null && reframe.executeMode == ExecuteModeOption.NDMF;
+		}
 
 		public static void EditorOnly(Transform obj) {
 			if (obj) {
@@ -450,5 +457,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 			}
 			return null;
 		}
+
 	}
 }

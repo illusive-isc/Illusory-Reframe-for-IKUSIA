@@ -32,20 +32,16 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Ririka {
 		};
 
 		internal override void InitializePlus(ReframeRuntime reframe) {
-			// FaceGestureFlg2 = ((RirikaReframe)reframe).FaceGestureFlg2;
+			FaceGestureFlg2 = ((RirikaReframe)reframe).FaceGestureFlg2;
 			FaceLockFlg = ((RirikaReframe)reframe).FaceLockFlg;
 			FaceValFlg = ((RirikaReframe)reframe).FaceValFlg;
 			blinkFlg = ((RirikaReframe)reframe).blinkFlg;
-			// blinkDelFlg = ((RirikaReframe)reframe).blinkDelFlg;
+			blinkDelFlg = ((RirikaReframe)reframe).blinkDelFlg;
 		}
 
 		internal override void ChangeFx(List<string> Layers) {
 			if (!FaceGestureFlg2 && FaceLockFlg)
-				foreach (
-					var layer in paryi_FX.layers.Where(layer =>
-						layer.name is "LeftHand" or "RightHand" or "Blink_Control"
-					)
-				) {
+				foreach (var layer in paryi_FX.layers.Where(layer => layer.name is "LeftHand" or "RightHand" or "Blink_Control")) {
 					if (layer.name is "Blink_Control") {
 						var states = layer.stateMachine.states;
 
@@ -65,11 +61,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Ririka {
 						foreach (var state in states) {
 							if (Fist.Contains(state.state.name)) {
 								var parentBlendTree = state.state.motion as BlendTree;
-								var newMotion = AssetDatabase.LoadAssetAtPath<Motion>(
-									AssetDatabase.GUIDToAssetPath(
-										"df86b31028c0faa419461abeea3fba9f"
-									)
-								);
+								var newMotion = AssetDatabase.LoadAssetAtPath<Motion>(AssetDatabase.GUIDToAssetPath("f51cf46f18de7fd4dabf3a70544a4963"));
 								state.state.motion = newMotion;
 							}
 						}
@@ -80,11 +72,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Ririka {
 						foreach (var state in states) {
 							if (Fist.Contains(state.state.name)) {
 								var parentBlendTree = state.state.motion as BlendTree;
-								var newMotion = AssetDatabase.LoadAssetAtPath<Motion>(
-									AssetDatabase.GUIDToAssetPath(
-										"df86b31028c0faa419461abeea3fba9f"
-									)
-								);
+								var newMotion = AssetDatabase.LoadAssetAtPath<Motion>(AssetDatabase.GUIDToAssetPath("c246cbd1068b6384b8c4b752022f9c2e"));
 								state.state.motion = newMotion;
 							}
 						}
@@ -94,11 +82,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Ririka {
 						t.conditions = t.conditions.Where(c => c.parameter != "FaceLock").ToArray();
 				}
 			if (!FaceGestureFlg2 && FaceValFlg)
-				foreach (
-					var layer in paryi_FX.layers.Where(layer =>
-						layer.name is "LeftHand" or "RightHand" or "Blink_Control"
-					)
-				) {
+				foreach (var layer in paryi_FX.layers.Where(layer => layer.name is "LeftHand" or "RightHand" or "Blink_Control")) {
 					RemoveStatesAndTransitions(
 						layer.stateMachine,
 						layer

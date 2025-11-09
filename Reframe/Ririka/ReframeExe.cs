@@ -16,6 +16,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Ririka {
 
 		protected override string GetParamGuid() => "ab33368960825474eb83487d302f6743";
 
+
 		protected override void EditAnimatorParams() {
 			AnimatorController paryi_Loco = target.paryi_Loco;
 			AnimatorController paryi_Gesture = target.paryi_Gesture;
@@ -110,32 +111,46 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Ririka {
 
 		public override void Execute(VRCAvatarDescriptor descriptor) {
 			var stopwatch = Stopwatch.StartNew();
-			var stepTimes = new Dictionary<string, long> {
-				[stepNames[0]] = InitializeAssets<RirikaReframe>(descriptor, GetPathDirPrefix()),
-				[stepNames[1]] = Edit<RirikaReframe>(
-					descriptor,
-					GetParamConfigs<Base, RirikaReframe>(target as RirikaReframe, GetNameSpace())
-				),
-				[stepNames[2]] = FinalizeAssets(descriptor),
-			};
+			var stepTimes = new Dictionary<string, long> { };
+			if (target.executeMode == ReframeRuntime.ExecuteModeOption.NDMF) {
+				var ririkaReframe = (RirikaReframe)target;
+				stepTimes.Add(stepNames[1], Edit<RirikaReframe>(descriptor, GetParamConfigs<Base, RirikaReframe>(ririkaReframe, GetNameSpace())));
+			} else {
+				stepTimes.Add(stepNames[0], InitializeAssets<RirikaReframe>(descriptor, GetPathDirPrefix()));
+				stepTimes.Add(stepNames[1], Edit<RirikaReframe>(descriptor, GetParamConfigs<Base, RirikaReframe>(target as RirikaReframe, GetNameSpace())));
+				stepTimes.Add(stepNames[2], FinalizeAssets(descriptor));
+			}
 
 			stopwatch.Stop();
-			Debug.Log(
-				$"最適化を実行しました！総処理時間: {stopwatch.ElapsedMilliseconds}ms ({stopwatch.Elapsed.TotalSeconds:F2}秒)"
-			);
+			Debug.Log($"最適化を実行しました！総処理時間: {stopwatch.ElapsedMilliseconds}ms ({stopwatch.Elapsed.TotalSeconds:F2}秒)");
 
-			foreach (var kvp in stepTimes) {
+			foreach (var kvp in stepTimes)
 				Debug.Log($"[Performance] {kvp.Key}: {kvp.Value}ms");
-			}
 		}
 
 		protected override void ExecuteSpecificEdit<T>() {
-			if ((target as T).IKUSIA_emote)
-				foreach (var control in target.menu.controls)
-					if (control.name == "IKUSIA_emote") {
-						target.menu.controls.Remove(control);
-						break;
-					}
+			foreach (var control in target.menu.controls)
+				if (control.name == "IKUSIA_emote")
+					foreach (var subControl in control.subMenu.controls)
+						if ((target as T).IKUSIA_emote && subControl.name is "姿勢変更") {
+							control.subMenu.controls.Remove(subControl);
+							break;
+						}
+			foreach (var control in target.menu.controls)
+				if (control.name == "IKUSIA_emote")
+					foreach (var subControl in control.subMenu.controls)
+						if ((target as T).IKUSIA_emote && subControl.name is "IKUSIA_Loco") {
+							control.subMenu.controls.Remove(subControl);
+							break;
+						}
+			foreach (var control in target.menu.controls)
+				if (control.name == "IKUSIA_emote")
+					foreach (var subControl in control.subMenu.controls)
+						if ((target as RirikaReframe).IKUSIA_emote2 && subControl.name is "Hand Animaton") {
+							control.subMenu.controls.Remove(subControl);
+							break;
+						}
+
 		}
 	}
 }

@@ -14,8 +14,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Ririka {
 				"Advanced/Particle/7",
 				"Advanced/Constraint/Index_R_Constraint",
 				"Advanced/Constraint/Index_L_Constraint",
-				"Advanced/Constraint/Hand_R_Constraint0",
-				"Advanced/Constraint/Hand_L_Constraint0",
 			};
 	}
 }

@@ -111,19 +111,17 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 
 		public override void Execute(VRCAvatarDescriptor descriptor) {
 			var stopwatch = Stopwatch.StartNew();
-			var stepTimes = new Dictionary<string, long> {
-				[stepNames[0]] = InitializeAssets<RuruneReframe>(descriptor, GetPathDirPrefix()),
-				[stepNames[1]] = Edit<RuruneReframe>(
-					descriptor,
-					GetParamConfigs<Base, RuruneReframe>(target as RuruneReframe, GetNameSpace())
-				),
-				[stepNames[2]] = FinalizeAssets(descriptor),
-			};
+			var stepTimes = new Dictionary<string, long> { };
+			if (target.executeMode == ReframeRuntime.ExecuteModeOption.NDMF) {
+				stepTimes.Add(stepNames[1], Edit<RuruneReframe>(descriptor, GetParamConfigs<Base, RuruneReframe>(target as RuruneReframe, GetNameSpace())));
+			} else {
+				stepTimes.Add(stepNames[0], InitializeAssets<RuruneReframe>(descriptor, GetPathDirPrefix()));
+				stepTimes.Add(stepNames[1], Edit<RuruneReframe>(descriptor, GetParamConfigs<Base, RuruneReframe>(target as RuruneReframe, GetNameSpace())));
+				stepTimes.Add(stepNames[2], FinalizeAssets(descriptor));
+			}
 
 			stopwatch.Stop();
-			Debug.Log(
-				$"最適化を実行しました！総処理時間: {stopwatch.ElapsedMilliseconds}ms ({stopwatch.Elapsed.TotalSeconds:F2}秒)"
-			);
+			Debug.Log($"最適化を実行しました！総処理時間: {stopwatch.ElapsedMilliseconds}ms ({stopwatch.Elapsed.TotalSeconds:F2}秒)");
 
 			foreach (var kvp in stepTimes) {
 				Debug.Log($"[Performance] {kvp.Key}: {kvp.Value}ms");

@@ -11,7 +11,7 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Rurune {
 		SerializedProperty JacketFlg;
 		SerializedProperty ClothFlg;
 		SerializedProperty AcceFlg;
-		SerializedProperty ClothFlg4;
+		SerializedProperty StringFlg;
 		SerializedProperty GloveFlg;
 		SerializedProperty SocksFlg;
 		SerializedProperty BootsFlg;

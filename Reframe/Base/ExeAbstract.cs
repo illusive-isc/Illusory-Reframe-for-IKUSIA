@@ -20,6 +20,7 @@ using Anatawa12.AvatarOptimizer;
 
 namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 	public abstract class ExeAbstract : ScriptableObject {
+		public bool ndmfExeFlg = false;
 		protected ReframeRuntime target { get; set; }
 
 		protected Object AssetContainer { get; set; }
@@ -271,38 +272,39 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 					InvokeProcessParamByType(this, config.processType, descriptor);
 
 			if (IsEdit()) {
-				EditAnimatorParams();
+				if (target.executeMode != ExecuteModeOption.nonNDMF) {
+					EditAnimatorParams();
 
-				var paryi_LocoParam = GetUseParams(
-					target.paryi_Loco != null
-						? target.paryi_Loco
-						: descriptor.baseAnimationLayers[0].animatorController as AnimatorController
-				);
-				var paryi_GestureParam = GetUseParams(
-					target.paryi_Gesture != null
-						? target.paryi_Gesture
-						: descriptor.baseAnimationLayers[2].animatorController as AnimatorController
-				);
-				var paryi_ActionParam = GetUseParams(
-					target.paryi_Action != null
-						? target.paryi_Action
-						: descriptor.baseAnimationLayers[3].animatorController as AnimatorController
-				);
-				var paryi_FXParam = EditFXParam(
-					target.paryi_FX != null
-						? target.paryi_FX
-						: descriptor.baseAnimationLayers[4].animatorController as AnimatorController
-				);
+					var paryi_LocoParam = GetUseParams(
+						target.paryi_Loco != null
+							? target.paryi_Loco
+							: descriptor.baseAnimationLayers[0].animatorController as AnimatorController
+					);
+					var paryi_GestureParam = GetUseParams(
+						target.paryi_Gesture != null
+							? target.paryi_Gesture
+							: descriptor.baseAnimationLayers[2].animatorController as AnimatorController
+					);
+					var paryi_ActionParam = GetUseParams(
+						target.paryi_Action != null
+							? target.paryi_Action
+							: descriptor.baseAnimationLayers[3].animatorController as AnimatorController
+					);
+					var paryi_FXParam = EditFXParam(
+						target.paryi_FX != null
+							? target.paryi_FX
+							: descriptor.baseAnimationLayers[4].animatorController as AnimatorController
+					);
 
-				HashSet<string> allParams = new();
-				allParams.UnionWith(paryi_LocoParam);
-				allParams.UnionWith(paryi_GestureParam);
-				allParams.UnionWith(paryi_ActionParam);
-				allParams.UnionWith(paryi_FXParam);
-				target.param.parameters = target
-					.param.parameters.Where(param => allParams.Contains(param.name))
-					.ToArray();
-
+					HashSet<string> allParams = new();
+					allParams.UnionWith(paryi_LocoParam);
+					allParams.UnionWith(paryi_GestureParam);
+					allParams.UnionWith(paryi_ActionParam);
+					allParams.UnionWith(paryi_FXParam);
+					target.param.parameters = target
+						.param.parameters.Where(param => allParams.Contains(param.name))
+						.ToArray();
+				}
 				var advanced = descriptor.transform.Find("Advanced");
 				if (advanced != null) {
 					var childList = new List<Transform>();
@@ -581,13 +583,10 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 			if (instance.GetType().Name == "Reframe" && target.maxParticleLimitFlg)
 				instance.ParticleOptimize();
 			instance.ChangeObj(delPath.ToArray());
-			if (
-				instance.GetType().Namespace == GetNameSpace() + ".Mizuki"
-				&& instance.GetType().Name == "Reframe"
-			) {
+			if (instance.GetType().Namespace == GetNameSpace() + ".Mizuki" && instance.GetType().Name == "Reframe")
 				if (IsEdit())
 					(instance as Base)?.DeleteMenuButtonCtrl(parameters);
-			}
+
 		}
 
 		protected ParamProcessConfig[] GetParamConfigs<Exe, Reframe>(
@@ -708,10 +707,8 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA {
 					&& m.GetGenericArguments().Length == 2
 				);
 
-			if (mi == null) {
-				Debug.LogError("ProcessParam<Exe, Reframe> メソッドが見つかりません");
+			if (mi == null)
 				return;
-			}
 
 			try {
 				var reframeType = typeof(ReframeRuntime);

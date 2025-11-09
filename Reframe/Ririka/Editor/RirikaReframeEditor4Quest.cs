@@ -6,8 +6,6 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Ririka {
 	internal partial class RirikaReframeEditor : ReframeEditor {
 		bool questArea;
 
-		SerializedProperty controller;
-		SerializedProperty controllerDef;
 		SerializedProperty Butt;
 		SerializedProperty Breast;
 		SerializedProperty acce_wing;
@@ -19,15 +17,15 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Ririka {
 		SerializedProperty twintail;
 		SerializedProperty stomach;
 		SerializedProperty side_root;
-		SerializedProperty frill;
 		SerializedProperty ribbon;
+		SerializedProperty frill;
 		SerializedProperty bag;
 		SerializedProperty nuigurumi;
 		SerializedProperty long_hair;
-		SerializedProperty Cloth;
 		SerializedProperty tail;
 		SerializedProperty bag_wing;
 		SerializedProperty bag_ribbon;
+		SerializedProperty Cloth;
 
 		SerializedProperty upperArm_collider1;
 		SerializedProperty upperArm_collider2;
@@ -44,134 +42,196 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Ririka {
 		SerializedProperty hip_collider2;
 		SerializedProperty hip_collider3;
 
-		SerializedProperty plane_collider;
 		SerializedProperty upperleg_collider1;
 		SerializedProperty upperleg_collider2;
 		SerializedProperty upperleg_collider3;
-		private int pbTCount = 207;
-		private int pbCCount = 271;
-		private int pbCount = 20;
+		SerializedProperty plane_collider;
+		private int pbTCount = 247;
+		private int pbCCount = 394;
+		private int pbCount = 28;
 
 		protected static readonly List<PhysBoneInfo> PhysBoneInfoList = new() {
+			new() {
+				name = "ヒップ",
+				flgName = "Butt",
+				TransformCount = 4,
+				ColliderCount = 0,
+				PBCount = 2,
+			},
+			new() {
+				name = "お腹",
+				flgName = "stomach",
+				TransformCount = 2,
+				ColliderCount = 0,
+				PBCount = 1,
+			},
 			new() {
 				name = "胸",
 				flgName = "Breast",
 				TransformCount = 6,
-				ColliderCount = 0,
+				ColliderCount = 8,
 				PBCount = 2,
+				titlesAndNames = new[] { ("腕干渉", "upperArm_collider1", 1f) },
 			},
 			new() {
-				name = "尻尾",
-				autodeletePropName = "TailDelFlg",
-				flgName = "tail_044",
-				TransformCount = 18,
-				ColliderCount = 13,
-				titlesAndNames = new[]
-				{
-					("頭の干渉", "head_collider2", 1f),
-					("胸周りの干渉", "chest_collider2", 1f),
-					("脚の干渉", "upperleg_collider3", 2f),
-					("地面の干渉", "plane_tail_collider", 1f),
-				},
+				name = "bob",
+				autodeletePropName = "HairDelFlg",
+				flgName = "bob",
+				TransformCount = 27,
+				ColliderCount = 34,
+				PBCount = 1,
+				titlesAndNames = new[] { ("腕干渉", "upperArm_collider2", 1f) },
+			},
+			new() {
+				name = "bobtwin",
+				autodeletePropName = "HairDelFlg",
+				flgName = "bobtwin",
+				TransformCount = 8,
+				ColliderCount = 6,
+				PBCount = 2,
+				titlesAndNames = new[] { ("腕干渉", "upperArm_collider3", 1f) },
+			},
+			new() {
+				name = "front_root",
+				autodeletePropName = "HairDelFlg",
+				flgName = "front_root",
+				TransformCount = 13,
+				ColliderCount = 0,
 				PBCount = 1,
 			},
 			new() {
-				name = "尻尾リボン",
-				autodeletePropName = "TailRibbonFlg",
-				flgName = "tail_022",
-				TransformCount = 10,
+				name = "twintail",
+				autodeletePropName = "HairDelFlg",
+				flgName = "twintail",
+				TransformCount = 9,
+				ColliderCount = 6,
+				PBCount = 1,
+				titlesAndNames = new[] {
+					("腕干渉", "upperArm_collider5", 2f),
+					("胸部干渉", "chest_collider1", 1f)
+				},
+			},
+			new() {
+				name = "side_root",
+				autodeletePropName = "HairDelFlg",
+				flgName = "side_root",
+				TransformCount = 11,
+				ColliderCount = 16,
+				PBCount = 1,
+				titlesAndNames = new[] { ("腕干渉", "upperArm_collider4", 1f) },
+			},
+			new() {
+				name = "long_hair",
+				autodeletePropName = "HairDelFlg",
+				flgName = "long_hair",
+				TransformCount = 39,
+				ColliderCount = 23,
+				PBCount = 4,
+				titlesAndNames = new[] {
+					("腕干渉", "upperArm_collider6", 2.35f),
+					("胸部干渉", "chest_collider2", 1f),
+					("脚干渉", "upperleg_collider1", 2f),
+					("お尻干渉", "hip_collider1", 1f),
+				},
+			},
+			new() {
+				name = "頭の羽",
+				autodeletePropName = "AccessoryDelFlg",
+				flgName = "acce_wing",
+				TransformCount = 11,
 				ColliderCount = 0,
-				PBCount = 2,
+				PBCount = 1,
 			},
 			new() {
-				name = "スカート",
-				autodeletePropName = "HairFlg",
-				flgName = "Skirt_Root",
-				TransformCount = 42,
-				ColliderCount = 60,
-				titlesAndNames = new[] { ("脚干渉", "upperleg_collider2", 1f) },
-				PBCount = 2,
+				name = "イヤリング",
+				autodeletePropName = "AccessoryDelFlg",
+				flgName = "earring",
+				TransformCount = 11,
+				ColliderCount = 0,
+				PBCount = 1,
 			},
 			new() {
-				name = "前髪",
-				autodeletePropName = "HairFlg",
-				flgName = "Head_002",
+				name = "レッグベルト",
+				autodeletePropName = "AccessoryDelFlg",
+				flgName = "Leg_acce",
+				TransformCount = 2,
+				ColliderCount = 0,
+				PBCount = 1,
+			},
+			new() {
+				name = "bag",
+				autodeletePropName = "BagFlg",
+				flgName = "bag",
+				TransformCount = 3,
+				ColliderCount = 0,
+				PBCount = 1,
+			},
+			new() {
+				name = "nuigurumi",
+				autodeletePropName = "BagFlg",
+				flgName = "nuigurumi",
 				TransformCount = 4,
 				ColliderCount = 0,
 				PBCount = 1,
 			},
 			new() {
-				name = "前髪小",
-				autodeletePropName = "HairFlg",
-				flgName = "side_1_root",
-				TransformCount = 15,
-				ColliderCount = 0,
-				PBCount = 1,
-			},
-			new() {
-				name = "横髪小",
-				autodeletePropName = "HairFlg",
-				flgName = "sidehair",
-				TransformCount = 10,
+				name = "bag_wing",
+				autodeletePropName = "BagFlg",
+				flgName = "bag_wing",
+				TransformCount = 14,
 				ColliderCount = 0,
 				PBCount = 2,
 			},
 			new() {
-				name = "ぱっつん前髪",
-				autodeletePropName = "HairFlg",
-				flgName = "Front_hair2_root",
-				TransformCount = 10,
+				name = "bag_ribbon",
+				autodeletePropName = "BagFlg",
+				flgName = "bag_ribbon",
+				TransformCount = 6,
 				ColliderCount = 0,
-				PBCount = 1,
+				PBCount = 2,
 			},
+
 			new() {
-				name = "前髪サイド",
-				autodeletePropName = "HairFlg",
-				flgName = "side_3_root",
-				TransformCount = 37,
-				ColliderCount = 0,
-				PBCount = 1,
-			},
-			new() {
-				name = "サイド",
-				autodeletePropName = "HairFlg",
-				flgName = "Side_root",
-				TransformCount = 13,
-				ColliderCount = 20,
-				titlesAndNames = new[] { ("胸部干渉", "Breast_collider", 1f) },
-				PBCount = 1,
-			},
-			new() {
-				name = "後ろ髪",
-				autodeletePropName = "HairFlg",
-				flgName = "backhair",
-				TransformCount = 27,
-				ColliderCount = 18,
-				titlesAndNames = new[]
-				{
-					("地面の干渉", "plane_collider", 1f),
-					("頭の干渉", "head_collider1", 1f),
-					("腕の干渉", "upperArm_collider", 2f),
-					("脚の干渉", "upperleg_collider1", 2f),
-					("胸周りの干渉", "chest_collider1", 1f),
-				},
-				PBCount = 3,
-			},
-			new() {
-				name = "後髪小",
-				autodeletePropName = "HairFlg",
-				flgName = "back_side_root",
+				name = "ribbon",
+				autodeletePropName = "ClothFlg",
+				flgName = "ribbon",
 				TransformCount = 9,
 				ColliderCount = 0,
 				PBCount = 1,
 			},
 			new() {
-				name = "hair_2",
-				autodeletePropName = "HairFlg40",
-				flgName = "hair_2",
-				TransformCount = 6,
-				ColliderCount = 0,
-				PBCount = 2,
+				name = "frill",
+				autodeletePropName = "ClothFlg",
+				flgName = "frill",
+				TransformCount = 4,
+				ColliderCount = 2,
+				PBCount = 1,
+				titlesAndNames = new[] { ("腕干渉", "upperArm_collider7", 1f) },
+			},
+			new() {
+				name = "スカート",
+				autodeletePropName = "ClothFlg",
+				flgName = "Cloth",
+				TransformCount = 49,
+				ColliderCount = 36,
+				titlesAndNames = new[] {
+					("脚干渉", "upperleg_collider2", 2f),
+					("お尻干渉", "hip_collider2", 1f)
+				},
+				PBCount = 1,
+			},
+			new() {
+				name = "tail",
+				autodeletePropName = "TailFlg",
+				flgName = "tail",
+				TransformCount = 15,
+				ColliderCount = 14,
+				PBCount = 1,
+				titlesAndNames = new[] {
+					("地面干渉", "plane_collider", 1f),
+					("脚干渉", "upperleg_collider3", 2f),
+					("お尻干渉", "hip_collider3", 1f),
+				},
 			},
 		};
 
@@ -184,28 +244,26 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Ririka {
 					questFlg1,
 					"Quest化に対応してないコンポーネントやシェーダーを使っているためペット、TPS、透視、コライダー・ジャンプ、ホワイトブレス、8bit、ペン操作、ハートガンのparticle、AFKの演出の一部を削除します。\n"
 				);
-
-				EditorGUILayout.PropertyField(questFlg1, new GUIContent("quest用にギミックを削除"));
-
 				if (questFlg1.boolValue) {
 					serializedObject.ApplyModifiedProperties();
 					serializedObject.Update();
 					TPSFlg.boolValue = true;
-					teppekiFlg.boolValue = true;
-					mesugakiFaceFlg1.boolValue = true;
+					TeppekiFlg.boolValue = true;
 					ClairvoyanceFlg.boolValue = true;
 					ColliderFlg.boolValue = true;
-					backlightFlg.boolValue = true;
+					BacklightFlg.boolValue = true;
 					WhiteBreathFlg.boolValue = true;
 					EightBitFlg.boolValue = true;
 					PenCtrlFlg.boolValue = true;
 					HeartGunFlg.boolValue = true;
-					candyFlg.boolValue = true;
-					neonFlg.boolValue = true;
-					HairFlg0.boolValue = true;
-					handHeartFlg.boolValue = true;
-					noisepanelFlg.boolValue = true;
-					petFlg.boolValue = true;
+					CandyFlg.boolValue = true;
+					NeonFlg.boolValue = true;
+					HairFlg.boolValue = true;
+					HandheartFlg.boolValue = true;
+					NoisepanelFlg.boolValue = true;
+					PetFlg.boolValue = true;
+					MesugakiFaceFlg.boolValue = true;
+					PhoneFlg.boolValue = true;
 					serializedObject.ApplyModifiedProperties();
 				}
 				if (GUILayout.Button("おすすめ設定にする")) {
@@ -218,13 +276,13 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Ririka {
 					acce_wing.boolValue = true;
 					earring.boolValue = true;
 					Leg_acce.boolValue = true;
-					bob.boolValue = HairFlg.boolValue || !HairFlg5.boolValue;
+					bob.boolValue = HairDelFlg.boolValue || !HairFlg5.boolValue;
 					bobtwin.boolValue =
-						HairFlg.boolValue || !(HairFlg3.boolValue && HairFlg5.boolValue);
+						HairDelFlg.boolValue || !(HairFlg3.boolValue && HairFlg5.boolValue);
 					front_root.boolValue = true;
-					side_root.boolValue = HairFlg.boolValue || HairFlg2.boolValue;
-					twintail.boolValue = HairFlg.boolValue || !HairFlg7.boolValue;
-					long_hair.boolValue = HairFlg.boolValue || !HairFlg4.boolValue;
+					side_root.boolValue = HairDelFlg.boolValue || HairFlg2.boolValue;
+					twintail.boolValue = HairDelFlg.boolValue || !HairFlg7.boolValue;
+					long_hair.boolValue = HairDelFlg.boolValue || !HairFlg4.boolValue;
 					Cloth.boolValue = true;
 					ribbon.boolValue = true;
 					frill.boolValue = true;

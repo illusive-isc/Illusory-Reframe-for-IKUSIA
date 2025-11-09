@@ -66,12 +66,14 @@ namespace jp.illusive_isc.IllusoryReframe.IKUSIA.Mizuki {
 
 		public override void Execute(VRCAvatarDescriptor descriptor) {
 			var stopwatch = Stopwatch.StartNew();
-			var stepTimes = new Dictionary<string, long> {
-				[stepNames[0]] = InitializeAssets<MizukiReframe>(descriptor, GetPathDirPrefix()),
-				[stepNames[1]] = Edit<MizukiReframe>(descriptor, GetParamConfigs<Base, MizukiReframe>(target as MizukiReframe, GetNameSpace())),
-				[stepNames[2]] = FinalizeAssets(descriptor),
-			};
-
+			var stepTimes = new Dictionary<string, long> { };
+			if (target.executeMode == ReframeRuntime.ExecuteModeOption.NDMF) {
+				stepTimes.Add(stepNames[1], Edit<MizukiReframe>(descriptor, GetParamConfigs<Base, MizukiReframe>(target as MizukiReframe, GetNameSpace())));
+			} else {
+				stepTimes.Add(stepNames[0], InitializeAssets<MizukiReframe>(descriptor, GetPathDirPrefix()));
+				stepTimes.Add(stepNames[1], Edit<MizukiReframe>(descriptor, GetParamConfigs<Base, MizukiReframe>(target as MizukiReframe, GetNameSpace())));
+				stepTimes.Add(stepNames[2], FinalizeAssets(descriptor));
+			}
 			stopwatch.Stop();
 			Debug.Log($"最適化を実行しました！総処理時間: {stopwatch.ElapsedMilliseconds}ms ({stopwatch.Elapsed.TotalSeconds:F2}秒)");
 
